@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-2720400164521095239
+--- !u!114 &-2307933879341027502
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,8 +20,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Gradient Remap 3
-  m_Shader: {fileID: -6465566751694194690, guid: f813ab064c0a0e94f927cfddeaae97da, type: 3}
+  m_Name: FourGradientFull Potential 2
+  m_Shader: {fileID: -6465566751694194690, guid: 5bd69e374e47f7b47b65d2c5f894f89e, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -116,7 +116,6 @@ Material:
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
-    - _GlossinessSource: 0
     - _GlossyReflections: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
@@ -124,11 +123,8 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Shininess: 0
     - _Smoothness: 0.5
-    - _SmoothnessSource: 0
     - _SmoothnessTextureChannel: 0
-    - _SpecSource: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
@@ -139,10 +135,14 @@ Material:
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Color_A1: {r: 1, g: 0.9056175, b: 0, a: 1}
-    - _Color_A2: {r: 0.04305338, g: 0, b: 0.5566038, a: 1}
-    - _Color_B1: {r: 0, g: 0.8862745, b: 0.4313782, a: 1}
-    - _Color_B2: {r: 1, g: 0.80508685, b: 0, a: 1}
+    - _Color_A1: {r: 0.003921569, g: 0, b: 1, a: 1}
+    - _Color_A2: {r: 0, g: 1, b: 1, a: 1}
+    - _Color_B1: {r: 1, g: 0.6351261, b: 0, a: 1}
+    - _Color_B2: {r: 1, g: 0.97530633, b: 0, a: 1}
+    - _Color_C1: {r: 0.08692647, g: 0.39622638, b: 0.001868997, a: 1}
+    - _Color_C2: {r: 0, g: 1, b: 0.14062497, a: 1}
+    - _Color_D1: {r: 1, g: 0, b: 0, a: 1}
+    - _Color_D2: {r: 1, g: 0.6470588, b: 0.6470588, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
