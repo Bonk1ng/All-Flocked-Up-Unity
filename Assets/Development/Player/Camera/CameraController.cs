@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CameraController : MonoBehaviour
 {
@@ -9,13 +10,25 @@ public class CameraController : MonoBehaviour
 
     private bool watchPlayer = true;
 
+    [SerializeField]
+    float cameraDistanceFromPlayer = 10; // Distance we want the player from camera (later to be used for zooming in/out)
+
+    InputAction lookAction; // Action for mouse input
+    float x, y; // Mouse input values
+
+    void Start()
+    {
+        lookAction = InputSystem.actions.FindAction("Look");
+        transform.position = player.position + new Vector3(0, 5, -10);
+        transform.LookAt(player);
+    }
+
     void LateUpdate()
     {
         if (watchPlayer && player != null)
         {
             // Follow player
-            transform.position = player.position + new Vector3(0, 5, -10);
-            transform.LookAt(player);
+            CameraMovement();
         }
         else if (respawnTarget != null)
         {
@@ -24,6 +37,28 @@ public class CameraController : MonoBehaviour
             transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * transitionSpeed);
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(90, 0, 0), Time.deltaTime * transitionSpeed);
         }
+    }
+
+    void Update()
+    {
+        PlayerInput();
+    }
+
+    void PlayerInput()
+    {
+        x = lookAction.ReadValue<Vector2>().x;
+        y = lookAction.ReadValue<Vector2>().y;
+    }
+
+    void CameraMovement()
+    {
+        Vector3 tempPos = transform.forward * -cameraDistanceFromPlayer;
+
+        tempPos -= transform.right * x * Time.deltaTime;
+        tempPos -= transform.up * y * Time.deltaTime;
+
+        transform.position = player.transform.position + tempPos;
+        transform.LookAt(player);
     }
 
     public void SwitchToRespawnCam()
