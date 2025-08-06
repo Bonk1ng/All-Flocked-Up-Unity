@@ -8,7 +8,7 @@ public class PlayerInteraction : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E)) // example input
+        if (Input.GetKeyDown(KeyCode.E)) // test input. Change later
         {
             RaycastHit hit;
             Debug.DrawRay(transform.position, transform.forward * interactionRange, Color.red);
@@ -22,7 +22,7 @@ public class PlayerInteraction : MonoBehaviour
             }
         }
 
-        // Optionally handle LookAt() logic with a shorter ray
+        
         RaycastHit lookHit;
         if (Physics.Raycast(transform.position, transform.forward, out lookHit, 6f, npcLayer))
         {
