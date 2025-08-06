@@ -3,15 +3,16 @@ using System.Collections.Generic;
 
 public class QuestGiver : MonoBehaviour, QuestInteraction
 {
+    //Quest Giver should be attached to any NPC the should give a quest. Also inherits the QuestInteraction interface to use those functions.
     [Header("Quests Offered")]
-    public List<QuestDetails> quests = new();
-    public bool offerSequentially = true;
-    public bool repeatable = false;
+    public List<QuestDetails> quests = new(); // List of quest the NPCwill give
+    public bool offerSequentially = true; // Are quests given in order?
+    public bool repeatable = false; //Is Quest repeatable?
 
     [Header("Prerequisites")]
-    public List<QuestDetails> requiredCompletedQuests = new();
+    public List<QuestDetails> requiredCompletedQuests = new(); //List of REQUIRED COMPLETED QUESTS.
 
-    // --- Called when player interacts ---
+    // *** Called when player interacts with the NPC***
     public void InteractWithNPC(QuestLog playerQuestLog)
     {
         if (!MeetsPrerequisites(playerQuestLog))
@@ -33,15 +34,15 @@ public class QuestGiver : MonoBehaviour, QuestInteraction
         }
         else
         {
-            // Trigger your custom UI prompt (quest title, accept button)
+            //ADD QUEST GIVER UI HERE TO DISPLAY THE QUESTS. CALL AcceptQuest() from UI ACCEPT BUTTON.
             Debug.Log($"Offer Quest: {quest.questName}");
-            // In UI: call AcceptQuest(...) from the accept button.
+            
         }
     }
 
     public void LookAtNPC()
     {
-        // Optional: Show floating UI, play idle animation, etc.
+        // ADD ONSCREEN PROMPT HERE? MAYBE UI TEXT OR NOTIF.
         Debug.Log("Looking at quest giver NPC.");
     }
 
