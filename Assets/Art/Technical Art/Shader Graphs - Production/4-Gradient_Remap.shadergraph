@@ -29,6 +29,12 @@
         },
         {
             "m_Id": "ac3c63f3259947adbad70cd22a5e6ba1"
+        },
+        {
+            "m_Id": "f6eb63cf24074d5e9a80143dd1dd7aeb"
+        },
+        {
+            "m_Id": "328fb649f9b54cf095d96b6b8b6f13ff"
         }
     ],
     "m_Keywords": [],
@@ -116,6 +122,15 @@
         },
         {
             "m_Id": "0d4bf32e0d1c49948d285a8213a01cdf"
+        },
+        {
+            "m_Id": "b4e984e8fa184ebf936ecee630248362"
+        },
+        {
+            "m_Id": "968e91af85894ace9423433b9dd7190e"
+        },
+        {
+            "m_Id": "564df9ff38734211be20619fe3da3aa6"
         }
     ],
     "m_GroupDatas": [],
@@ -222,6 +237,20 @@
         {
             "m_OutputSlot": {
                 "m_Node": {
+                    "m_Id": "564df9ff38734211be20619fe3da3aa6"
+                },
+                "m_SlotId": 0
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "aa797a2a73b1454cb669a4081e755a79"
+                },
+                "m_SlotId": 1
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
                     "m_Id": "5d5faae562c546db90f2b38d2d0ff252"
                 },
                 "m_SlotId": 0
@@ -320,6 +349,20 @@
         {
             "m_OutputSlot": {
                 "m_Node": {
+                    "m_Id": "968e91af85894ace9423433b9dd7190e"
+                },
+                "m_SlotId": 0
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "3f48ba72753d4bceabebcef17a301ff0"
+                },
+                "m_SlotId": 1
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
                     "m_Id": "97e517d6294948caa89d4cd0cd81eb53"
                 },
                 "m_SlotId": 0
@@ -357,6 +400,20 @@
                     "m_Id": "0d4bf32e0d1c49948d285a8213a01cdf"
                 },
                 "m_SlotId": 0
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "b4e984e8fa184ebf936ecee630248362"
+                },
+                "m_SlotId": 0
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "c6268e71d0504e7fa74ed81a4090e214"
+                },
+                "m_SlotId": 1
             }
         },
         {
@@ -611,6 +668,21 @@
     "m_CustomColors": {
         "m_SerializableColors": []
     }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "08540670bfdb4b0cbbf9e89c27f4b034",
+    "m_Id": 0,
+    "m_DisplayName": "Adjustment Point X",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Out",
+    "m_StageCapability": 3,
+    "m_Value": 0.0,
+    "m_DefaultValue": 0.0,
+    "m_Labels": []
 }
 
 {
@@ -988,6 +1060,34 @@
 
 {
     "m_SGVersion": 1,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.Vector1ShaderProperty",
+    "m_ObjectId": "328fb649f9b54cf095d96b6b8b6f13ff",
+    "m_Guid": {
+        "m_GuidSerialized": "17d03858-a554-436f-8e33-f4b7ed708cad"
+    },
+    "m_Name": "Adjustment Point Y",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "Adjustment Point Y",
+    "m_DefaultReferenceName": "_Adjustment_Point_Y",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_DismissedVersion": 0,
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "m_Hidden": false,
+    "m_Value": 0.5,
+    "m_FloatType": 0,
+    "m_RangeValues": {
+        "x": 0.0,
+        "y": 1.0
+    }
+}
+
+{
+    "m_SGVersion": 1,
     "m_Type": "UnityEditor.Rendering.Universal.ShaderGraph.UniversalTarget",
     "m_ObjectId": "32a83fe7eab24071873d4731bb089db6",
     "m_Datas": [],
@@ -1331,6 +1431,42 @@
         "m_SerializableColors": []
     },
     "m_SerializedDescriptor": "VertexDescription.Tangent"
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
+    "m_ObjectId": "564df9ff38734211be20619fe3da3aa6",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "Property",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": -1272.0,
+            "y": 382.9999694824219,
+            "width": 175.0,
+            "height": 34.000030517578128
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "8ced047f26594dc880928384457661b0"
+        }
+    ],
+    "synonyms": [],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_DismissedVersion": 0,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_Property": {
+        "m_Id": "328fb649f9b54cf095d96b6b8b6f13ff"
+    }
 }
 
 {
@@ -1985,6 +2121,36 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "8af313fcd3a14c4ea5cc3c3f99adb4cb",
+    "m_Id": 0,
+    "m_DisplayName": "Adjustment Point Y",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Out",
+    "m_StageCapability": 3,
+    "m_Value": 0.0,
+    "m_DefaultValue": 0.0,
+    "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "8ced047f26594dc880928384457661b0",
+    "m_Id": 0,
+    "m_DisplayName": "Adjustment Point Y",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Out",
+    "m_StageCapability": 3,
+    "m_Value": 0.0,
+    "m_DefaultValue": 0.0,
+    "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.CategoryData",
     "m_ObjectId": "8d864039af2d4cb3a482c29773be83a9",
     "m_Name": "",
@@ -2015,6 +2181,12 @@
         },
         {
             "m_Id": "7338866f6c0747b89a98b60b7449913f"
+        },
+        {
+            "m_Id": "f6eb63cf24074d5e9a80143dd1dd7aeb"
+        },
+        {
+            "m_Id": "328fb649f9b54cf095d96b6b8b6f13ff"
         }
     ]
 }
@@ -2116,6 +2288,42 @@
         "y": 0.0,
         "z": 0.0,
         "w": 0.0
+    }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
+    "m_ObjectId": "968e91af85894ace9423433b9dd7190e",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "Property",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": -1272.0,
+            "y": 1172.0,
+            "width": 175.0,
+            "height": 34.0
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "8af313fcd3a14c4ea5cc3c3f99adb4cb"
+        }
+    ],
+    "synonyms": [],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_DismissedVersion": 0,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_Property": {
+        "m_Id": "328fb649f9b54cf095d96b6b8b6f13ff"
     }
 }
 
@@ -2555,6 +2763,42 @@
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
     "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
+    "m_ObjectId": "b4e984e8fa184ebf936ecee630248362",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "Property",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": -1265.0,
+            "y": -76.0000228881836,
+            "width": 175.0,
+            "height": 34.00001525878906
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "08540670bfdb4b0cbbf9e89c27f4b034"
+        }
+    ],
+    "synonyms": [],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_DismissedVersion": 0,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_Property": {
+        "m_Id": "f6eb63cf24074d5e9a80143dd1dd7aeb"
+    }
 }
 
 {
@@ -3195,6 +3439,34 @@
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
     "m_Labels": []
+}
+
+{
+    "m_SGVersion": 1,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.Vector1ShaderProperty",
+    "m_ObjectId": "f6eb63cf24074d5e9a80143dd1dd7aeb",
+    "m_Guid": {
+        "m_GuidSerialized": "de3a354f-72d0-437d-be0c-ce565d532df1"
+    },
+    "m_Name": "Adjustment Point X",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "Adjustment Point X",
+    "m_DefaultReferenceName": "_Adjustment_Point_X",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_DismissedVersion": 0,
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "m_Hidden": false,
+    "m_Value": 0.75,
+    "m_FloatType": 0,
+    "m_RangeValues": {
+        "x": 0.0,
+        "y": 1.0
+    }
 }
 
 {
