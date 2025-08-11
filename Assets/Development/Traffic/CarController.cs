@@ -1,126 +1,119 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Splines;
 
 public class CarController : MonoBehaviour
 {
-    [Header("Car Components")]
-    [SerializeField] private MeshCollider MC;
-    [SerializeField] private Rigidbody RB;
-
-    [Header("Car Navigation")]
-    public Spline targetSpline;
-    public Spline nextSpline;
-    public LayerMask obstacleLayer;
-
-    [Header("Car Settings")]
-    [SerializeField] public bool isStopped = false;
-    [SerializeField] public bool isStopping = false;
-    [SerializeField] public float maxSpeed = 10f;
-    [SerializeField] public float acceleration = 2f;
-    [SerializeField] public float currentSpeed = 0f;
-    [SerializeField] public float distanceTraveled = 0f;
-    [SerializeField] public float detectionRange = 5f;
-    [SerializeField] public float stopDistance = 1.5f;
+    public GameObject currentSpline;
+    public GameObject nextSpline;
+    public bool isStopped = false;
+    public bool isStopping = false;
+    public float currentSpeed = 5f;
+    public float maxSpeed = 10f;
+    public float acceleration = 2f;
+    public float deceleration = 2f;
+    public float currentSplinePosition = 0f;  
 
     void Start()
     {
-        if (MC == null)
-        {
-            MC = GetComponent<MeshCollider>();
-        }
-        if (RB == null)
-        {
-            RB = GetComponent<Rigidbody>();
-        }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
         
     }
-
-    void FixedUpdate()
+    void Update()
     {
-        if (isStopped) return;
-        if (targetSpline == null)
-            return;
-
-        float splineLength = targetSpline.GetLength();
-
-        // Check if near end of spline
-        if (distanceTraveled >= splineLength - 0.5f)
+        if (currentSpline != null && !isStopped)
         {
-            if (nextSpline != null)
+            MoveAlongSpline(Time.deltaTime);
+        }
+        if (!isStopped && !isStopping && currentSpeed < maxSpeed)
+        {
+            Accelerate(Time.deltaTime);
+        }
+        else if (isStopping || (isStopped && currentSpeed > 0f))
+        {
+            Decelerate(Time.deltaTime);
+        }
+    }
+
+    public void SetCurrentSpline(GameObject spline)
+    {
+        currentSpline = spline;
+        if (currentSpline != null)
+        {
+            SplineContainer splineContainer = currentSpline.GetComponent<SplineContainer>();
+            if (splineContainer != null)
             {
-                targetSpline = nextSpline;
-                nextSpline = null;
-                distanceTraveled = 0f;
-                return;
-            }
-            else
-            {
-                isStopping = true;
+                // Initialize the car's position on the spline
+                transform.position = splineContainer.EvaluatePosition(0f);
+
+                // Fix: Spline does not have EvaluateOrientation. Use tangent and up vector to set rotation.
+                Vector3 tangent = (Vector3)splineContainer.EvaluateTangent(0f);
+                Vector3 up = (Vector3)splineContainer.EvaluateUpVector(0f);
+                if (tangent != Vector3.zero)
+                {
+                    transform.rotation = Quaternion.LookRotation(tangent, up);
+                }
             }
         }
-
-        // Speed control
-        bool obstacleDetected = DetectObstacle();
-
-        currentSpeed = Mathf.MoveTowards(currentSpeed, maxSpeed, acceleration * Time.fixedDeltaTime);
-        distanceTraveled += currentSpeed * Time.fixedDeltaTime;
-
-        // Move along spline
-        float t = Mathf.Clamp01(distanceTraveled / splineLength);
-
-        Vector3 position = targetSpline.EvaluatePosition(t);
-        Vector3 tangent = targetSpline.EvaluateTangent(t);
-
-        transform.position = position;
-        transform.forward = Vector3.Lerp(transform.forward, tangent.normalized, Time.fixedDeltaTime * 5f);
     }
-    bool DetectObstacle()
+    public void SetNextSpline(GameObject spline)
     {
-        Vector3 origin = transform.position + Vector3.up * 0.5f;
-        Vector3 direction = transform.forward;
+        nextSpline = spline;
+    }
 
-        if (Physics.Raycast(origin, direction, out RaycastHit hit, detectionRange, obstacleLayer))
+    public void MoveAlongSpline(float deltaTime)
+    {
+        if (currentSpline == null || isStopped) return;
+        SplineContainer splineContainer = currentSpline.GetComponent<SplineContainer>();
+        if (splineContainer == null) return;
+        // Calculate the new position along the spline
+        currentSplinePosition += currentSpeed * deltaTime;
+        float splineLength = splineContainer.Spline.GetLength();
+        if (currentSplinePosition > splineLength)
         {
-            return hit.distance <= stopDistance;
+            currentSplinePosition = 0f; // Reset to start of spline
+            SetCurrentSpline(nextSpline); // Switch to next spline if available
+            splineContainer = currentSpline != null ? currentSpline.GetComponent<SplineContainer>() : null;
+            if (splineContainer == null) return;
+            splineLength = splineContainer.Spline.GetLength();
         }
-
-        return false;
+        // Update the car's position and rotation
+        float t = currentSplinePosition / splineLength;
+        transform.position = (Vector3)splineContainer.EvaluatePosition(t);
+        Vector3 tangent = (Vector3)splineContainer.Spline.EvaluateTangent(t);
+        Vector3 up = (Vector3)splineContainer.Spline.EvaluateUpVector(t);
+        if (tangent != Vector3.zero)
+        {
+            transform.rotation = Quaternion.LookRotation(tangent, up);
+        }
     }
-    public void SetNewSpline(Spline newSpline)
-    {
-        nextSpline = newSpline;
-    }
-
-    public void SetTargetSpline()
-    {
-        targetSpline = nextSpline;
-    }
-
-    public void StartCar()
-    {
-        isStopped = false;
-    }
-
     public void Accelerate(float deltaTime)
     {
         if (isStopped) return;
-        if (currentSpeed >= maxSpeed) return;
-        currentSpeed = Mathf.Min(currentSpeed + acceleration * deltaTime, maxSpeed);
+        currentSpeed += acceleration * deltaTime;
+        if (currentSpeed > maxSpeed)
+        {
+            currentSpeed = maxSpeed; // Cap speed at maxSpeed
+        }
     }
     public void Decelerate(float deltaTime)
     {
         if (isStopped) return;
-        currentSpeed = Mathf.Max(currentSpeed - acceleration * deltaTime, 0f);
-
-        if (currentSpeed == 0f)
+        currentSpeed -= deceleration * deltaTime;
+        if (currentSpeed < 0f)
         {
-            isStopped = true;
+            currentSpeed = 0f; // Stop the car
+            isStopped = true; // Set stopped state
         }
+    }
+    public void Stop()
+    {
+        isStopped = true;
+        currentSpeed = 0f; // Immediately stop the car
+    }
+    public void Resume()
+    {
+        isStopped = false; // Resume movement
     }
 }
