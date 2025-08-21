@@ -10,6 +10,7 @@ public class PlayerGroundMovement : MonoBehaviour
     private Rigidbody playerBody;
     private PlayerFlightMovement playerFlightMovement;
     private static GroundCheck groundCheck;
+    private Transform cameraRef;
 
 
     // movement variables
@@ -46,6 +47,7 @@ public class PlayerGroundMovement : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        cameraRef = Camera.main.transform;
         groundCheck = GetComponentInChildren<GroundCheck>();
         playerFlightMovement = GetComponent<PlayerFlightMovement>();
         Cursor.lockState = CursorLockMode.Locked;
@@ -112,6 +114,11 @@ public class PlayerGroundMovement : MonoBehaviour
         if (z > 0 && yMag > maxSpeed) z = 0;
         if (z < 0 && yMag < -maxSpeed) z = 0;
 
+
+        if (z > 0)
+        {
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x, cameraRef.eulerAngles.y, transform.eulerAngles.z);
+        }
         //Apply forces to playerBody
         playerBody.AddForce(transform.forward * z * currentSpeed * Time.deltaTime);
         playerBody.AddForce(transform.right * x * currentSpeed * Time.deltaTime);

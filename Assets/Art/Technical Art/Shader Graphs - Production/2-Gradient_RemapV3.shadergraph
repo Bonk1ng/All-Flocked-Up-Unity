@@ -17,6 +17,9 @@
         },
         {
             "m_Id": "ef224f750aca49ef8238cc1fec3f6f55"
+        },
+        {
+            "m_Id": "40a52516210b4a9ea974f71ecbadeb9f"
         }
     ],
     "m_Keywords": [],
@@ -80,6 +83,9 @@
         },
         {
             "m_Id": "a033198b92b54055b8b31b22ae278b9e"
+        },
+        {
+            "m_Id": "5c230aca813f42a0b35509f08a0ca8a5"
         }
     ],
     "m_GroupDatas": [],
@@ -139,6 +145,20 @@
                     "m_Id": "8e3070945d49438e89fac7019aa843f9"
                 },
                 "m_SlotId": 0
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "5c230aca813f42a0b35509f08a0ca8a5"
+                },
+                "m_SlotId": 0
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "cb3649f2c7794bc499726462e95667c3"
+                },
+                "m_SlotId": 1
             }
         },
         {
@@ -778,6 +798,34 @@
 }
 
 {
+    "m_SGVersion": 1,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.Vector1ShaderProperty",
+    "m_ObjectId": "40a52516210b4a9ea974f71ecbadeb9f",
+    "m_Guid": {
+        "m_GuidSerialized": "437b523d-0dec-452b-9e95-70cc6b2f529b"
+    },
+    "m_Name": "Adjustment Point",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "Adjustment Point",
+    "m_DefaultReferenceName": "_Adjustment_Point",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_DismissedVersion": 0,
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "m_Hidden": false,
+    "m_Value": 0.5,
+    "m_FloatType": 0,
+    "m_RangeValues": {
+        "x": 0.0,
+        "y": 1.0
+    }
+}
+
+{
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
     "m_ObjectId": "44733d3ea59a46e88b5585188e0ba4c5",
@@ -1020,6 +1068,42 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
+    "m_ObjectId": "5c230aca813f42a0b35509f08a0ca8a5",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "Property",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": -1169.0,
+            "y": 248.00001525878907,
+            "width": 165.0,
+            "height": 34.00001525878906
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "ca87f53a831148a4a473d38c4dd24e74"
+        }
+    ],
+    "synonyms": [],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_DismissedVersion": 0,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_Property": {
+        "m_Id": "40a52516210b4a9ea974f71ecbadeb9f"
+    }
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Texture2DInputMaterialSlot",
     "m_ObjectId": "68980d62baa04819accd4383fc0dd511",
     "m_Id": 1,
@@ -1251,6 +1335,9 @@
         },
         {
             "m_Id": "ef224f750aca49ef8238cc1fec3f6f55"
+        },
+        {
+            "m_Id": "40a52516210b4a9ea974f71ecbadeb9f"
         }
     ]
 }
@@ -1731,6 +1818,21 @@
         "z": 0.0,
         "w": 0.0
     }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "ca87f53a831148a4a473d38c4dd24e74",
+    "m_Id": 0,
+    "m_DisplayName": "Adjustment Point",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Out",
+    "m_StageCapability": 3,
+    "m_Value": 0.0,
+    "m_DefaultValue": 0.0,
+    "m_Labels": []
 }
 
 {
