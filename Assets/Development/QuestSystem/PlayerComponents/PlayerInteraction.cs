@@ -5,6 +5,7 @@ public class PlayerInteraction : MonoBehaviour
     public float interactionRange = 3f;
     public LayerMask npcLayer;
     public QuestLog questLog; // assign in Inspector
+    public UI_QuestGiver questGiverUI;
 
     void Update()
     {
@@ -17,7 +18,7 @@ public class PlayerInteraction : MonoBehaviour
                 var questNPC = hit.collider.GetComponentInParent<QuestInteraction>();
                 if (questNPC != null)
                 {
-                    questNPC.InteractWithNPC(questLog);
+                    questGiverUI.OpenQuestGiverUI();
                 }
             }
         }
