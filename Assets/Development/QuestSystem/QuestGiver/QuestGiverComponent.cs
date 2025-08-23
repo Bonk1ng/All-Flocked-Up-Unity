@@ -8,6 +8,7 @@ public class QuestGiver : MonoBehaviour, QuestInteraction
     public List<QuestDetails> quests = new(); // List of quest the NPCwill give
     public bool offerSequentially = true; // Are quests given in order?
     public bool repeatable = false; //Is Quest repeatable?
+    public string questName;
 
     [Header("Prerequisites")]
     public List<QuestDetails> requiredCompletedQuests = new(); //List of REQUIRED COMPLETED QUESTS.
@@ -38,6 +39,7 @@ public class QuestGiver : MonoBehaviour, QuestInteraction
             Debug.Log($"Offer Quest: {quest.questName}");
             
         }
+        quest.questName = questName;
     }
 
     public void LookAtNPC()
