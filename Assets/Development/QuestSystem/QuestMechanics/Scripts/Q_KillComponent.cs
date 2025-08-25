@@ -1,20 +1,23 @@
 using UnityEngine;
 
-public class Q_KillComponent : MonoBehaviour
+public class Q_KillComponent : MonoBehaviour, I_QuestMechanicInterface
 {
     public string objectiveID;
     QuestRuntimeInstance questRuntimeInstance;
+    private readonly string questID;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         questRuntimeInstance = GetComponent<QuestRuntimeInstance>();
     }
 
-    // Update is called once per frame
-    void Update()
+
+    public void SetRuntimeInstance(QuestRuntimeInstance instance)
     {
-        
+        questRuntimeInstance = instance;
     }
+
+    public string GetQuestID() => questID;
 
     void KillComplete()
     {

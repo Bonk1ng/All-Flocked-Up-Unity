@@ -1,20 +1,19 @@
 using UnityEngine;
 
-public class Q_ItemToLocation : MonoBehaviour
+public class Q_ItemToLocation : MonoBehaviour, I_QuestMechanicInterface
 {
     public string objectiveID;
+    public string questID;
     public QuestRuntimeInstance questRuntimeInstance;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+
+    public void SetRuntimeInstance(QuestRuntimeInstance instance)
     {
-        questRuntimeInstance = GetComponent<QuestRuntimeInstance>();    
+        questRuntimeInstance = instance;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public string GetQuestID() => questID;
 
     void ItemAtLocation()
     {
@@ -24,7 +23,7 @@ public class Q_ItemToLocation : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("ItemToLocation"))
+        if (collision.gameObject.CompareTag("QuestItemToLocation"))
         {
             ItemAtLocation();
             Destroy(collision.gameObject);

@@ -20,10 +20,15 @@ public class UI_QuestNotif : MonoBehaviour
         
     }
 
-    private async void ShowQuestNotif()
+    public void SetNotifText(string text)
+    {
+        questNotifText.text = text;
+    }
+
+    public async void ShowQuestNotif()
     {
         questNotifCanvas.SetActive(true);
-        await Task.Delay(3000);
+        await Task.Delay(1500);
         questNotifCanvas.SetActive(false);
     }
 }

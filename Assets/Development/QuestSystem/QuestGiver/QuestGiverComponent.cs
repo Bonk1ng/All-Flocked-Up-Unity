@@ -9,6 +9,7 @@ public class QuestGiver : MonoBehaviour, QuestInteraction
     public bool offerSequentially = true; // Are quests given in order?
     public bool repeatable = false; //Is Quest repeatable?
     public string questName;
+    public bool hasQuest;
 
     [Header("Prerequisites")]
     public List<QuestDetails> requiredCompletedQuests = new(); //List of REQUIRED COMPLETED QUESTS.
@@ -31,6 +32,7 @@ public class QuestGiver : MonoBehaviour, QuestInteraction
 
         if (quest.autoAcceptQuest)
         {
+          
             AcceptQuest(playerQuestLog, quest);
         }
         else
@@ -45,7 +47,7 @@ public class QuestGiver : MonoBehaviour, QuestInteraction
     public void LookAtNPC()
     {
         // ADD ONSCREEN PROMPT HERE? MAYBE UI TEXT OR NOTIF.
-        Debug.Log("Looking at quest giver NPC.");
+        //Debug.Log("Looking at quest giver NPC.");
     }
 
     private QuestDetails GetNextAvailableQuest(QuestLog playerQuestLog)
@@ -76,6 +78,7 @@ public class QuestGiver : MonoBehaviour, QuestInteraction
         {
             log.MarkQuestTurnedIn(quest);
             Debug.Log("Quest auto-completed and turned in.");
+           
         }
         else
         {
