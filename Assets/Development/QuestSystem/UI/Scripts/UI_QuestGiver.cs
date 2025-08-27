@@ -6,7 +6,7 @@ public class UI_QuestGiver : MonoBehaviour
 {
 
     [SerializeField] GameObject questGiverCanvas;
-    [SerializeField] QuestGiver questGiver;
+    [SerializeField] QuestGiver currentquestGiver;
     public QuestLog questLog;
 
     [SerializeField] Button acceptQuestButton;
@@ -30,8 +30,9 @@ public class UI_QuestGiver : MonoBehaviour
         SetRewardsText(rewards);
     }
 
-    public void OpenQuestGiverUI()
+    public void OpenQuestGiverUI(QuestGiver questGiver)
     {
+        currentquestGiver = questGiver;
         if (questLog.hasQuest == true) { return; }
         questGiverCanvas.SetActive(true);
         
@@ -44,7 +45,7 @@ public class UI_QuestGiver : MonoBehaviour
 
     private void AddQuestToLog()
     {
-      questGiver.InteractWithNPC(questLog);
+      currentquestGiver.InteractWithNPC(questLog);
         CloseQuestGiverUI();
     }
 

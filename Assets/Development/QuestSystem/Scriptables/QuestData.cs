@@ -14,5 +14,6 @@ public class QuestData : ScriptableObject
     [TextArea] public string questDescription;
 
     public ObjectiveDetails[] objectives;
+
   
 }

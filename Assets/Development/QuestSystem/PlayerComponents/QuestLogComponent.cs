@@ -8,8 +8,9 @@ public class QuestLog : MonoBehaviour
     [SerializeField] private UI_QuestNotif questNotif;
     [SerializeField] private UI_QuestReward questRewardUI;
     public bool hasQuest=false;
+    public QuestGiver currentQuestGiver;
 
-    public void AcceptQuest(QuestDetails questData)
+    public void AcceptQuest(QuestDetails questData,QuestGiver questGiver)
     {
         if (hasQuest) { return; }
         if (HasQuestOrCompleted(questData))
@@ -21,10 +22,12 @@ public class QuestLog : MonoBehaviour
         QuestRuntimeInstance instance = new QuestRuntimeInstance
         {
             questData = questData
+            
         };
         instance.StartQuest();
         activeQuests.Add(instance);
         hasQuest = true;
+        currentQuestGiver = questGiver;
     }
 
     public void UpdateQuestObjective(string objectiveID, int amount)
@@ -56,7 +59,8 @@ public class QuestLog : MonoBehaviour
                 activeQuests.RemoveAt(i);
                 hasQuest = false;
                 questRewardUI.OpenQuestRewardsUI();
-                
+                Destroy(currentQuestGiver);
+
             }
         }
     }
@@ -95,6 +99,7 @@ public class QuestLog : MonoBehaviour
             activeQuests.Remove(questInstance);
             if (!completedQuests.Contains(quest))
                 completedQuests.Add(quest);
+            
         }
     }
 }
