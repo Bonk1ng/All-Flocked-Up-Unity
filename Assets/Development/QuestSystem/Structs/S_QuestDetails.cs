@@ -6,6 +6,7 @@ public class QuestDetails : ScriptableObject
     //Store the QUEST variables and refs here.
 
     public string questName;
+    public string questID;
     [TextArea] public string questLogDescription;
     [TextArea] public string trackerDescription;
 

@@ -175,7 +175,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   questRewardCanvas: {fileID: 2515295621989761779}
-  acceptReward: {fileID: 0}
+  acceptReward: {fileID: 5145096172045134901}
 --- !u!223 &7707820072697415464
 Canvas:
   m_ObjectHideFlags: 0

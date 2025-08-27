@@ -18,7 +18,7 @@ public class PlayerInteraction : MonoBehaviour
                 var questNPC = hit.collider.GetComponentInParent<QuestInteraction>();
                 if (questNPC != null)
                 {
-                    questGiverUI.OpenQuestGiverUI();
+                    questGiverUI.OpenQuestGiverUI(hit.collider.GetComponentInParent<QuestGiver>());
                 }
             }
         }
