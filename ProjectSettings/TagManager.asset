@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 3
   tags:
   - Nest
+  - QuestLocation
+  - QuestItemToLocation
+  - QuestKill
+  - QuestInteract
   layers:
   - Default
   - TransparentFX
@@ -15,7 +19,7 @@ TagManager:
   - Player
   - NPC
   - Enemy
-  - 
+  - Quest
   - 
   - 
   - 

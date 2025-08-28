@@ -5,9 +5,14 @@ public class QuestLog : MonoBehaviour
 {
     public List<QuestRuntimeInstance> activeQuests = new();
     public List<QuestDetails> completedQuests = new();
+    [SerializeField] private UI_QuestNotif questNotif;
+    [SerializeField] private UI_QuestReward questRewardUI;
+    public bool hasQuest=false;
+    public QuestGiver currentQuestGiver;
 
-    public void AcceptQuest(QuestDetails questData)
+    public void AcceptQuest(QuestDetails questData,QuestGiver questGiver)
     {
+        if (hasQuest) { return; }
         if (HasQuestOrCompleted(questData))
         {
             Debug.LogWarning($"Quest '{questData.questName}' already accepted or completed.");
@@ -17,9 +22,12 @@ public class QuestLog : MonoBehaviour
         QuestRuntimeInstance instance = new QuestRuntimeInstance
         {
             questData = questData
+            
         };
         instance.StartQuest();
         activeQuests.Add(instance);
+        hasQuest = true;
+        currentQuestGiver = questGiver;
     }
 
     public void UpdateQuestObjective(string objectiveID, int amount)
@@ -32,7 +40,16 @@ public class QuestLog : MonoBehaviour
         CheckForCompletedQuests();
     }
 
-    private void CheckForCompletedQuests()
+    public void OnObjectiveUpdated(QuestRuntimeInstance quest, string objectiveID, int newValue)
+    {
+        // purely update UI / notify player
+        questNotif.SetNotifText("Objective Complete");
+        questNotif.ShowQuestNotif();
+        
+        Debug.Log($"Quest {quest.questData.questName} objective {objectiveID} progress: {newValue}");
+    }
+
+    public void CheckForCompletedQuests()
     {
         for (int i = activeQuests.Count - 1; i >= 0; i--)
         {
@@ -40,6 +57,10 @@ public class QuestLog : MonoBehaviour
             {
                 completedQuests.Add(activeQuests[i].questData);
                 activeQuests.RemoveAt(i);
+                hasQuest = false;
+                questRewardUI.OpenQuestRewardsUI();
+                Destroy(currentQuestGiver);
+
             }
         }
     }
@@ -78,6 +99,7 @@ public class QuestLog : MonoBehaviour
             activeQuests.Remove(questInstance);
             if (!completedQuests.Contains(quest))
                 completedQuests.Add(quest);
+            
         }
     }
 }
