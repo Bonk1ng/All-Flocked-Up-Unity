@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class QuestLog : MonoBehaviour
 {
@@ -9,6 +11,8 @@ public class QuestLog : MonoBehaviour
     [SerializeField] private UI_QuestReward questRewardUI;
     public bool hasQuest=false;
     public QuestGiver currentQuestGiver;
+    public QuestLogMenuEvents logMenuEvents;
+
 
     public void AcceptQuest(QuestDetails questData,QuestGiver questGiver)
     {
@@ -28,6 +32,7 @@ public class QuestLog : MonoBehaviour
         activeQuests.Add(instance);
         hasQuest = true;
         currentQuestGiver = questGiver;
+        
     }
 
     public void UpdateQuestObjective(string objectiveID, int amount)
