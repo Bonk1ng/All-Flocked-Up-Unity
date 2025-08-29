@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: AllDogsGoToToronto
   m_EditorClassIdentifier: 
   questName: All Dogs
-  questID: 
+  questID: Q002
   questLogDescription: All Dogs
   trackerDescription: All Dogs
   isMainQuest: 1
