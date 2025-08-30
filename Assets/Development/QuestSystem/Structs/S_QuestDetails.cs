@@ -13,6 +13,9 @@ public class QuestDetails : ScriptableObject
     public bool isMainQuest;
     public int stagesToComplete;
 
+    public bool isQuestTimed;
+    public float questTime;
+
     public bool autoAcceptQuest;
     public bool autoCompleteQuest;
 

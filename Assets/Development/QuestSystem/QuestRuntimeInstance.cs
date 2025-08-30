@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 [System.Serializable]
@@ -12,6 +13,7 @@ public class QuestRuntimeInstance
 
     public bool IsComplete => currentStageIndex >= questData.stages.Length;
     public QuestLog questLog;
+    public float currentTime;
 
     public void Start()
     {
@@ -21,28 +23,26 @@ public class QuestRuntimeInstance
     //Gets objectives and for each sets an objectiveID
     public void StartQuest()
     {
-        // Get player quest log
         questLog = GameObject.Find("Player").GetComponent<QuestLog>();
 
-        // Create progress dictionary
         var objectives = GetCurrentObjectives();
         foreach (var obj in objectives)
         {
             objectiveProgress[obj.objectiveID] = 0;
         }
 
-        // Wire quest mechanics
+        // finds quest mechanics
         I_QuestMechanicInterface[] mechanics = Object.FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
             .OfType<I_QuestMechanicInterface>()
             .ToArray();
 
-        foreach (var mech in mechanics)
-        {
-            if (mech.GetQuestID() == questData.questID) 
-            {
-                mech.SetRuntimeInstance(this);
-            }
-        }
+        //foreach (var mech in mechanics)
+        //{
+        //    if (mech.GetQuestID() == questData.questID) 
+        //    { 
+        //        mech.SetRuntimeInstance(this);
+        //    }
+        //}
     }
 
 
@@ -100,4 +100,6 @@ public class QuestRuntimeInstance
     {
         questLog.CheckForCompletedQuests();
     }
+
+
 }
