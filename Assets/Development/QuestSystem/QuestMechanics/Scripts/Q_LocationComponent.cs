@@ -4,26 +4,25 @@ using UnityEngine;
 public class Q_LocationComponent : MonoBehaviour, I_QuestMechanicInterface
 {
     public string objectiveID;
-    public string questID;
-    public QuestRuntimeInstance questRuntimeInstance;
     public UI_QuestLocationNotif questLocationCanvas;
+    public QuestLog questLog;
 
     private bool triggered = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //questLocationCanvas = GetComponent<UI_QuestLocationNotif>();
+        GetQuestLog();
+        
         
     }
 
     // Update is called once per frame
 
-    public void SetRuntimeInstance(QuestRuntimeInstance instance)
+    public void GetQuestLog()
     {
-        questRuntimeInstance = instance;
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        questLog = player.GetComponent<QuestLog>();
     }
-
-    public string GetQuestID() => questID;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -31,7 +30,8 @@ public class Q_LocationComponent : MonoBehaviour, I_QuestMechanicInterface
         if (other.gameObject.CompareTag("Player"))
         {
             triggered = true;
-            questRuntimeInstance.UpdateObjective(objectiveID, 1);
+            //questRuntimeInstance.UpdateObjective(objectiveID, 1);
+            questLog.UpdateQuestObjective(objectiveID, 1);
             questLocationCanvas.ShowQuestLocationNotif();
 
         }

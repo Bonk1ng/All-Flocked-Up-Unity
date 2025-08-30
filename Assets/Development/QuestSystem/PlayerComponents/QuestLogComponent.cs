@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class QuestLog : MonoBehaviour
 {
@@ -7,8 +9,60 @@ public class QuestLog : MonoBehaviour
     public List<QuestDetails> completedQuests = new();
     [SerializeField] private UI_QuestNotif questNotif;
     [SerializeField] private UI_QuestReward questRewardUI;
-    public bool hasQuest=false;
+    public bool hasQuest = false;
     public QuestGiver currentQuestGiver;
+    public QuestLogMenuEvents logMenuEvents;
+    private bool questTimerStarted;
+    private float currentTime;
+
+
+    private void GetIsQuestTimed(QuestDetails quest, QuestRuntimeInstance instance)
+    {
+        if (quest.isQuestTimed)
+        {
+            StartQuestTimer(quest.questTime, instance);
+        }
+    }
+
+    private void StartQuestTimer(float questTime, QuestRuntimeInstance instance)
+    {
+        currentTime = questTime;
+        questTimerStarted = true;
+
+    }
+
+    private void CheckTimerState()
+    {
+        for (int i = activeQuests.Count - 1; i >= 0; i--)
+        {
+            var questInstance = activeQuests[i];
+            if (currentTime == 0f)
+            {
+                activeQuests.Remove(questInstance);
+                //doesn't remove when timer is done?
+            }
+            else
+            {
+                Debug.Log("Quest Not Timed");
+            }
+        } }
+
+    private void Update()
+    {
+        if (questTimerStarted == true) { 
+        currentTime -= Time.deltaTime;
+            if(currentTime == 0f)
+            {
+                CheckTimerState();
+            }
+            else
+            {
+                Debug.Log(currentTime);
+            }
+    }
+    }
+
+
 
     public void AcceptQuest(QuestDetails questData,QuestGiver questGiver)
     {
@@ -28,6 +82,8 @@ public class QuestLog : MonoBehaviour
         activeQuests.Add(instance);
         hasQuest = true;
         currentQuestGiver = questGiver;
+        GetIsQuestTimed(questData, instance);
+        
     }
 
     public void UpdateQuestObjective(string objectiveID, int amount)

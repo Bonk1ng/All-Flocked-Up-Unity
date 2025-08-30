@@ -13,11 +13,13 @@ MonoBehaviour:
   m_Name: AllDogsGoToToronto
   m_EditorClassIdentifier: 
   questName: All Dogs
-  questID: 
+  questID: Q002
   questLogDescription: All Dogs
   trackerDescription: All Dogs
   isMainQuest: 1
   stagesToComplete: 1
+  isQuestTimed: 1
+  questTime: 30
   autoAcceptQuest: 1
   autoCompleteQuest: 0
   stages:
@@ -26,8 +28,15 @@ MonoBehaviour:
     objectivesToComplete:
     - objectiveName: All Dogs
       objectiveDescription: All Dogs
-      objectiveType: 
+      objectiveType: Q_KillComponent
       objectiveID: 101
+      quantityToComplete: 1
+      isOptional: 0
+      bonusEXP: 0
+    - objectiveName: All Dogs
+      objectiveDescription: All Dogs
+      objectiveType: Q_InteractComponent
+      objectiveID: 102
       quantityToComplete: 1
       isOptional: 0
       bonusEXP: 0

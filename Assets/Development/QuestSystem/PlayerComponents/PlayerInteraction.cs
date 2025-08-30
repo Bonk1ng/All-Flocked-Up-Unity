@@ -4,6 +4,7 @@ public class PlayerInteraction : MonoBehaviour
 {
     public float interactionRange = 3f;
     public LayerMask npcLayer;
+    public LayerMask questLayer;
     public QuestLog questLog; // assign in Inspector
     public UI_QuestGiver questGiverUI;
 
@@ -19,6 +20,16 @@ public class PlayerInteraction : MonoBehaviour
                 if (questNPC != null)
                 {
                     questGiverUI.OpenQuestGiverUI(hit.collider.GetComponentInParent<QuestGiver>());
+                }
+            }
+
+            if (Physics.Raycast(transform.position, transform.forward, out hit, interactionRange, questLayer))
+            {
+                var questInteractable = hit.collider.GetComponentInParent<Q_InteractComponent>();
+                if (questInteractable != null)
+                {
+                    questInteractable.InteractWithObjective();
+                    Debug.Log(hit.ToString());
                 }
             }
         }
