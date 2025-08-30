@@ -3,24 +3,24 @@ using UnityEngine;
 public class Q_InteractComponent : MonoBehaviour, I_QuestMechanicInterface
 {
     public string objectiveID;
-    QuestRuntimeInstance questRuntimeInstance;
-    private readonly string questID;
+    public QuestLog questLog;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        questRuntimeInstance = GetComponent<QuestRuntimeInstance>();
+        GetQuestLog();
     }
 
-    public void SetRuntimeInstance(QuestRuntimeInstance instance)
+
+
+    public void GetQuestLog()
     {
-        questRuntimeInstance = instance;
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        questLog = player.GetComponent<QuestLog>();
     }
 
-    public string GetQuestID() => questID;
-
-    void InteractWithObjective()
+    public void InteractWithObjective()
     {
-        questRuntimeInstance.UpdateObjective(objectiveID, 1);
+        questLog.UpdateQuestObjective(objectiveID, 1);
     }
 
     //Link to PlayerInteraction script.
