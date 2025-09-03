@@ -6,7 +6,7 @@ public class UI_QuestGiver : MonoBehaviour
 {
 
     [SerializeField] GameObject questGiverCanvas;
-    [SerializeField] QuestGiver currentquestGiver;
+    public QuestGiver currentquestGiver;
     public QuestLog questLog;
 
     [SerializeField] Button acceptQuestButton;
@@ -18,7 +18,7 @@ public class UI_QuestGiver : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        questGiverCanvas.SetActive(false);
+        questLog = FindFirstObjectByType<QuestLog>();
         acceptQuestButton.onClick.AddListener(AddQuestToLog);
         cancelButton.onClick.AddListener(CloseQuestGiverUI);
     }
@@ -34,13 +34,12 @@ public class UI_QuestGiver : MonoBehaviour
     {
         currentquestGiver = questGiver;
         if (questLog.hasQuest == true) { return; }
-        questGiverCanvas.SetActive(true);
         
     }
 
     public void CloseQuestGiverUI()
     {
-        questGiverCanvas.SetActive(false);
+        Destroy(this.gameObject);
     }
 
     private void AddQuestToLog()

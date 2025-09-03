@@ -6,7 +6,7 @@ public class PlayerInteraction : MonoBehaviour
     public LayerMask npcLayer;
     public LayerMask questLayer;
     public QuestLog questLog; // assign in Inspector
-    public UI_QuestGiver questGiverUI;
+    public UI_CanvasController canvasController;
 
     void Update()
     {
@@ -19,7 +19,7 @@ public class PlayerInteraction : MonoBehaviour
                 var questNPC = hit.collider.GetComponentInParent<QuestInteraction>();
                 if (questNPC != null)
                 {
-                    questGiverUI.OpenQuestGiverUI(hit.collider.GetComponentInParent<QuestGiver>());
+                    canvasController.ShowQuestGiver(hit.collider.GetComponentInParent<QuestGiver>());
                 }
             }
 
