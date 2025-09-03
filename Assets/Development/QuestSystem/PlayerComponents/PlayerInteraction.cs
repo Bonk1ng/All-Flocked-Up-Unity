@@ -1,5 +1,6 @@
 using UnityEngine;
 
+
 public class PlayerInteraction : MonoBehaviour
 {
     public float interactionRange = 3f;

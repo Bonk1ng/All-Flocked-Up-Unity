@@ -27,10 +27,21 @@ public class UI_CanvasController : MonoBehaviour
     public UI_QuestLocationNotif activeLocationNotifInstance;
 
 
+    public void ShowPlayerCursor()
+    {
+        Cursor.visible = true;
+    }
+
+    public void HidePlayerCursor()
+    {
+        Cursor.visible = false;
+    }
+
 
     public void ShowTimer()
     {
         activeTimerInstance = Instantiate(timerCanvas);
+
     }
 
     public void EndTimer()
@@ -39,6 +50,7 @@ public class UI_CanvasController : MonoBehaviour
         {
             activeTimerInstance.DestroyTimer();
             activeTimerInstance = null;
+
         }
 
     }
@@ -47,6 +59,7 @@ public class UI_CanvasController : MonoBehaviour
     {
         activeGiverInstance = Instantiate(questGiverCanvas);
         activeGiverInstance.currentquestGiver = questGiver;
+        ShowPlayerCursor() ;
     }
 
     public void DestroyQuestGiver()
@@ -55,12 +68,14 @@ public class UI_CanvasController : MonoBehaviour
         {
             activeGiverInstance.CloseQuestGiverUI();
             activeGiverInstance = null;
+            HidePlayerCursor();
         }
     }
 
     public void ShowQuestReward()
     {
         activeRewardInstance=Instantiate(questRewardsCanvas);
+        ShowPlayerCursor();
     }
 
     public void DestroyQuestReward()
@@ -69,12 +84,14 @@ public class UI_CanvasController : MonoBehaviour
         {
             activeRewardInstance.AcceptReward();
             activeRewardInstance = null;
+            HidePlayerCursor();
         }
     }
 
     public void ShowTracker()
     {
         activeTrackerInstance = Instantiate(questTrackerCanvas);
+
     }
 
     public void DestroyTracker()
@@ -83,15 +100,29 @@ public class UI_CanvasController : MonoBehaviour
         {
             activeTrackerInstance.RemoveTracker();
             activeTrackerInstance = null;
+
         }
     }
 
     //Timed Destroy
     public void ShowQuestNotif(string text)
     {
+        if  (activeNotifInstance != null)
+        {
+            activeNotifInstance.SetNotifText(text);
+            return;
+        }
         activeNotifInstance = Instantiate(questNotifCanvas);
         activeNotifInstance.SetNotifText(text);
         activeNotifInstance.ShowQuestNotif();
+        
+    }
+
+    
+
+    public bool OnQuestNotifShown()
+    {
+        return activeNotifInstance != null && activeNotifInstance.isActiveAndEnabled;
     }
 
     //Timed Destroy
@@ -100,5 +131,9 @@ public class UI_CanvasController : MonoBehaviour
         activeLocationNotifInstance = Instantiate(questLocationNotifCanvas);
     }
 
+    public bool OnQuestLocationNotifShown()
+    {
+        return activeLocationNotifInstance!=null && activeLocationNotifInstance.isActiveAndEnabled;
+    }
 
 }
