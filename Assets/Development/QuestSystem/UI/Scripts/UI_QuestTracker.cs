@@ -22,6 +22,6 @@ public class UI_QuestTracker : MonoBehaviour
 
     public void RemoveTracker()
     {
-        questTrackerCanvas.SetActive(false);
+        Destroy(questTrackerCanvas);
     }
 }

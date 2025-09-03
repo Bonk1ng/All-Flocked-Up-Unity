@@ -11,7 +11,7 @@ public class UI_QuestLocationNotif : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        locationNotifCanvas.SetActive(false);
+        ShowQuestLocationNotif();
     }
 
 
@@ -19,7 +19,9 @@ public class UI_QuestLocationNotif : MonoBehaviour
     {
         locationNotifCanvas.SetActive(true);
         await Task.Delay(2000);
-        locationNotifCanvas.SetActive(false);
+        Destroy(locationNotifCanvas);
     }
+
+
 
 }

@@ -15,6 +15,9 @@ public class QuestRuntimeInstance
     public QuestLog questLog;
     public float currentTime;
 
+    public bool isQuestFailed = false;
+    public bool isRetrySelected = false;
+
     public void Start()
     {
 
@@ -36,13 +39,7 @@ public class QuestRuntimeInstance
             .OfType<I_QuestMechanicInterface>()
             .ToArray();
 
-        //foreach (var mech in mechanics)
-        //{
-        //    if (mech.GetQuestID() == questData.questID) 
-        //    { 
-        //        mech.SetRuntimeInstance(this);
-        //    }
-        //}
+
     }
 
 
@@ -101,5 +98,21 @@ public class QuestRuntimeInstance
         questLog.CheckForCompletedQuests();
     }
 
-
+    
+    public void QuestFailed()
+    {
+        questLog.OnQuestFailed(this);
+        isQuestFailed = true;
+        if (isRetrySelected)
+        {
+            objectiveProgress.First();
+        }
+        else if(isRetrySelected && isQuestFailed)
+        {
+            questLog.OnQuestFailed(this);
+            
+        }
+   
+        Debug.Log("Call Quest Failed");
+    }
 }
