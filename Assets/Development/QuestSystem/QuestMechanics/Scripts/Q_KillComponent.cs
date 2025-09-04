@@ -1,23 +1,32 @@
 using UnityEngine;
+using System.Threading.Tasks;
 
-public class Q_KillComponent : MonoBehaviour
+public class Q_KillComponent : MonoBehaviour, I_QuestMechanicInterface
 {
     public string objectiveID;
-    QuestRuntimeInstance questRuntimeInstance;
+    public QuestLog questLog;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        questRuntimeInstance = GetComponent<QuestRuntimeInstance>();
+        GetQuestLog();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void GetQuestLog()
     {
-        
+        questLog = FindFirstObjectByType<QuestLog>();
     }
 
-    void KillComplete()
+    public void KillComplete()
     {
-        questRuntimeInstance.UpdateObjective(objectiveID, 1);
+        questLog.UpdateQuestObjective(objectiveID, 1);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            KillComplete();
+            Debug.Log("collision test");
+        }
     }
 }

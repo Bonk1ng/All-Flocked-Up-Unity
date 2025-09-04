@@ -1,11 +1,13 @@
 using UnityEngine;
 
+
 public class PlayerInteraction : MonoBehaviour
 {
     public float interactionRange = 3f;
     public LayerMask npcLayer;
+    public LayerMask questLayer;
     public QuestLog questLog; // assign in Inspector
-    public UI_QuestGiver questGiverUI;
+    public UI_CanvasController canvasController;
 
     void Update()
     {
@@ -18,9 +20,29 @@ public class PlayerInteraction : MonoBehaviour
                 var questNPC = hit.collider.GetComponentInParent<QuestInteraction>();
                 if (questNPC != null)
                 {
-                    questGiverUI.OpenQuestGiverUI();
+                    canvasController.ShowQuestGiver(hit.collider.GetComponentInParent<QuestGiver>());
                 }
             }
+
+            if (Physics.Raycast(transform.position, transform.forward, out hit, interactionRange, questLayer))
+            {
+                var questInteractable = hit.collider.GetComponentInParent<Q_InteractComponent>();
+                if (questInteractable != null)
+                {
+                    questInteractable.InteractWithObjective();
+                    Debug.Log(hit.ToString());
+                }
+            }
+        }
+        //TAB for quest log...will change this later to new input system
+       else if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            if (canvasController.activeLogInstance == null)
+            {
+                Debug.Log("QuestLog Opened?");
+                canvasController.ShowQuestLog();
+            }
+            else canvasController.DestroyQuestLog();
         }
 
         

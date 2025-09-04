@@ -1,24 +1,25 @@
 using UnityEngine;
 
-public class Q_InteractComponent : MonoBehaviour
+public class Q_InteractComponent : MonoBehaviour, I_QuestMechanicInterface
 {
     public string objectiveID;
-    QuestRuntimeInstance questRuntimeInstance;
+    public QuestLog questLog;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        questRuntimeInstance = GetComponent<QuestRuntimeInstance>();
+        GetQuestLog();
     }
 
-    // Update is called once per frame
-    void Update()
+
+
+    public void GetQuestLog()
     {
-        
+        questLog = FindFirstObjectByType<QuestLog>();
     }
 
-    void InteractWithObjective()
+    public void InteractWithObjective()
     {
-        questRuntimeInstance.UpdateObjective(objectiveID, 1);
+        questLog.UpdateQuestObjective(objectiveID, 1);
     }
 
     //Link to PlayerInteraction script.
