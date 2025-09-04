@@ -25,6 +25,8 @@ public class UI_QuestReward : MonoBehaviour
     public void AcceptReward()
     {
         Destroy(questRewardCanvas);
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void SetQuestNameText(string name)
