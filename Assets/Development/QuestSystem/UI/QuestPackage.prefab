@@ -56,3 +56,5 @@ MonoBehaviour:
   activeNotifInstance: {fileID: 0}
   questLocationNotifCanvas: {fileID: 4503963831914532512, guid: 24b99a15e48635d48acc07d40e807e56, type: 3}
   activeLocationNotifInstance: {fileID: 0}
+  questLogCanvas: {fileID: 6368815328901718887, guid: a674d11e25a29d04f974d7e292a236f8, type: 3}
+  activeLogInstance: {fileID: 0}

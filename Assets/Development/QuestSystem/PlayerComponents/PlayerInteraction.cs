@@ -34,6 +34,16 @@ public class PlayerInteraction : MonoBehaviour
                 }
             }
         }
+        //TAB for quest log...will change this later to new input system
+       else if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            if (canvasController.activeLogInstance == null)
+            {
+                Debug.Log("QuestLog Opened?");
+                canvasController.ShowQuestLog();
+            }
+            else canvasController.DestroyQuestLog();
+        }
 
         
         RaycastHit lookHit;

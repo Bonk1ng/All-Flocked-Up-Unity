@@ -26,15 +26,23 @@ public class UI_CanvasController : MonoBehaviour
     [SerializeField] private UI_QuestLocationNotif questLocationNotifCanvas;
     public UI_QuestLocationNotif activeLocationNotifInstance;
 
+    [Header("QuestLogCanvas")]
+    [SerializeField] private UI_QuestLog questLogCanvas;
+    public UI_QuestLog activeLogInstance;
+
 
     public void ShowPlayerCursor()
     {
         Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.Confined;
+        Debug.Log("Cursor Toggle ON");
     }
 
     public void HidePlayerCursor()
     {
         Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        Debug.Log("Cursor Toggle OFF");
     }
 
 
@@ -57,9 +65,10 @@ public class UI_CanvasController : MonoBehaviour
 
     public void ShowQuestGiver(QuestGiver questGiver)
     {
+        ShowPlayerCursor();
         activeGiverInstance = Instantiate(questGiverCanvas);
         activeGiverInstance.currentquestGiver = questGiver;
-        ShowPlayerCursor() ;
+        
     }
 
     public void DestroyQuestGiver()
@@ -134,6 +143,24 @@ public class UI_CanvasController : MonoBehaviour
     public bool OnQuestLocationNotifShown()
     {
         return activeLocationNotifInstance!=null && activeLocationNotifInstance.isActiveAndEnabled;
+    }
+
+    public void ShowQuestLog()
+    {
+
+            activeLogInstance = Instantiate(questLogCanvas);
+            ShowPlayerCursor();
+
+    }
+
+    public void DestroyQuestLog()
+    {
+        if (activeLogInstance != null)
+        {
+            activeLogInstance.CloseQuestLog();
+            activeLogInstance=null;
+            HidePlayerCursor();
+        }
     }
 
 }
