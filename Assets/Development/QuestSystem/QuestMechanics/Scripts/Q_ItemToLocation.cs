@@ -30,4 +30,6 @@ public class Q_ItemToLocation : MonoBehaviour, I_QuestMechanicInterface
             Destroy(collision.gameObject);
         }
     }
+
+    public string GetObjectiveID() => objectiveID;
 }

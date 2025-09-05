@@ -1,13 +1,17 @@
+using Mono.Cecil.Cil;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [System.Serializable]
 public class QuestRuntimeInstance
 {
 
     public QuestDetails questData; //Quest Details Struct
+    public string questID;
     public int currentStageIndex = 0; //Stage index; Each Quest has 1+ stages with 1+ Objectives.
     public Dictionary<string, int> objectiveProgress = new(); //Dictionary stores the objectives from the current Stage Index
 
@@ -17,6 +21,8 @@ public class QuestRuntimeInstance
 
     public bool isQuestFailed = false;
     public bool isRetrySelected = false;
+
+    public List<GameObject> questMechanicsObjects = new List<GameObject>();
 
     public void Start()
     {
@@ -35,11 +41,27 @@ public class QuestRuntimeInstance
         }
 
         // finds quest mechanics
+        GetQuestObjects();
+
+
+    }
+
+    public void GetQuestObjects()
+    {
+
+        questMechanicsObjects.Clear();
         I_QuestMechanicInterface[] mechanics = Object.FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
-            .OfType<I_QuestMechanicInterface>()
-            .ToArray();
-
-
+    .OfType<I_QuestMechanicInterface>()
+    .ToArray();
+        foreach (var mechanic in mechanics)
+        {
+            if (mechanic is MonoBehaviour monoBehaviour && objectiveProgress.Keys.Contains<string>(mechanic.GetObjectiveID()))
+            {
+                GameObject mechanicObject = monoBehaviour.gameObject;
+                questMechanicsObjects.Add(mechanicObject);
+            }
+            else continue;
+        }
     }
 
 
@@ -83,6 +105,7 @@ public class QuestRuntimeInstance
     public void AdvanceStage()
     {
         currentStageIndex++;
+        GetQuestObjects();
         if (!IsComplete)
         {
             StartQuest();

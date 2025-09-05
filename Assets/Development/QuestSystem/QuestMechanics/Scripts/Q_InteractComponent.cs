@@ -22,5 +22,7 @@ public class Q_InteractComponent : MonoBehaviour, I_QuestMechanicInterface
         questLog.UpdateQuestObjective(objectiveID, 1);
     }
 
+    public string GetObjectiveID() => objectiveID;
+
     //Link to PlayerInteraction script.
 }

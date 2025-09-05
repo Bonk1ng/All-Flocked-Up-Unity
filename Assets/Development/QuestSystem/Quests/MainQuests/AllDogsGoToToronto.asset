@@ -29,14 +29,14 @@ MonoBehaviour:
     - objectiveName: All Dogs
       objectiveDescription: All Dogs
       objectiveType: Q_KillComponent
-      objectiveID: 101
+      objectiveID: 201
       quantityToComplete: 1
       isOptional: 0
       bonusEXP: 0
     - objectiveName: All Dogs
       objectiveDescription: All Dogs
       objectiveType: Q_InteractComponent
-      objectiveID: 102
+      objectiveID: 202
       quantityToComplete: 1
       isOptional: 0
       bonusEXP: 0

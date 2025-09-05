@@ -8,6 +8,7 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
     public Transform targetLocation;
     [SerializeField] private NavMeshAgent navAgentComponent;
     public bool isMoving=false;
+    private UI_CanvasController canvasController;
     //on load
     public void Awake()
     {
@@ -17,6 +18,7 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
     public void Start()
     {
         navAgentComponent = GetComponent<NavMeshAgent>();
+        canvasController = FindFirstObjectByType<UI_CanvasController>();
         Debug.Log("NPC LOADED");
     }
 
@@ -34,7 +36,7 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
 
     public void InteractWithNPCDialogue()
     {
-
+        canvasController.OpenDialogue();
     }
 
     public void SetMoveToLocation(Transform location)

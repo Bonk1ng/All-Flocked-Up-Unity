@@ -30,6 +30,10 @@ public class UI_CanvasController : MonoBehaviour
     [SerializeField] private UI_QuestLog questLogCanvas;
     public UI_QuestLog activeLogInstance;
 
+    [Header("DialogueCanvas")]
+    [SerializeField] private UI_DialogueCanvas dialogueCanvas;
+    public UI_DialogueCanvas activeDialogueInstance;
+
 
     public void ShowPlayerCursor()
     {
@@ -160,6 +164,23 @@ public class UI_CanvasController : MonoBehaviour
             activeLogInstance.CloseQuestLog();
             activeLogInstance=null;
             HidePlayerCursor();
+        }
+    }
+
+    public void OpenDialogue()
+    {
+        //activeDialogueInstance = Instantiate(dialogueCanvas);
+        activeDialogueInstance.gameObject.SetActive(true);
+
+    }
+
+    public void CloseDialogue()
+    {
+        if(activeDialogueInstance != null || dialogueCanvas.isActiveAndEnabled)
+        {
+            //activeDialogueInstance.DestroyDialogue();
+            activeDialogueInstance.gameObject.SetActive(false);
+            activeDialogueInstance=null;
         }
     }
 

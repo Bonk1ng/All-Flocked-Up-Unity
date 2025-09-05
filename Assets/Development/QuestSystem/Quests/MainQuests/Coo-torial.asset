@@ -18,6 +18,8 @@ MonoBehaviour:
   trackerDescription: TESTING THE COOTORIAL
   isMainQuest: 1
   stagesToComplete: 1
+  isQuestTimed: 0
+  questTime: 0
   autoAcceptQuest: 1
   autoCompleteQuest: 0
   stages:
@@ -27,7 +29,7 @@ MonoBehaviour:
     - objectiveName: OBJECTIVE 1
       objectiveDescription: TESTING COOTORIAL OBJECTIVE 1
       objectiveType: Q_Location
-      objectiveID: 001
+      objectiveID: 101
       quantityToComplete: 1
       isOptional: 0
       bonusEXP: 0
@@ -41,7 +43,7 @@ MonoBehaviour:
 
 '
       objectiveType: Q_Location
-      objectiveID: 002
+      objectiveID: 102
       quantityToComplete: 1
       isOptional: 0
       bonusEXP: 0
@@ -55,7 +57,7 @@ MonoBehaviour:
 
 '
       objectiveType: Q_ItemToLocation
-      objectiveID: 003
+      objectiveID: 103
       quantityToComplete: 1
       isOptional: 0
       bonusEXP: 0
