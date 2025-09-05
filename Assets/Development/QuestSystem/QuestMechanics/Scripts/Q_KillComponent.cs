@@ -29,4 +29,6 @@ public class Q_KillComponent : MonoBehaviour, I_QuestMechanicInterface
             Debug.Log("collision test");
         }
     }
+
+    public string GetObjectiveID() => objectiveID;
 }

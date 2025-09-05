@@ -13,13 +13,13 @@ public class Q_LocationComponent : MonoBehaviour, I_QuestMechanicInterface
     {
         GetQuestLog();
 
-        //change this later or add spawning to quests...this will only check is hasQuest...any quest will trigger
+        //change this later or add spawning to quests...this will only check against hasQuest bool...any quest will trigger
         //and you would be able to hit collider while wrong quest is active
-        if (!questLog.hasQuest)
-        {
-            this.gameObject.SetActive(false);
-        }
-        else this.gameObject.SetActive(true);
+        //if (!questLog.hasQuest)
+        //{
+        //    this.gameObject.SetActive(false);
+        //}
+        //else this.gameObject.SetActive(true);
         
         
     }
@@ -30,6 +30,8 @@ public class Q_LocationComponent : MonoBehaviour, I_QuestMechanicInterface
     {
         questLog = FindFirstObjectByType<QuestLog>();
     }
+
+    public string GetObjectiveID() => objectiveID;
 
     private void OnTriggerEnter(Collider other)
     {
