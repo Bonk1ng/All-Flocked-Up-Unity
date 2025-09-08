@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Coo-torial
   m_EditorClassIdentifier: 
   questName: Coo-Torial
-  questID: Q000
+  questID: Q1
   questLogDescription: TESTING THE COOTORIAL
   trackerDescription: TESTING THE COOTORIAL
   isMainQuest: 1

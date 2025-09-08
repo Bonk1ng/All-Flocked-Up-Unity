@@ -6,6 +6,7 @@ public class PlayerInteraction : MonoBehaviour
     public float interactionRange = 3f;
     public LayerMask npcLayer;
     public LayerMask questLayer;
+    public LayerMask dialogueLayer;
     public QuestLog questLog; // assign in Inspector
     public UI_CanvasController canvasController;
 
@@ -21,6 +22,7 @@ public class PlayerInteraction : MonoBehaviour
                 if (questNPC != null)
                 {
                     canvasController.ShowQuestGiver(hit.collider.GetComponentInParent<QuestGiver>());
+                    Debug.Log(hit.ToString() + "QuestGiver");
                 }
             }
 
@@ -30,7 +32,18 @@ public class PlayerInteraction : MonoBehaviour
                 if (questInteractable != null)
                 {
                     questInteractable.InteractWithObjective();
-                    Debug.Log(hit.ToString());
+                    Debug.Log(hit.ToString() + "InteractionObject");
+                }
+            }
+
+            if (Physics.Raycast(transform.position, transform.forward, out hit, interactionRange, dialogueLayer))
+            {
+                var dialogueInteractable = hit.collider.GetComponentInParent<NPCBase>();
+                if (dialogueInteractable != null)
+                {
+                    canvasController.OpenDialogue();
+                    dialogueInteractable.InteractWithNPCDialogue();
+                    Debug.Log(hit.ToString() + "Dialogue");
                 }
             }
         }

@@ -26,7 +26,7 @@ public class QuestRuntimeInstance
 
     public void Start()
     {
-
+        
     }
 
     //Gets objectives and for each sets an objectiveID
@@ -42,9 +42,11 @@ public class QuestRuntimeInstance
 
         // finds quest mechanics
         GetQuestObjects();
+        GetQuestID(questData.questID);
 
 
     }
+    public string GetQuestID(string questid) => questID;
 
     public void GetQuestObjects()
     {
