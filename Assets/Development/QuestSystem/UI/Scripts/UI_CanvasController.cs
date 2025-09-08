@@ -34,6 +34,10 @@ public class UI_CanvasController : MonoBehaviour
     public UI_DialogueCanvas dialogueCanvas;
     public UI_DialogueCanvas activeDialogueInstance;
 
+    [Header("TrashCanvas")]
+    [SerializeField] private UI_TrashCanvas trashCanvas;
+    public UI_TrashCanvas activeTrashInstance;
+
 
     public void ShowPlayerCursor()
     {
@@ -181,6 +185,17 @@ public class UI_CanvasController : MonoBehaviour
             //activeDialogueInstance.DestroyDialogue();
             dialogueCanvas.gameObject.SetActive(false);
             dialogueCanvas = null;
+        }
+    }
+
+    public void ShowTrashPrompt()
+    {
+       activeTrashInstance= Instantiate(trashCanvas);
+        activeTrashInstance.InitCanvas();
+        if(activeTrashInstance != null )
+        {
+            activeTrashInstance.DestroyCanvas();
+            activeTrashInstance = null;
         }
     }
 

@@ -5,11 +5,12 @@ using UnityEngine.UI;
 using System.IO;
 using System.Collections.Generic;
 using JetBrains.Annotations;
+using System.Linq;
 
 public class DialogueBase : MonoBehaviour
 {
-    [SerializeField] private int currentDialogueIndex=1;
-    [SerializeField] private int startDialogueIndex=1;
+    [SerializeField] private int currentDialogueIndex=0;
+    [SerializeField] private int startDialogueIndex=0;
     [SerializeField] private string currentDialogueLineID;
 
     [SerializeField] private string currentDialogueName;
@@ -53,13 +54,23 @@ public class DialogueBase : MonoBehaviour
                 dialogueImage = lineData[3],
                 dialogueCondition = lineData[4],
                 nextID = lineData[5]
+
             };
             dialogueList.Add(dialogueLine);
             currentDialogueLineData = dialogueLine;
+            currentDialogueLineID = dialogueLine.dialogueID;
             currentDialogueName = dialogueLine.dialogueSpeaker;
             currentDialogueText = dialogueLine.dialogueText;
-            currentDialogueIndex = i;
+            
         }
+        if (dialogueList.Count > 0)
+        {
+            currentDialogueLineData = dialogueList[0];
+            currentDialogueLineID = currentDialogueLineData.dialogueID;
+            currentDialogueName = currentDialogueLineData.dialogueSpeaker;
+            currentDialogueText = currentDialogueLineData.dialogueText;
+        }
+
     }
 
     public DialogueLineData GetDialogueLineByID(string id)
@@ -67,15 +78,21 @@ public class DialogueBase : MonoBehaviour
         return dialogueList.Find(line => line.dialogueID == id);
     }
 
-    public void SetCurrentDialogue(DialogueLineData dialogueLine, string id)
+    public void SetCurrentDialogue( string id)
     {
-        if (dialogueLine.dialogueID == id)
+        DialogueLineData line = GetDialogueLineByID(id);
+        if (line == null)
         {
-            currentDialogueName = dialogueLine.dialogueSpeaker;
-            currentDialogueText = dialogueLine.dialogueText;
+            Debug.LogWarning("Dialogue ID not found: " + id);
+            return;
         }
-    }
 
+        currentDialogueLineData = line;
+        currentDialogueLineID = line.dialogueID;
+        currentDialogueName = line.dialogueSpeaker;
+        currentDialogueText = line.dialogueText;
+    }
+    
 
     // Update is called once per frame
     void Update()
@@ -84,15 +101,32 @@ public class DialogueBase : MonoBehaviour
     }
 
 
-    public void PrintDialogue(string currentDialogueLineID)
+    public void PrintDialogue(string dialogueLineID)
     {
-        SetCurrentDialogue(currentDialogueLineData,currentDialogueLineID);
-        canvasController.dialogueCanvas.UpdateDialogueUI(currentDialogueName, currentDialogueText, currentDialogueImage);
+
+        SetCurrentDialogue(dialogueLineID);
+
+        if (canvasController != null && canvasController.dialogueCanvas != null)
+        {
+            canvasController.dialogueCanvas.UpdateDialogueUI(
+                currentDialogueName,
+                currentDialogueText,
+                currentDialogueImage
+            );
+        }
+
+        currentDialogueIndex++;
     }
     public void ProgressDialogue()
     {
-        ClearDialogue();
-        canvasController.dialogueCanvas.UpdateDialogueUI(currentDialogueName, currentDialogueText, currentDialogueImage);
+        if (currentDialogueLineData != null && !string.IsNullOrEmpty(currentDialogueLineData.nextID))
+        {
+            PrintDialogue(currentDialogueLineData.nextID);
+        }
+        else
+        {
+            ClearDialogue();
+        }
     }
 
     public void ClearDialogue()

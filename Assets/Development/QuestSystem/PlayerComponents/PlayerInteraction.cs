@@ -7,6 +7,7 @@ public class PlayerInteraction : MonoBehaviour
     public LayerMask npcLayer;
     public LayerMask questLayer;
     public LayerMask dialogueLayer;
+    public LayerMask trashLayer;
     public QuestLog questLog; // assign in Inspector
     public UI_CanvasController canvasController;
 
@@ -44,6 +45,17 @@ public class PlayerInteraction : MonoBehaviour
                     canvasController.OpenDialogue();
                     dialogueInteractable.InteractWithNPCDialogue();
                     Debug.Log(hit.ToString() + "Dialogue");
+                }
+            }
+
+            if (Physics.Raycast(transform.position, transform.forward, out hit, interactionRange, trashLayer))
+            {
+                var trashInteractable = hit.collider.GetComponentInParent<TrashCanInteraction>();
+                if (trashInteractable != null)
+                {
+                    canvasController.OpenDialogue();
+                    trashInteractable.InteractWithTrashCan();
+                    Debug.Log(hit.ToString() + "TrashCan");
                 }
             }
         }

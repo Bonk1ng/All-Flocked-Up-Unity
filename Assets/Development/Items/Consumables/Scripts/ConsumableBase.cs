@@ -13,29 +13,34 @@ public class ConsumableBase : MonoBehaviour
     [SerializeField] private E_ConsumableType consumableType;
     [SerializeField] private bool hasReaction;
     [SerializeField] private E_ReactionType reactionType;
-    [Header("Health")]
-    [SerializeField] private bool isHealth;
+
+    [SerializeField] private int positiveEffectValue;
+    [SerializeField] private int positiveModifier;
+    [SerializeField] private int negativeEffectValue;
+    [SerializeField] private int negativeModifier;
+    //[Header("Health")]
+    //[SerializeField] private bool isHealth;
     [SerializeField] PlayerHealth playerHealth;
-    [SerializeField] private int healthToRegen;
-    [SerializeField] private int healthToLose;
-    [Header("Stamina")]
-    [SerializeField] private bool isStamina;
-    [SerializeField]private float staminaToRegen;
-    [SerializeField] private float staminaToLose;
-    [Header("Poop")]
-    [SerializeField] private bool isPoop;
-    [SerializeField] private int poopToRegen;
-    [SerializeField] private int poopToLose;
-    [Header("Custom")]
-    [SerializeField] private bool isCustom;
-    [Header("ReactionModifiers")]
-    [SerializeField] private int healthModifier;
-    [SerializeField] private float staminaModifier;
-    [SerializeField] private int poopModifier;
-    [SerializeField] private float groundSpeedModifier;
+    //[SerializeField] private int healthToRegen;
+    //[SerializeField] private int healthToLose;
+    //[Header("Stamina")]
+    //[SerializeField] private bool isStamina;
+    //[SerializeField]private float staminaToRegen;
+    //[SerializeField] private float staminaToLose;
+    //[Header("Poop")]
+    //[SerializeField] private bool isPoop;
+    //[SerializeField] private int poopToRegen;
+    //[SerializeField] private int poopToLose;
+    //[Header("Custom")]
+    //[SerializeField] private bool isCustom;
+    //[Header("ReactionModifiers")]
+    //[SerializeField] private int healthModifier;
+    //[SerializeField] private float staminaModifier;
+    //[SerializeField] private int poopModifier;
+    //[SerializeField] private float groundSpeedModifier;
     [SerializeField] private bool canFly;
     [SerializeField] private bool canPoop;
-    [SerializeField] private float flightSpeedModifier;
+    //[SerializeField] private float flightSpeedModifier;
     [Header("Particles")]
     [SerializeField] private ParticleSystem consumableParticles;
 
@@ -66,24 +71,24 @@ public class ConsumableBase : MonoBehaviour
         switch (consumableType)
         {
             case E_ConsumableType.Health:
-                isHealth = true;
+                //isHealth = true;
                 playerHealth = playerRef.GetComponent<PlayerHealth>();
-                HealEffect(healthToRegen, healthModifier);
+                HealEffect(positiveEffectValue, positiveModifier);
                 CheckForReaction();
                 break;
             case E_ConsumableType.Stamina:
-                isStamina = true;
-                StaminaEffect(staminaToRegen,staminaModifier);
+                //isStamina = true;
+                StaminaEffect(positiveEffectValue,positiveModifier);
                 CheckForReaction();
                 break;
             case E_ConsumableType.Poop:
-                isPoop = true;
-                PoopEffect(poopToRegen,poopModifier,canPoop);
+                //isPoop = true;
+                PoopEffect(positiveEffectValue,positiveModifier,canPoop);
                 CheckForReaction();
                 break;
             case E_ConsumableType.Custom:
-                isCustom = true;
-                CustomEffect(healthToRegen,healthModifier,staminaToRegen,staminaModifier,poopToRegen,poopModifier,groundSpeedModifier,flightSpeedModifier,canFly,canPoop);
+                //isCustom = true;
+                CustomEffect(positiveEffectValue,positiveModifier,canFly,canPoop);
                 CheckForReaction();
                 break;
         }
@@ -95,25 +100,25 @@ public class ConsumableBase : MonoBehaviour
         {
             
             case E_ReactionType.Health:
-                HealEffect(-healthToLose, -healthModifier);
+                HealEffect(negativeEffectValue, negativeModifier);
                 break;
             case E_ReactionType.Stamina:
-                StaminaEffect(staminaToLose,-staminaModifier);
+                StaminaEffect(negativeEffectValue, negativeModifier);
                 break;
             case E_ReactionType.Poop:
-                PoopEffect(poopToLose,poopModifier,canPoop);
+                PoopEffect(negativeEffectValue, negativeModifier, canPoop);
                 break;
             case E_ReactionType.Custom:
-                CustomEffect(-healthToLose, -healthModifier,-staminaToLose,-staminaModifier,-poopToLose,-poopModifier,-groundSpeedModifier,-flightSpeedModifier,canFly,canPoop);
+                CustomEffect(-negativeEffectValue, negativeModifier, canFly,canPoop);
                 break;
             case E_ReactionType.Speed:
-                SpeedEffect(-groundSpeedModifier);
+                SpeedEffect(negativeEffectValue);
                 break;
             case E_ReactionType.Flight:
                 FlightEffect(!canFly);
                 break;
             case E_ReactionType.FlySpeed:
-                FlySpeedEffect(-flightSpeedModifier);
+                FlySpeedEffect(negativeEffectValue);
                 break;
            
 
@@ -159,29 +164,28 @@ public class ConsumableBase : MonoBehaviour
         else
             Debug.Log("");
     }
-    private void CustomEffect(int health, int healthMod, float stamina, float stamMod,int poop, float poopMod,float groundSpeedMod,float flySpeedMod, bool canFly,
-                        bool canPoop)
+    private void CustomEffect(int health, int healthMod,  bool canFly, bool canPoop)
     {
         if (healthMod > 0)
         {
 
         }
-        if (stamMod > 0)
-        {
+        //if (stamMod > 0)
+        //{
 
-        }
-        if (poopMod > 0)
-        {
+        //}
+        //if (poopMod > 0)
+        //{
 
-        }
-        if (groundSpeedMod > 0)
-        {
+        //}
+        //if (groundSpeedMod > 0)
+        //{
 
-        }
-        if (flySpeedMod > 0)
-        {
+        //}
+        //if (flySpeedMod > 0)
+        //{
 
-        }
+        //}
         if (!canFly)
         {
 
