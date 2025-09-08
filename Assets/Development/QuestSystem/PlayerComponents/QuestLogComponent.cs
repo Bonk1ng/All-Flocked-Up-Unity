@@ -86,7 +86,8 @@ public class QuestLog : MonoBehaviour
 
         QuestRuntimeInstance instance = new()
         {
-            questData = questData
+            questData = questData,
+            questID = questData.questID
             
         };
         instance.StartQuest();
@@ -127,6 +128,8 @@ public class QuestLog : MonoBehaviour
                 activeQuests.RemoveAt(i);
                 hasQuest = false;
                 canvasController.ShowQuestReward();
+                currentQuestGiver.gameObject.layer = LayerMask.NameToLayer("Dialogue");
+                Debug.Log(currentQuestGiver.gameObject.layer);
                 Destroy(currentQuestGiver);
                 canvasController.EndTimer();
 

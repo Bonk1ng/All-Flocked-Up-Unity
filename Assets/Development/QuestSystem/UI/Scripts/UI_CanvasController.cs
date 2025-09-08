@@ -31,7 +31,7 @@ public class UI_CanvasController : MonoBehaviour
     public UI_QuestLog activeLogInstance;
 
     [Header("DialogueCanvas")]
-    [SerializeField] private UI_DialogueCanvas dialogueCanvas;
+    public UI_DialogueCanvas dialogueCanvas;
     public UI_DialogueCanvas activeDialogueInstance;
 
 
@@ -169,18 +169,18 @@ public class UI_CanvasController : MonoBehaviour
 
     public void OpenDialogue()
     {
-        //activeDialogueInstance = Instantiate(dialogueCanvas);
-        activeDialogueInstance.gameObject.SetActive(true);
+
+        dialogueCanvas.gameObject.SetActive(true);
 
     }
 
     public void CloseDialogue()
     {
-        if(activeDialogueInstance != null || dialogueCanvas.isActiveAndEnabled)
+        if(dialogueCanvas != null || dialogueCanvas.isActiveAndEnabled)
         {
             //activeDialogueInstance.DestroyDialogue();
-            activeDialogueInstance.gameObject.SetActive(false);
-            activeDialogueInstance=null;
+            dialogueCanvas.gameObject.SetActive(false);
+            dialogueCanvas = null;
         }
     }
 
