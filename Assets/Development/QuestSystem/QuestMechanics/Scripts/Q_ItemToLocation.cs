@@ -13,14 +13,13 @@ public class Q_ItemToLocation : MonoBehaviour, I_QuestMechanicInterface
     }
     public void GetQuestLog()
     {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        questLog=player.GetComponent<QuestLog>();
+        questLog = FindFirstObjectByType<QuestLog>();
     }
 
     void ItemAtLocation()
     {
-        Destroy(gameObject);
         questLog.UpdateQuestObjective(objectiveID, 1);
+        Destroy(gameObject);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -31,4 +30,6 @@ public class Q_ItemToLocation : MonoBehaviour, I_QuestMechanicInterface
             Destroy(collision.gameObject);
         }
     }
+
+    public string GetObjectiveID() => objectiveID;
 }

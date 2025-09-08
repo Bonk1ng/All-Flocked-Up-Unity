@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,7 +14,8 @@ public class QuestLog : MonoBehaviour
     public QuestGiver currentQuestGiver;
     public QuestLogMenuEvents logMenuEvents;
     private bool questTimerStarted;
-    private float currentTime;
+    public float currentTime;
+    [SerializeField] private UI_CanvasController canvasController;
 
 
     private void GetIsQuestTimed(QuestDetails quest, QuestRuntimeInstance instance)
@@ -21,6 +23,7 @@ public class QuestLog : MonoBehaviour
         if (quest.isQuestTimed)
         {
             StartQuestTimer(quest.questTime, instance);
+            canvasController.ShowTimer();
         }
     }
 
@@ -31,33 +34,41 @@ public class QuestLog : MonoBehaviour
 
     }
 
-    private void CheckTimerState()
+    private void CheckTimerState(QuestRuntimeInstance quest)
     {
-        for (int i = activeQuests.Count - 1; i >= 0; i--)
-        {
-            var questInstance = activeQuests[i];
+
             if (currentTime == 0f)
             {
-                activeQuests.Remove(questInstance);
+                activeQuests.Remove(quest);
+
+                canvasController.EndTimer();
+                //quest.QuestFailed();
+                //OnQuestFailed(quest);
                 //doesn't remove when timer is done?
-            }
+        }
             else
             {
                 Debug.Log("Quest Not Timed");
             }
-        } }
+        } 
 
     private void Update()
     {
-        if (questTimerStarted == true) { 
+        //needs to check for if quest is completed before timer done
+        if (questTimerStarted == true&& currentTime>0) { 
         currentTime -= Time.deltaTime;
             if(currentTime == 0f)
             {
-                CheckTimerState();
+                //chnage later...this can only check against first index.... probably will add timer variables to questdetails so multiple quests can be timed at once or make an enum for quest states
+                //Active/Completed/Failed...
+                CheckTimerState(activeQuests[0]);
+                canvasController.EndTimer();
+                
+                
             }
             else
             {
-                Debug.Log(currentTime);
+                //Debug.Log(currentTime);
             }
     }
     }
@@ -73,9 +84,10 @@ public class QuestLog : MonoBehaviour
             return;
         }
 
-        QuestRuntimeInstance instance = new QuestRuntimeInstance
+        QuestRuntimeInstance instance = new()
         {
-            questData = questData
+            questData = questData,
+            questID = questData.questID
             
         };
         instance.StartQuest();
@@ -90,7 +102,9 @@ public class QuestLog : MonoBehaviour
     {
         foreach (var quest in activeQuests)
         {
-            quest.UpdateObjective(objectiveID, amount);
+            //throws an error when a quest is complete...stupid
+                quest.UpdateObjective(objectiveID, amount);
+            
         }
 
         CheckForCompletedQuests();
@@ -99,8 +113,7 @@ public class QuestLog : MonoBehaviour
     public void OnObjectiveUpdated(QuestRuntimeInstance quest, string objectiveID, int newValue)
     {
         // purely update UI / notify player
-        questNotif.SetNotifText("Objective Complete");
-        questNotif.ShowQuestNotif();
+        canvasController.ShowQuestNotif("Objective Complete");
         
         Debug.Log($"Quest {quest.questData.questName} objective {objectiveID} progress: {newValue}");
     }
@@ -114,8 +127,11 @@ public class QuestLog : MonoBehaviour
                 completedQuests.Add(activeQuests[i].questData);
                 activeQuests.RemoveAt(i);
                 hasQuest = false;
-                questRewardUI.OpenQuestRewardsUI();
+                canvasController.ShowQuestReward();
+                currentQuestGiver.gameObject.layer = LayerMask.NameToLayer("Dialogue");
+                Debug.Log(currentQuestGiver.gameObject.layer);
                 Destroy(currentQuestGiver);
+                canvasController.EndTimer();
 
             }
         }
@@ -155,6 +171,17 @@ public class QuestLog : MonoBehaviour
             activeQuests.Remove(questInstance);
             if (!completedQuests.Contains(quest))
                 completedQuests.Add(quest);
+
+
+        }
+    }
+
+    public void OnQuestFailed(QuestRuntimeInstance quest)
+    {
+        if (quest != null)
+        {
+            activeQuests.Remove(quest);
+            
             
         }
     }

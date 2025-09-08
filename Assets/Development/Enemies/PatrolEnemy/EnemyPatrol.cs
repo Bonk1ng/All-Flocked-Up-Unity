@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemyPatrol : MonoBehaviour
+public class EnemyPatrol : MonoBehaviour, I_EnemyBase
 {
     public Transform[] patrolPoints;
     public Transform player;
@@ -12,6 +12,8 @@ public class EnemyPatrol : MonoBehaviour
     private int currentPointIndex = 0;
     private enum EnemyState { Patrolling, Chasing }
     private EnemyState currentState = EnemyState.Patrolling;
+
+    public bool IsDead = false;
 
     void Update()
     {
@@ -67,5 +69,16 @@ public class EnemyPatrol : MonoBehaviour
         dir.y = 0;
         if (dir != Vector3.zero)
             transform.forward = dir;
+    }
+
+    public void TakeDamage(int damage)
+    {
+
+
+    }
+
+    public void OnDeath(bool IsDead)
+    {
+
     }
 }

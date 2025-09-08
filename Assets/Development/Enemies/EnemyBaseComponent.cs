@@ -13,10 +13,7 @@ public class EnemyBaseComponent : MonoBehaviour, I_EnemyBase
     {
         questKillComponent = GetComponent<Q_KillComponent>();
     }
-    void Start()
-    {
-        
-    }
+
 
     void Update()
     {
@@ -29,7 +26,7 @@ public class EnemyBaseComponent : MonoBehaviour, I_EnemyBase
 
     public void TakeDamage(int damage)
     {
-        currentHealth = currentHealth-damage;
+        currentHealth -= damage;
         if (currentHealth <= 0)
         {
             isDeadLocal = true;

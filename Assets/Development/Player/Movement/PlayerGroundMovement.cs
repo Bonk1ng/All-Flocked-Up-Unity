@@ -33,16 +33,35 @@ public class PlayerGroundMovement : MonoBehaviour
     [SerializeField]
     float threshold = 0.01f;
 
+    [Header("Step Variables: ")]
+    [SerializeField] 
+    GameObject stepRayUpper;
+    [SerializeField] 
+    GameObject stepRayLower;
+    [SerializeField]
+    float stepHeight = 0.3f;
+    [SerializeField]
+    float stepSmoothing = 2f;
+    [SerializeField]
+    float stepCastDistance = .2f;
+
+
+    [Header("Other Variables")]
     //playerInput
     float x, z;
     bool jumping, crouching;
     bool isJumping = false;
-    public bool isFlying = false;
+    bool isFlying = false;
 
     InputAction moveAction;
     InputAction jumpAction;
 
-    private void Awake() => playerBody = GetComponent<Rigidbody>();
+    private void Awake()
+    { 
+        playerBody = GetComponent<Rigidbody>();
+
+        stepRayUpper.transform.localPosition = new Vector3(stepRayUpper.transform.localPosition.x, stepHeight, stepRayUpper.transform.localPosition.z);
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -93,6 +112,9 @@ public class PlayerGroundMovement : MonoBehaviour
 
     void Movement()
     {
+        if (x != 0 || z != 0)
+            StepClimb();
+
         //Set max speed
         float maxSpeed = currentMaxSpeed;
 
@@ -121,7 +143,7 @@ public class PlayerGroundMovement : MonoBehaviour
         }
         //Apply forces to playerBody
         playerBody.AddForce(transform.forward * z * currentSpeed * Time.deltaTime);
-        playerBody.AddForce(transform.right * x * currentSpeed * Time.deltaTime);
+        playerBody.AddForce(transform.right * x * currentSpeed * Time.deltaTime);      
     }
 
     void Jump()
@@ -184,6 +206,59 @@ public class PlayerGroundMovement : MonoBehaviour
             Vector3 normSpeed = playerBody.linearVelocity.normalized * currentMaxSpeed;
             // set player speed but keep the falling speed the same
             playerBody.linearVelocity = new Vector3(normSpeed.x, tempFallspeed, normSpeed.z);
+        }
+    }
+
+    void StepClimb()
+    {
+        RaycastHit hitLower;
+        if (Physics.Raycast(stepRayLower.transform.position, transform.TransformDirection(Vector3.forward), out hitLower, stepCastDistance))
+        {
+            RaycastHit hitUpper;
+            if (!Physics.Raycast(stepRayUpper.transform.position, transform.TransformDirection(Vector3.forward), out hitUpper, stepCastDistance))
+            {
+                playerBody.position -= new Vector3(0f, -stepSmoothing * Time.deltaTime, 0f);
+            }
+        }
+
+        RaycastHit hitLower45;
+        if (Physics.Raycast(stepRayLower.transform.position, transform.TransformDirection(1f, 0f, 1f), out hitLower45, stepCastDistance))
+        {
+            RaycastHit hitUpper45;
+            if (!Physics.Raycast(stepRayUpper.transform.position, transform.TransformDirection(1f, 0f, 1f), out hitUpper45, stepCastDistance))
+            {
+                playerBody.position -= new Vector3(0f, -stepSmoothing * Time.deltaTime, 0f);
+            }
+        }
+
+        RaycastHit hitLowerMinus45;
+        if (Physics.Raycast(stepRayLower.transform.position, transform.TransformDirection(-1f, 0f, 1f), out hitLowerMinus45, stepCastDistance))
+        {
+            RaycastHit hitUpperMinus45;
+            if (!Physics.Raycast(stepRayUpper.transform.position, transform.TransformDirection(-1f, 0f, 1f), out hitUpperMinus45, stepCastDistance)) 
+            {
+                playerBody.position -= new Vector3(0f, -stepSmoothing * Time.deltaTime, 0f);
+            }
+        }
+
+        RaycastHit hitLower60;
+        if (Physics.Raycast(stepRayLower.transform.position, transform.TransformDirection(2f, 0f, 1f), out hitLower60, stepCastDistance))
+        {
+            RaycastHit hitUpper60;
+            if (!Physics.Raycast(stepRayUpper.transform.position, transform.TransformDirection(2f, 0f, 1f), out hitUpper60, stepCastDistance))
+            {
+                playerBody.position -= new Vector3(0f, -stepSmoothing * Time.deltaTime, 0f);
+            }
+        }
+
+        RaycastHit hitLowerMinus60;
+        if (Physics.Raycast(stepRayLower.transform.position, transform.TransformDirection(-2f, 0f, 1f), out hitLowerMinus60, stepCastDistance))
+        {
+            RaycastHit hitUpperMinus60;
+            if (!Physics.Raycast(stepRayUpper.transform.position, transform.TransformDirection(-2f, 0f, 1f), out hitUpperMinus60, stepCastDistance))
+            {
+                playerBody.position -= new Vector3(0f, -stepSmoothing * Time.deltaTime, 0f);
+            }
         }
     }
 

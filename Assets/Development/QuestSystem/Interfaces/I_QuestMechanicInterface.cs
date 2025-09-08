@@ -5,5 +5,6 @@ public interface I_QuestMechanicInterface
 {
     void GetQuestLog();
 
+    string GetObjectiveID();
 
 }

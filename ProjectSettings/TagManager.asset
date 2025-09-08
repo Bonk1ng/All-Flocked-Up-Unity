@@ -9,6 +9,7 @@ TagManager:
   - QuestItemToLocation
   - QuestKill
   - QuestInteract
+  - Consumable
   layers:
   - Default
   - TransparentFX
@@ -20,8 +21,8 @@ TagManager:
   - NPC
   - Enemy
   - Quest
-  - 
-  - 
+  - Dialogue
+  - Consumable
   - 
   - 
   - 

@@ -15,16 +15,18 @@ public class UI_QuestReward : MonoBehaviour
     void Start()
     {
         acceptReward.onClick.AddListener(AcceptReward);
-        questRewardCanvas.SetActive(false);
+
     }
 
     public void OpenQuestRewardsUI()
     {
         questRewardCanvas.SetActive(true);
     }
-    private void AcceptReward()
+    public void AcceptReward()
     {
-        questRewardCanvas.SetActive(false);
+        Destroy(questRewardCanvas);
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void SetQuestNameText(string name)

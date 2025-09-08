@@ -14,14 +14,15 @@ public class Q_InteractComponent : MonoBehaviour, I_QuestMechanicInterface
 
     public void GetQuestLog()
     {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        questLog = player.GetComponent<QuestLog>();
+        questLog = FindFirstObjectByType<QuestLog>();
     }
 
     public void InteractWithObjective()
     {
         questLog.UpdateQuestObjective(objectiveID, 1);
     }
+
+    public string GetObjectiveID() => objectiveID;
 
     //Link to PlayerInteraction script.
 }

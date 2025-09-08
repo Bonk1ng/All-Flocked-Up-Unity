@@ -13,8 +13,7 @@ public class Q_KillComponent : MonoBehaviour, I_QuestMechanicInterface
 
     public void GetQuestLog()
     {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        questLog = player.GetComponent<QuestLog>();
+        questLog = FindFirstObjectByType<QuestLog>();
     }
 
     public void KillComplete()
@@ -30,4 +29,6 @@ public class Q_KillComponent : MonoBehaviour, I_QuestMechanicInterface
             Debug.Log("collision test");
         }
     }
+
+    public string GetObjectiveID() => objectiveID;
 }

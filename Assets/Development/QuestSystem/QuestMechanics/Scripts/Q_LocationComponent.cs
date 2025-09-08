@@ -4,7 +4,7 @@ using UnityEngine;
 public class Q_LocationComponent : MonoBehaviour, I_QuestMechanicInterface
 {
     public string objectiveID;
-    public UI_QuestLocationNotif questLocationCanvas;
+    public UI_CanvasController canvasController;
     public QuestLog questLog;
 
     private bool triggered = false;
@@ -12,6 +12,14 @@ public class Q_LocationComponent : MonoBehaviour, I_QuestMechanicInterface
     void Start()
     {
         GetQuestLog();
+
+        //change this later or add spawning to quests...this will only check against hasQuest bool...any quest will trigger
+        //and you would be able to hit collider while wrong quest is active
+        //if (!questLog.hasQuest)
+        //{
+        //    this.gameObject.SetActive(false);
+        //}
+        //else this.gameObject.SetActive(true);
         
         
     }
@@ -20,9 +28,10 @@ public class Q_LocationComponent : MonoBehaviour, I_QuestMechanicInterface
 
     public void GetQuestLog()
     {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        questLog = player.GetComponent<QuestLog>();
+        questLog = FindFirstObjectByType<QuestLog>();
     }
+
+    public string GetObjectiveID() => objectiveID;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -32,7 +41,7 @@ public class Q_LocationComponent : MonoBehaviour, I_QuestMechanicInterface
             triggered = true;
             //questRuntimeInstance.UpdateObjective(objectiveID, 1);
             questLog.UpdateQuestObjective(objectiveID, 1);
-            questLocationCanvas.ShowQuestLocationNotif();
+            canvasController.ShowQuestLocationNotif();
 
         }
     }

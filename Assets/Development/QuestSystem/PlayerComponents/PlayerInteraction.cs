@@ -1,12 +1,14 @@
 using UnityEngine;
 
+
 public class PlayerInteraction : MonoBehaviour
 {
     public float interactionRange = 3f;
     public LayerMask npcLayer;
     public LayerMask questLayer;
+    public LayerMask dialogueLayer;
     public QuestLog questLog; // assign in Inspector
-    public UI_QuestGiver questGiverUI;
+    public UI_CanvasController canvasController;
 
     void Update()
     {
@@ -19,7 +21,8 @@ public class PlayerInteraction : MonoBehaviour
                 var questNPC = hit.collider.GetComponentInParent<QuestInteraction>();
                 if (questNPC != null)
                 {
-                    questGiverUI.OpenQuestGiverUI(hit.collider.GetComponentInParent<QuestGiver>());
+                    canvasController.ShowQuestGiver(hit.collider.GetComponentInParent<QuestGiver>());
+                    Debug.Log(hit.ToString() + "QuestGiver");
                 }
             }
 
@@ -29,9 +32,30 @@ public class PlayerInteraction : MonoBehaviour
                 if (questInteractable != null)
                 {
                     questInteractable.InteractWithObjective();
-                    Debug.Log(hit.ToString());
+                    Debug.Log(hit.ToString() + "InteractionObject");
                 }
             }
+
+            if (Physics.Raycast(transform.position, transform.forward, out hit, interactionRange, dialogueLayer))
+            {
+                var dialogueInteractable = hit.collider.GetComponentInParent<NPCBase>();
+                if (dialogueInteractable != null)
+                {
+                    canvasController.OpenDialogue();
+                    dialogueInteractable.InteractWithNPCDialogue();
+                    Debug.Log(hit.ToString() + "Dialogue");
+                }
+            }
+        }
+        //TAB for quest log...will change this later to new input system
+       else if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            if (canvasController.activeLogInstance == null)
+            {
+                Debug.Log("QuestLog Opened?");
+                canvasController.ShowQuestLog();
+            }
+            else canvasController.DestroyQuestLog();
         }
 
         
