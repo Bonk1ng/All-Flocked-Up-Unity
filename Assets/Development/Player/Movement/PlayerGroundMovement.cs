@@ -15,38 +15,30 @@ public class PlayerGroundMovement : MonoBehaviour
 
     // movement variables
     [Header("Movement Speed: ")]
-    [SerializeField]
-    float moveSpeed = 4500f;
-    [SerializeField]
-    float maxSpeed = 10f;
-    [SerializeField]
-    float crouchSpeed = 4f;
-    [SerializeField]
-    float jumpHeight = 400f;
+    [SerializeField] float moveSpeed = 500f;
+    [SerializeField] float maxSpeed = 4f;
+    [SerializeField] float crouchSpeed = 2f;
+    [SerializeField] float jumpHeight = 150f;
 
     float currentMaxSpeed;
     float currentSpeed;
 
     [Header("Counter Movement: ")]
-    [SerializeField]
-    float counterMovement = 0.175f;
-    [SerializeField]
-    float threshold = 0.01f;
+    [SerializeField] float counterMovement = 0.175f;
+    [SerializeField] float threshold = 0.01f;
 
     [Header("Step Variables: ")]
-    [SerializeField] 
-    GameObject stepRayUpper;
-    [SerializeField] 
-    GameObject stepRayLower;
-    [SerializeField]
-    float stepHeight = 0.3f;
-    [SerializeField]
-    float stepSmoothing = 2f;
-    [SerializeField]
-    float stepCastDistance = .2f;
+    [SerializeField] GameObject stepRayUpper;
+    [SerializeField] GameObject stepRayLower;
+    [SerializeField] float stepHeight = 0.3f;
+    [SerializeField] float stepSmoothing = 2f;
+    [SerializeField] float stepCastDistance = .2f;
 
 
     [Header("Other Variables")]
+    [SerializeField] float rotationLerpSpeed = 0.1f;
+
+
     //playerInput
     float x, z;
     bool jumping, crouching;
@@ -139,7 +131,7 @@ public class PlayerGroundMovement : MonoBehaviour
 
         if (z > 0)
         {
-            transform.eulerAngles = new Vector3(transform.eulerAngles.x, cameraRef.eulerAngles.y, transform.eulerAngles.z);
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x, Mathf.LerpAngle(transform.eulerAngles.y, cameraRef.eulerAngles.y, rotationLerpSpeed), transform.eulerAngles.z);
         }
         //Apply forces to playerBody
         playerBody.AddForce(transform.forward * z * currentSpeed * Time.deltaTime);
@@ -221,21 +213,21 @@ public class PlayerGroundMovement : MonoBehaviour
             }
         }
 
-        RaycastHit hitLower45;
-        if (Physics.Raycast(stepRayLower.transform.position, transform.TransformDirection(1f, 0f, 1f), out hitLower45, stepCastDistance))
+        RaycastHit hitLower30;
+        if (Physics.Raycast(stepRayLower.transform.position, transform.TransformDirection(1f, 0f, 1f), out hitLower30, stepCastDistance))
         {
-            RaycastHit hitUpper45;
-            if (!Physics.Raycast(stepRayUpper.transform.position, transform.TransformDirection(1f, 0f, 1f), out hitUpper45, stepCastDistance))
+            RaycastHit hitUpper30;
+            if (!Physics.Raycast(stepRayUpper.transform.position, transform.TransformDirection(1f, 0f, 1f), out hitUpper30, stepCastDistance))
             {
                 playerBody.position -= new Vector3(0f, -stepSmoothing * Time.deltaTime, 0f);
             }
         }
 
-        RaycastHit hitLowerMinus45;
-        if (Physics.Raycast(stepRayLower.transform.position, transform.TransformDirection(-1f, 0f, 1f), out hitLowerMinus45, stepCastDistance))
+        RaycastHit hitLowerMinus30;
+        if (Physics.Raycast(stepRayLower.transform.position, transform.TransformDirection(-1f, 0f, 1f), out hitLowerMinus30, stepCastDistance))
         {
-            RaycastHit hitUpperMinus45;
-            if (!Physics.Raycast(stepRayUpper.transform.position, transform.TransformDirection(-1f, 0f, 1f), out hitUpperMinus45, stepCastDistance)) 
+            RaycastHit hitUpperMinus30;
+            if (!Physics.Raycast(stepRayUpper.transform.position, transform.TransformDirection(-1f, 0f, 1f), out hitUpperMinus30, stepCastDistance)) 
             {
                 playerBody.position -= new Vector3(0f, -stepSmoothing * Time.deltaTime, 0f);
             }
@@ -265,12 +257,14 @@ public class PlayerGroundMovement : MonoBehaviour
     public void InitiateFlight()
     {
         isFlying = true;
+        playerBody.useGravity = false;
         playerFlightMovement.InitiateFlight();
     }
 
     public void InitiateWalkState()
     {
         isFlying = false;
+        playerBody.useGravity = true;
     }
 
 }
