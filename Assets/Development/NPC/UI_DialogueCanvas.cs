@@ -16,7 +16,7 @@ public class UI_DialogueCanvas : MonoBehaviour
     void Start()
     {
         dialogueCanvas = GetComponent<Canvas>();
-        dialogueImage = GetComponent<Image>();
+        //dialogueImage = GetComponent<Image>();
         dialogueCanvas.gameObject.SetActive(false);
 
     }
@@ -36,9 +36,10 @@ public class UI_DialogueCanvas : MonoBehaviour
 
     public void ClearDialogueCanvas()
     {
-        dialogueText = null;
-        nameText = null;
-        dialogueImage.material = null;
+        
+        dialogueText.SetText("");
+        nameText.SetText("");
+       
     }
 
     public void DestroyDialogue()
