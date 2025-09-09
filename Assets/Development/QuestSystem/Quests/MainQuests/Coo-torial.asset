@@ -32,8 +32,8 @@ MonoBehaviour:
       objectiveID: 101
       quantityToComplete: 1
       isOptional: 0
-      bonusEXP: 0
-    expReward: 0
+      bonusEXP: 2
+    expReward: 1
     trinketReward: 0
   - stageName: TEST STAGE 2
     stageDescription: TESTING COOTORIAL STAGE 1
@@ -47,7 +47,7 @@ MonoBehaviour:
       quantityToComplete: 1
       isOptional: 0
       bonusEXP: 0
-    expReward: 0
+    expReward: 1
     trinketReward: 0
   - stageName: TEST STAGE 3
     stageDescription: TESTING COOTORIAL STAGE 3
@@ -61,5 +61,5 @@ MonoBehaviour:
       quantityToComplete: 1
       isOptional: 0
       bonusEXP: 0
-    expReward: 0
+    expReward: 1
     trinketReward: 0

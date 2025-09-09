@@ -1213,6 +1213,9 @@ PrefabInstance:
       addedObject: {fileID: 7090866481989506578}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 1838661733868436487}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 4585154954453579094}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
       insertIndex: -1
@@ -1275,6 +1278,9 @@ MonoBehaviour:
   dialogueLayer:
     serializedVersion: 2
     m_Bits: 1024
+  trashLayer:
+    serializedVersion: 2
+    m_Bits: 0
   questLog: {fileID: 5256277540902806047}
   canvasController: {fileID: 0}
 --- !u!114 &5360852943576176621
@@ -1300,6 +1306,7 @@ MonoBehaviour:
   stepHeight: 0.3
   stepSmoothing: 2
   stepCastDistance: 0.2
+  rotationLerpSpeed: 0.1
 --- !u!114 &5691531790606118220
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1313,6 +1320,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseGlideSpeed: 400
+  maxDownwardVelocity: -3
   flapUpHeight: 5
   rotateSpeed: 80
   glideDownSpeed: 1000
@@ -1359,6 +1367,21 @@ MonoBehaviour:
   respawnCanvasPrefab: {fileID: 7144571349346881106, guid: a7afa39afeeb21b4c954129c1e324f98, type: 3}
   respawnCanvasInstance: {fileID: 0}
   rb: {fileID: 4585154954453579094}
+--- !u!114 &1838661733868436487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608166696854051247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e40c59698d52684997c0f5e59e95033, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentXP: 0
+  requiredToNextLevel: 5
+  currentLevel: 0
 --- !u!54 &4585154954453579094
 Rigidbody:
   m_ObjectHideFlags: 0
