@@ -6,12 +6,12 @@ using UnityEngine.UI;
 public class UI_QuestNotif : MonoBehaviour
 {
 
-    [SerializeField] private GameObject questNotifCanvas;
     [SerializeField] private TextMeshProUGUI questNotifText;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        questNotifCanvas.SetActive(false);
+        questNotifText = GetComponent<TextMeshProUGUI>();
+
     }
 
     // Update is called once per frame
@@ -20,10 +20,14 @@ public class UI_QuestNotif : MonoBehaviour
         
     }
 
-    private async void ShowQuestNotif()
+    public void SetNotifText(string text)
     {
-        questNotifCanvas.SetActive(true);
-        await Task.Delay(3000);
-        questNotifCanvas.SetActive(false);
+        questNotifText.text = text;
+    }
+
+    public async void ShowQuestNotif()
+    {
+        await Task.Delay(1500);
+        Destroy(this.gameObject);
     }
 }
