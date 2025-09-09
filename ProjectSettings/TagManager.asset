@@ -10,6 +10,7 @@ TagManager:
   - QuestKill
   - QuestInteract
   - Consumable
+  - Race
   layers:
   - Default
   - TransparentFX
@@ -25,7 +26,7 @@ TagManager:
   - Consumable
   - Trash
   - Collectible
-  - 
+  - Race
   - 
   - 
   - 

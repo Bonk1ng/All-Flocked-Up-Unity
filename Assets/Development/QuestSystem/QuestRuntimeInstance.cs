@@ -1,6 +1,7 @@
 using Mono.Cecil.Cil;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -83,6 +84,7 @@ public class QuestRuntimeInstance
         objectiveProgress[objectiveID] += amount;
         questLog.OnObjectiveUpdated(this, objectiveID, objectiveProgress[objectiveID]);
 
+
         Debug.Log("Objective Increments?");
         if (CheckStageComplete())
             AdvanceStage();
@@ -99,7 +101,10 @@ public class QuestRuntimeInstance
             if (!objectiveProgress.ContainsKey(obj.objectiveID)) return false;
             if (objectiveProgress[obj.objectiveID] < obj.quantityToComplete)
                 return false;
+            //not sure if this triggers properly
+            GameObject.FindFirstObjectByType<EXPSystem>().IncrementXP(objectiveProgress[obj.objectiveID]);
         }
+
         return true;
     }
 
@@ -107,6 +112,7 @@ public class QuestRuntimeInstance
     public void AdvanceStage()
     {
         currentStageIndex++;
+        GameObject.FindFirstObjectByType<EXPSystem>().IncrementXP(questData.stages[currentStageIndex].expReward);
         GetQuestObjects();
         if (!IsComplete)
         {

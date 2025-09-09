@@ -48,7 +48,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerRef: {fileID: 0}
-  value: 0
+  value: 15
+  playerXP: {fileID: 0}
 --- !u!33 &1458731753942329412
 MeshFilter:
   m_ObjectHideFlags: 0

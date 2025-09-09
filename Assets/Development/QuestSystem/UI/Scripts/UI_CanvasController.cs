@@ -38,6 +38,16 @@ public class UI_CanvasController : MonoBehaviour
     [SerializeField] private UI_TrashCanvas trashCanvas;
     public UI_TrashCanvas activeTrashInstance;
 
+    [Header("RaceCanvas")]
+    [SerializeField] private UI_RaceGiver raceGiverCanvas;
+    public UI_RaceGiver raceGiverInstance;
+
+    [SerializeField] private UI_RaceReward raceRewardCanvas;
+    public UI_RaceReward raceRewardInstance;
+
+    [SerializeField] private UI_RaceFail raceFailCanvas;
+    public UI_RaceFail raceFailInstance;
+
 
     public void ShowPlayerCursor()
     {
@@ -196,6 +206,48 @@ public class UI_CanvasController : MonoBehaviour
         {
             activeTrashInstance.DestroyCanvas();
             activeTrashInstance = null;
+        }
+    }
+
+    public void OpenRaceGiver()
+    {
+        raceGiverInstance = Instantiate(raceGiverCanvas);
+    }
+
+    public void CloseRaceGiver()
+    {
+        if(raceGiverInstance != null)
+        {
+            Destroy(raceGiverInstance);
+            raceGiverInstance = null;
+        }
+    }
+
+    public void OpenRaceRewards()
+    {
+        raceRewardInstance = Instantiate(raceRewardCanvas);
+    }
+
+    public void CloseRaceRewards()
+    {
+        if(raceRewardInstance != null)
+        {
+            Destroy(raceRewardInstance);
+            raceRewardInstance = null;
+        }
+    }
+
+    public void OpenRaceFail()
+    {
+        raceFailInstance = Instantiate(raceFailCanvas);
+    }
+
+    public void CloseRaceFail()
+    {
+        if(raceFailInstance != null)
+        {
+            Destroy(raceFailInstance);
+            raceFailInstance = null;
         }
     }
 
