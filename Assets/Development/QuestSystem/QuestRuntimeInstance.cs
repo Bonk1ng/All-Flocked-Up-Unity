@@ -111,8 +111,8 @@ public class QuestRuntimeInstance
     //Advances Stage index. If not complete, Start quest.
     public void AdvanceStage()
     {
-        currentStageIndex++;
         GameObject.FindFirstObjectByType<EXPSystem>().IncrementXP(questData.stages[currentStageIndex].expReward);
+        currentStageIndex++;
         GetQuestObjects();
         if (!IsComplete)
         {
