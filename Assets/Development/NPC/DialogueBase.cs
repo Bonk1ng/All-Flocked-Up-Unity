@@ -6,6 +6,9 @@ using System.IO;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using System.Linq;
+using Unity.Mathematics;
+using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 
 public class DialogueBase : MonoBehaviour
 {
@@ -16,17 +19,28 @@ public class DialogueBase : MonoBehaviour
     [SerializeField] private string currentDialogueName;
     [SerializeField] private string currentDialogueText;
     [SerializeField] private Image currentDialogueImage;
+    [SerializeField] private string currentContinueStatus;
+    public string currentBranchID;
+    public string[] currentResponseOptions;
+    public int responseReturned;
     [SerializeField] private UI_CanvasController canvasController;
 
     public string DIALOGUEFILENAME = "DialogueSpreadsheet.csv";
     public List<DialogueLineData> dialogueList = new List<DialogueLineData>();
     public DialogueLineData currentDialogueLineData;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+
+    [SerializeField]private string retriggerDialogueLineID;
+    public bool isRetrigger;
+
+   [SerializeField] private int currentTextSpeed;
+    public int textSpeed=>currentTextSpeed=500;// this speed is in ms
+
+
     void Start()
     {
         LoadDialogueSheet();
-        
-        //PrintDialogue();
+
     }
 
     public void LoadDialogueSheet()
@@ -36,7 +50,6 @@ public class DialogueBase : MonoBehaviour
 
         string[] importedLines = File.ReadAllLines(filePath);
         Debug.Log(importedLines.Length);
-        //does print correct number of lines but doesnt fill []
 
         for (int i = currentDialogueIndex; i < importedLines.Length; i++)
         {
@@ -52,15 +65,24 @@ public class DialogueBase : MonoBehaviour
                 dialogueSpeaker = lineData[1],
                 dialogueText = lineData[2],
                 dialogueImage = lineData[3],
-                dialogueCondition = lineData[4],
-                nextID = lineData[5]
+                dialogueContinue = lineData[4],
+                nextID = lineData[5],
+                resposeOptions = lineData[6].Split('|'),
+                branchID = lineData[7]
+
+
 
             };
             dialogueList.Add(dialogueLine);
             currentDialogueLineData = dialogueLine;
             currentDialogueLineID = dialogueLine.dialogueID;
+            currentContinueStatus = dialogueLine.dialogueContinue;
             currentDialogueName = dialogueLine.dialogueSpeaker;
             currentDialogueText = dialogueLine.dialogueText;
+            retriggerDialogueLineID = dialogueLine.nextID;
+            currentResponseOptions = dialogueLine.resposeOptions;
+            currentBranchID = dialogueLine.branchID;
+
             
         }
         if (dialogueList.Count > 0)
@@ -69,8 +91,13 @@ public class DialogueBase : MonoBehaviour
             currentDialogueLineID = currentDialogueLineData.dialogueID;
             currentDialogueName = currentDialogueLineData.dialogueSpeaker;
             currentDialogueText = currentDialogueLineData.dialogueText;
-        }
+            currentContinueStatus=currentDialogueLineData.dialogueContinue;
+            currentResponseOptions = currentDialogueLineData.resposeOptions;
+            currentBranchID=currentDialogueLineData.branchID;
 
+        }
+        TypeText(textSpeed);
+        SendResponseOptions();
     }
 
     public DialogueLineData GetDialogueLineByID(string id)
@@ -91,15 +118,10 @@ public class DialogueBase : MonoBehaviour
         currentDialogueLineID = line.dialogueID;
         currentDialogueName = line.dialogueSpeaker;
         currentDialogueText = line.dialogueText;
+        currentContinueStatus = line.dialogueContinue;
+        currentResponseOptions = line.resposeOptions;
     }
     
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
 
     public void PrintDialogue(string dialogueLineID)
     {
@@ -108,44 +130,75 @@ public class DialogueBase : MonoBehaviour
 
         if (canvasController != null && canvasController.dialogueCanvas != null)
         {
-            canvasController.dialogueCanvas.UpdateDialogueUI(
-                currentDialogueName,
-                currentDialogueText,
-                currentDialogueImage
-            );
-        }
+            TypeText(textSpeed);
 
+        }
         currentDialogueIndex++;
     }
     public void ProgressDialogue()
     {
         if (currentDialogueLineData != null && !string.IsNullOrEmpty(currentDialogueLineData.nextID))
         {
-            PrintDialogue(currentDialogueLineData.nextID);
+            //Added for branching dialogue but will only check if NOT first option
+            if (responseReturned == 2) { PrintDialogue(currentBranchID); }
+            Debug.Log(currentContinueStatus);
+            if (currentContinueStatus != "BREAK")
+            {
+                PrintDialogue(currentDialogueLineData.nextID);
+            }
+            else ClearDialogue(); 
         }
         else
         {
-            ClearDialogue();
+            ClearDialogue(); 
         }
+
     }
 
     public void ClearDialogue()
     {
         canvasController.dialogueCanvas.ClearDialogueCanvas();
+        isRetrigger = true;
     }
 
     public bool SkipDialogue(Action SkipLine)
-    { 
+    {
+
         return true;
     }
 
-    public void SetStartDialogueLine()
-    {
 
+    public int SetTextSpeed(int speed)
+    {
+        currentTextSpeed = speed;
+        return currentTextSpeed;
     }
 
-    public void SetNextDialogueLine()
+    public async void TypeText(int speed)
+    {
+        string temp = "";
+        foreach (var item in currentDialogueText.AsSpan().ToArray())
+        {
+            
+            Debug.Log(temp);
+            temp += item; 
+            canvasController.dialogueCanvas.UpdateDialogueUI(
+            currentDialogueName,
+            temp,
+            currentDialogueImage);
+            //Add narrative sounds / function call here
+            await Task.Delay(speed);
+
+        }
+        
+    }
+
+    public void SendResponseOptions()
     {
 
+        canvasController.SendResponseOptions(currentResponseOptions);
     }
+
+
+
 }
