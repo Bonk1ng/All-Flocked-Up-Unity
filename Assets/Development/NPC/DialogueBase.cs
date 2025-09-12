@@ -22,8 +22,9 @@ public class DialogueBase : MonoBehaviour
     [SerializeField] private string currentContinueStatus;
     public string currentBranchID;
     public string[] currentResponseOptions;
-    public int responseReturned;
+    public string responseReturnID;
     [SerializeField] private UI_CanvasController canvasController;
+    [SerializeField] private bool typerComplete {  get; set; }
 
     public string DIALOGUEFILENAME = "DialogueSpreadsheet.csv";
     public List<DialogueLineData> dialogueList = new List<DialogueLineData>();
@@ -125,7 +126,7 @@ public class DialogueBase : MonoBehaviour
 
     public void PrintDialogue(string dialogueLineID)
     {
-
+        typerComplete = false;
         SetCurrentDialogue(dialogueLineID);
 
         if (canvasController != null && canvasController.dialogueCanvas != null)
@@ -133,6 +134,9 @@ public class DialogueBase : MonoBehaviour
             TypeText(textSpeed);
 
         }
+
+       // if (typerComplete) canvasController.dialogueCanvas.GetResponseOptions();
+        
         currentDialogueIndex++;
     }
     public void ProgressDialogue()
@@ -140,7 +144,7 @@ public class DialogueBase : MonoBehaviour
         if (currentDialogueLineData != null && !string.IsNullOrEmpty(currentDialogueLineData.nextID))
         {
             //Added for branching dialogue but will only check if NOT first option
-            if (responseReturned == 2) { PrintDialogue(currentBranchID); }
+            if (responseReturnID == currentBranchID) { PrintDialogue(currentBranchID); }
             Debug.Log(currentContinueStatus);
             if (currentContinueStatus != "BREAK")
             {
@@ -152,7 +156,7 @@ public class DialogueBase : MonoBehaviour
         {
             ClearDialogue(); 
         }
-
+        typerComplete = false;
     }
 
     public void ClearDialogue()
@@ -191,6 +195,8 @@ public class DialogueBase : MonoBehaviour
 
         }
         
+        await Task.Delay(2000);
+        ShowResponseButtons(true);
     }
 
     public void SendResponseOptions()
@@ -199,6 +205,15 @@ public class DialogueBase : MonoBehaviour
         canvasController.SendResponseOptions(currentResponseOptions);
     }
 
-
+    private void ShowResponseButtons(bool ready)
+    {
+        typerComplete = ready;
+        if (typerComplete)
+        {
+            canvasController.dialogueCanvas.GetResponseOptions();
+            
+        }
+        
+    }
 
 }
