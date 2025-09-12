@@ -21,7 +21,8 @@ public class UI_DialogueCanvas : MonoBehaviour
     [SerializeField] private Button buttonPrefab;
     public int textSpeed = 1;
     public string[] responses;
-    public int responseReturnInt;
+    public string responseReturnID;
+    private bool hasButtons = false;
 
     bool skipDialogue;
     public Action SkipLine { get; private set; }
@@ -39,12 +40,11 @@ public class UI_DialogueCanvas : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         if(Input.GetMouseButtonDown(0))
         {
             if (responses != null)
             {
-                GetResponseOptions();
-                Cursor.visible = true;
                 // ProgressDialogueCanvas();
             }
         }
@@ -75,7 +75,6 @@ public class UI_DialogueCanvas : MonoBehaviour
     public void ProgressDialogueCanvas()
     {
         dialogueBase.ProgressDialogue();
-        GetResponseOptions();
     }
 
     public async void TypeText()
@@ -85,6 +84,7 @@ public class UI_DialogueCanvas : MonoBehaviour
             Debug.Log(item);
             await Task.Delay(500);
         }
+
     }
 
     public void GetResponseOptions()
@@ -106,26 +106,40 @@ public class UI_DialogueCanvas : MonoBehaviour
             buttonTransform.pivot = new Vector2(0.5f, 1);
             buttonTransform.anchoredPosition  = new Vector2(0, startY);
             startY -= offset;
-            response.GetComponentInChildren<TextMeshProUGUI>().text = item.ToString();
 
-            response.onClick.AddListener(()=>ResponseClicked(item.ToString()));
-           // response.GetComponent<Text>().text = item.ToString();
+            string capturedOption = dialogueBase.currentBranchID;
+            response.onClick.AddListener(()=>ResponseClicked(capturedOption));
+            // response.GetComponent<Text>().text = item.ToString();
 
-            response.GetComponentInChildren<TextMeshProUGUI>().SetText(item.ToString());
+            response.GetComponentInChildren<TextMeshProUGUI>().SetText(item);
             Debug.Log(item);
         }
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
+        hasButtons = true;
         
     }
 
     private void ResponseClicked(string option)
     {
-        Debug.Log(option);
-        responseReturnInt = int.Parse(option); 
-        dialogueBase.responseReturned = responseReturnInt;
+        Debug.Log("responseClicked");
+        responseReturnID = option; 
+        dialogueBase.responseReturnID = responseReturnID;
         Cursor.visible = false;
+        DestroyCurrentOptionButtons(); Debug.Log("destroycalled");
+        dialogueBase.ProgressDialogue();
 
+        
+
+    }
+
+    private void DestroyCurrentOptionButtons()
+    {
+        foreach (Transform child in responseBox.transform)
+        {
+            Destroy(child.gameObject);
+        }
+        hasButtons = false;
     }
 
 
