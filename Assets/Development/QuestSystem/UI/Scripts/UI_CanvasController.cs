@@ -228,7 +228,7 @@ public class UI_CanvasController : MonoBehaviour
     {
         if(raceGiverInstance != null)
         {
-            Destroy(raceGiverInstance);
+            raceGiverInstance.CloseRaceGiver();
             raceGiverInstance = null;
         }
     }

@@ -18,9 +18,8 @@ MonoBehaviour:
   raceName: Test Race
   raceDescription: TESTER
   raceRewards: 10
-  checkpointLocations:
+  checkpointLocations: []
+  checkpointSpawns:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 0}
-  checkpointSpawns: []
