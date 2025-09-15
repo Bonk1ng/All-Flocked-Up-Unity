@@ -94,6 +94,7 @@ public class UI_DialogueCanvas : MonoBehaviour
         Debug.Log("UISpawnResponseButtons");
         float startY = 0f;
         float offset = .2f;
+        int index = 0;
         if (responses.Length>3) offset = 0.15f;
 
         foreach (var item in responses)
@@ -106,9 +107,10 @@ public class UI_DialogueCanvas : MonoBehaviour
             buttonTransform.pivot = new Vector2(0.5f, 1);
             buttonTransform.anchoredPosition  = new Vector2(0, startY);
             startY -= offset;
-
-            string capturedOption = dialogueBase.currentBranchID;
-            response.onClick.AddListener(()=>ResponseClicked(capturedOption));
+            string[] capturedOptions = dialogueBase.currentDialogueLineData.branchID.Split('|');
+            string selectedOption = capturedOptions[index];
+            response.onClick.AddListener(()=>ResponseClicked(selectedOption));
+            index++;
             // response.GetComponent<Text>().text = item.ToString();
 
             response.GetComponentInChildren<TextMeshProUGUI>().SetText(item);
@@ -123,11 +125,11 @@ public class UI_DialogueCanvas : MonoBehaviour
     private void ResponseClicked(string option)
     {
         Debug.Log("responseClicked");
-        responseReturnID = option; 
-        dialogueBase.responseReturnID = responseReturnID;
+        dialogueBase.responseReturnID = responseReturnID = option;
         Cursor.visible = false;
         DestroyCurrentOptionButtons(); Debug.Log("destroycalled");
         dialogueBase.ProgressDialogue();
+        //ProgressDialogueCanvas();
 
         
 

@@ -141,16 +141,17 @@ public class DialogueBase : MonoBehaviour
     }
     public void ProgressDialogue()
     {
+        
         if (currentDialogueLineData != null && !string.IsNullOrEmpty(currentDialogueLineData.nextID))
         {
             //Added for branching dialogue but will only check if NOT first option
-            if (responseReturnID == currentBranchID) { PrintDialogue(currentBranchID); }
-            Debug.Log(currentContinueStatus);
-            if (currentContinueStatus != "BREAK")
+            if (currentBranchID.Contains(responseReturnID) || currentDialogueLineID!=responseReturnID) { SetCurrentDialogue(responseReturnID); PrintDialogue(responseReturnID);Debug.Log("ResponseTriggered"); }
+            else if (currentContinueStatus != "BREAK")
             {
+                Debug.Log("Next ID Triggered");
                 PrintDialogue(currentDialogueLineData.nextID);
             }
-            else ClearDialogue(); 
+            if(currentContinueStatus == "BREAK")ClearDialogue(); 
         }
         else
         {
