@@ -10,7 +10,7 @@ public class RaceData : ScriptableObject
     public bool raceActive;
     public string raceName;
     public string raceDescription;
-    public float raceRewards;
+    public int raceRewards;
     public List<Transform> checkpointLocations = new();
     public List< RaceCheckpoint>  checkpointSpawns = new();
 
