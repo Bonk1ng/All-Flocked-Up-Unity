@@ -12,11 +12,6 @@ public class RaceGiver : MonoBehaviour
         race = FindFirstObjectByType<RaceBase>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void InteractWithRaceGiver()
     {
