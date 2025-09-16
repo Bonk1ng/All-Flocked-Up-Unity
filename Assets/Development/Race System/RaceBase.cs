@@ -3,42 +3,37 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEditor.Rendering;
 using System.Drawing;
+using System.Linq;
 
 public class RaceBase : MonoBehaviour
 {
-    public RaceData raceData => GetRaceData(raceData);
+    public RaceData raceData => GetRaceData(currentRaceGiver.raceData);
     [SerializeField] private RaceCheckpoint checkpointPrefab;
-    [SerializeField] private RaceGiver currentRaceGiver;
+    public RaceGiver currentRaceGiver;
     public List<RaceCheckpoint> activeCheckpoints = new();
     public List<Transform> checkpointTransforms = new();
-    [SerializeField] private int checkpointIndex;
+    public int checkpointIndex = 1;
+    public List<RaceData> completedRaces = new();
 
     [SerializeField] private float raceTimer;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     private RaceData GetRaceData(RaceData data)
     {
-        currentRaceGiver.raceData = data;
-        return raceData;
+        var temp = data;
+        return temp;
     }
 
     private void GetCheckpointLocationAndClear()
     {
-        foreach(var checkpoint in activeCheckpoints)
+        raceData.GetCheckPoints();
+        //raceData.checkpointSpawns = activeCheckpoints;
+        foreach (var checkpoint in raceData.checkpointSpawns)
         {
-            checkpointTransforms.Add(checkpoint.transform);
-            activeCheckpoints.Remove(checkpoint);
+            //checkpointTransforms.Add(checkpoint.transform);
+           activeCheckpoints.Add(checkpoint);
         }
+        activeCheckpoints = activeCheckpoints.OrderBy(cpoint => cpoint.checkpointNumber).ToList();
+        SpawnCheckpoints();
     }
 
     public void InteractWithRaceGiver()
@@ -49,7 +44,12 @@ public class RaceBase : MonoBehaviour
 
     public void StartRace()
     {
-        SpawnCheckpoints();
+        GetCheckpointLocationAndClear();
+        Debug.Log("Race Started");
+        UI_CanvasController canvas = FindFirstObjectByType<UI_CanvasController>(); 
+        canvas.CloseRaceGiver();
+        Debug.Log("canvasClosed");
+        checkpointIndex = 1;
     }
 
     private void SpawnCheckpoints()
@@ -63,21 +63,30 @@ public class RaceBase : MonoBehaviour
 
     }
 
-    private void UpdateCheckpoints()
+    public void UpdateCheckpoints(int hitPoint)
     {
-        for(int i = 0; i < activeCheckpoints.Count; i++)
+        Debug.Log($"HitPoint: {hitPoint}, Expected: {checkpointIndex}");
+
+        for (int i = 0; i < activeCheckpoints.Count; i++)
         {
+            if (hitPoint != checkpointIndex) { Debug.Log("Wrong or Last Checkpoint Missed"); return; }
             checkpointIndex++;
-            if(checkpointIndex >= activeCheckpoints.Count)
+            Debug.Log("Checkpoint Hit");
+            Debug.Log(activeCheckpoints.Count);
+            if(activeCheckpoints.Count == 1)
             {
                 RaceCompleted();
             }
+            activeCheckpoints.RemoveAt(0);
         }
     }
 
     private void RaceCompleted()
     {
-        DestroyCheckpoints();
+        UI_CanvasController canvas = FindFirstObjectByType<UI_CanvasController>();
+        canvas.OpenRaceRewards();
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 
 
@@ -90,5 +99,9 @@ public class RaceBase : MonoBehaviour
         }
     }
 
-
+    public void GiveRewards()
+    {
+        var reward = raceData.raceRewards;
+        FindFirstObjectByType<EXPSystem>().IncrementXP(reward);
+    }
 }

@@ -1,4 +1,6 @@
+using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.UI;
 [System.Serializable]
 public class DialogueLineData 
 {
@@ -6,6 +8,8 @@ public class DialogueLineData
     public string dialogueSpeaker;
     public string dialogueText;
     public string dialogueImage;
-    public string dialogueCondition;
+    public string dialogueContinue;
     public string nextID;
+    public string[] resposeOptions;
+    public string branchID;
 }

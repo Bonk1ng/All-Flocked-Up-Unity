@@ -33,6 +33,7 @@ public class UI_CanvasController : MonoBehaviour
     [Header("DialogueCanvas")]
     public UI_DialogueCanvas dialogueCanvas;
     public UI_DialogueCanvas activeDialogueInstance;
+    public string[] dialogueResponses;
 
     [Header("TrashCanvas")]
     [SerializeField] private UI_TrashCanvas trashCanvas;
@@ -188,13 +189,22 @@ public class UI_CanvasController : MonoBehaviour
 
     }
 
+    public void SendResponseOptions(string[] responses)
+    {
+        activeDialogueInstance.responses = responses;
+    }
+
+    public string[] GetCurrentResponseOptions()
+    {
+        return dialogueResponses;
+    }
+
     public void CloseDialogue()
     {
         if(dialogueCanvas != null || dialogueCanvas.isActiveAndEnabled)
         {
             //activeDialogueInstance.DestroyDialogue();
             dialogueCanvas.gameObject.SetActive(false);
-            dialogueCanvas = null;
         }
     }
 
@@ -218,7 +228,7 @@ public class UI_CanvasController : MonoBehaviour
     {
         if(raceGiverInstance != null)
         {
-            Destroy(raceGiverInstance);
+            raceGiverInstance.CloseRaceGiver();
             raceGiverInstance = null;
         }
     }

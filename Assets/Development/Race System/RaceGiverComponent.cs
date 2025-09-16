@@ -9,17 +9,14 @@ public class RaceGiver : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        race = FindFirstObjectByType<RaceBase>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void InteractWithRaceGiver()
     {
+        race.currentRaceGiver = this;
+
         canvasController.OpenRaceGiver();
     }
 }

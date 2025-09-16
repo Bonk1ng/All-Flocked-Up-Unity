@@ -11,6 +11,8 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
     private UI_CanvasController canvasController;
     [SerializeField] private DialogueBase dialogue;
     [SerializeField] private string dialogueStartLineID;
+    [SerializeField] private string retriggerDialogueLineID;
+    private bool isRetrigger;
     //on load
     public void Awake()
     {
@@ -39,8 +41,15 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
 
     public void InteractWithNPCDialogue()
     {
+        if (dialogue.isRetrigger)
+        {
+            dialogue.PrintDialogue(retriggerDialogueLineID);
+        } 
+        else
         dialogue.PrintDialogue(dialogueStartLineID);
-        
+        dialogue.isRetrigger = true;
+
+
     }
 
     public void SetMoveToLocation(Transform location)
@@ -52,6 +61,8 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
     {
         navAgentComponent.SetDestination(targetLocation.position);
     }
+
+
 
 
 }
