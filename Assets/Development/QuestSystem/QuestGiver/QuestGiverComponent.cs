@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class QuestGiver : MonoBehaviour, QuestInteraction
+public class QuestGiver : MonoBehaviour, IQuestInteraction
 {
     //Quest Giver should be attached to any NPC the should give a quest. Also inherits the QuestInteraction interface to use those functions.
     [Header("Quests Offered")]
@@ -52,6 +52,7 @@ public class QuestGiver : MonoBehaviour, QuestInteraction
         //Debug.Log("Looking at quest giver NPC.");
     }
 
+    //gets next quest from quest giver if multiple are avail
     private QuestDetails GetNextAvailableQuest(QuestLog playerQuestLog)
     {
         foreach (var q in quests)
@@ -62,6 +63,7 @@ public class QuestGiver : MonoBehaviour, QuestInteraction
         return null;
     }
 
+    //check quest prereq if quest needs to be complete before given quest
     private bool MeetsPrerequisites(QuestLog playerQuestLog)
     {
         foreach (var req in requiredCompletedQuests)
@@ -71,7 +73,7 @@ public class QuestGiver : MonoBehaviour, QuestInteraction
         }
         return true;
     }
-
+    //sends the accepted quest to the quest log... if completed but not in completed quest it auto turns in quest
     public void AcceptQuest(QuestLog log, QuestDetails quest,QuestGiver questGiver)
     {
         log.AcceptQuest(quest,questGiver);

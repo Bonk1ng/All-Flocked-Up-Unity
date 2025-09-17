@@ -16,6 +16,10 @@ public class RaceBase : MonoBehaviour
     public List<RaceData> completedRaces = new();
 
     [SerializeField] private float raceTimer;
+    [SerializeField] private StartingLine currentRaceStartingLine => raceData.GetStartLine();
+    public StartingLine raceStartLine=>currentRaceStartingLine;
+    [SerializeField] private List<CPURacer> currentRacerList = new();
+    [SerializeField] private CPURacer racerPrefab;
 
     private RaceData GetRaceData(RaceData data)
     {
@@ -30,7 +34,7 @@ public class RaceBase : MonoBehaviour
         foreach (var checkpoint in raceData.checkpointSpawns)
         {
             //checkpointTransforms.Add(checkpoint.transform);
-           activeCheckpoints.Add(checkpoint);
+            activeCheckpoints.Add(checkpoint);
         }
         activeCheckpoints = activeCheckpoints.OrderBy(cpoint => cpoint.checkpointNumber).ToList();
         SpawnCheckpoints();
@@ -46,10 +50,12 @@ public class RaceBase : MonoBehaviour
     {
         GetCheckpointLocationAndClear();
         Debug.Log("Race Started");
-        UI_CanvasController canvas = FindFirstObjectByType<UI_CanvasController>(); 
+        UI_CanvasController canvas = FindFirstObjectByType<UI_CanvasController>();
         canvas.CloseRaceGiver();
         Debug.Log("canvasClosed");
         checkpointIndex = 1;
+        SetStartLine();
+        SpawnCPURacers();
     }
 
     private void SpawnCheckpoints()
@@ -73,7 +79,7 @@ public class RaceBase : MonoBehaviour
             checkpointIndex++;
             Debug.Log("Checkpoint Hit");
             Debug.Log(activeCheckpoints.Count);
-            if(activeCheckpoints.Count == 1)
+            if (activeCheckpoints.Count == 1)
             {
                 RaceCompleted();
             }
@@ -92,7 +98,7 @@ public class RaceBase : MonoBehaviour
 
     private void DestroyCheckpoints()
     {
-        foreach( var checkpoint in activeCheckpoints)
+        foreach (var checkpoint in activeCheckpoints)
         {
             activeCheckpoints.Remove(checkpoint);
             Destroy(checkpoint.gameObject);
@@ -103,5 +109,32 @@ public class RaceBase : MonoBehaviour
     {
         var reward = raceData.raceRewards;
         FindFirstObjectByType<EXPSystem>().IncrementXP(reward);
+    }
+    private void SetStartLine()
+    {
+        Debug.Log(currentRaceStartingLine.name);
+
+    }
+
+    private void SetStartingRacerLocation()
+    {
+        currentRacerList.ForEach(r => { r.transform.position = raceStartLine.transform.position; });
+    }
+
+    private void SpawnCPURacers()
+    {
+        var racers = raceData.numberOfCPURacers;
+        for (int i = racers;i>0;i--)
+        {
+            CPURacer racer = Instantiate(racerPrefab);
+            currentRacerList.Add(racer);
+            SetStartingRacerLocation();
+            
+        }
+    }
+
+    private void SpawnRaceWalls()
+    {
+
     }
 }

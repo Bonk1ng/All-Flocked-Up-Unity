@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class Q_LocationComponent : MonoBehaviour, I_QuestMechanicInterface
+public class Q_LocationComponent : MonoBehaviour, IQuestMechanic
 {
     public string objectiveID;
     public UI_CanvasController canvasController;

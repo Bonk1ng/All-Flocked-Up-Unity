@@ -7,7 +7,8 @@ public class RaceCheckpoint : MonoBehaviour
     public string raceID;
     public int checkpointNumber;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-
+    
+    //calls UpdateCheckpoints on raceBase
     private void TriggerCheckpoint()
     {
         if (raceBase != null && raceBase.checkpointIndex == checkpointNumber)
@@ -16,6 +17,7 @@ public class RaceCheckpoint : MonoBehaviour
         }
     }
 
+    //trigger enter will call above function and destroy checkpoint
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))

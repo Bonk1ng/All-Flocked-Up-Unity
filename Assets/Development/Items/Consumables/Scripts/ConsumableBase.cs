@@ -44,28 +44,24 @@ public class ConsumableBase : MonoBehaviour
     [Header("Particles")]
     [SerializeField] private ParticleSystem consumableParticles;
 
-
+    //gets comps
     private void Awake()
     {
         consumableMesh = GetComponent<MeshFilter>().sharedMesh;
         consumableParticles = GetComponent<ParticleSystem>();
     }
 
-    void Start()
-    {
-        playerRef = GameObject.FindGameObjectWithTag("Player");
-            
-    }
-
+    //trigger checks if player and sets the playerRef, then calls effect and destroy
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
+            playerRef = other.gameObject;
             ConsumableEffect(consumableType);
             Destroy(gameObject);
         }
     }
-
+    //switch case based on consumabletype enum... this is what triggers each effect when collected
     private void ConsumableEffect(E_ConsumableType consumableType)
     {
         switch (consumableType)
@@ -93,7 +89,7 @@ public class ConsumableBase : MonoBehaviour
                 break;
         }
     }
-
+    //switch case based on reaction effects... this is what neg effect triggers when collected
     private void ReactionEffect(E_ReactionType reactionType)
     {
         switch (reactionType)
@@ -124,7 +120,7 @@ public class ConsumableBase : MonoBehaviour
 
         }
     }
-
+    //check for if object has reaction
     private void CheckForReaction()
     {
         if (hasReaction)
@@ -132,6 +128,7 @@ public class ConsumableBase : MonoBehaviour
             ReactionEffect(reactionType);
         }
     }
+    //heal function
     private void HealEffect(int health, int modifier)
     {
         playerHealth = playerRef.GetComponent<PlayerHealth>();
@@ -146,6 +143,8 @@ public class ConsumableBase : MonoBehaviour
         else
             currenthealth = playerHealth.currentHealth;
     }
+
+    //stamina effect
     private void StaminaEffect(float stamina, float modifier)
     {
         if (modifier > 0)
@@ -155,6 +154,8 @@ public class ConsumableBase : MonoBehaviour
         else
             Debug.Log("");
     }
+
+    //poop effect
     private void PoopEffect(int poop,int poopMod, bool canPoop)
     {
         if (poopMod > 0)
@@ -164,6 +165,7 @@ public class ConsumableBase : MonoBehaviour
         else
             Debug.Log("");
     }
+    //custom effect
     private void CustomEffect(int health, int healthMod,  bool canFly, bool canPoop)
     {
         if (healthMod > 0)
@@ -197,14 +199,18 @@ public class ConsumableBase : MonoBehaviour
         else
             Debug.Log("");
     }
+
+    //speed effect
     private void SpeedEffect(float speed)
     {
 
     }
+    //flight effect
     private void FlightEffect(bool canFly)
     {
 
     }
+    //flyspeed effect
     private void FlySpeedEffect(float flySpeed)
     {
 

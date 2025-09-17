@@ -34,11 +34,14 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
             MoveToLocation();
         }
     }    
+
+    //use this to add "Look at" effects like a prompt or something
     public void LookAtNPC()
     {
 
     }
 
+    //called from PlayerInteraction... opens and prints dialogue
     public void InteractWithNPCDialogue()
     {
         if (dialogue.isRetrigger)
@@ -52,11 +55,13 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
 
     }
 
+    //sets the NPC move-to location
     public void SetMoveToLocation(Transform location)
     {
         targetLocation = location;
     }
 
+    //call this to run like wind
     public void MoveToLocation()
     {
         navAgentComponent.SetDestination(targetLocation.position);

@@ -2,12 +2,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System;
-using Unity.VisualScripting;
-using Unity.Mathematics;
 using System.Threading.Tasks;
-using static UnityEditor.Progress;
-using UnityEngine.Events;
-using UnityEditor.Experimental.GraphView;
 
 
 public class UI_DialogueCanvas : MonoBehaviour
@@ -19,25 +14,24 @@ public class UI_DialogueCanvas : MonoBehaviour
     [SerializeField] private DialogueBase dialogueBase;
     [SerializeField] private ScrollRect responseBox;
     [SerializeField] private Button buttonPrefab;
-    public int textSpeed = 1;
+    [SerializeField] private int textSpeed = 1;
     public string[] responses;
-    public string responseReturnID;
-    private bool hasButtons = false;
+    [SerializeField] private string responseReturnID;
+    [SerializeField] private bool hasButtons = false;
 
     bool skipDialogue;
     public Action SkipLine { get; private set; }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Awake()
     {
         dialogueCanvas = GetComponent<Canvas>();
-        //dialogueImage = GetComponent<Image>();
-        dialogueCanvas.gameObject.SetActive(false);
         dialogueBase = FindFirstObjectByType<DialogueBase>();
-        textSpeed=dialogueBase.textSpeed;
-
+        //dialogueImage = GetComponent<Image>();
     }
-
-    // Update is called once per frame
+    void Start()
+    {
+        dialogueCanvas.gameObject.SetActive(false);
+        textSpeed=dialogueBase.textSpeed;
+    }
     void Update()
     {
 
@@ -89,6 +83,7 @@ public class UI_DialogueCanvas : MonoBehaviour
 
     public void GetResponseOptions()
     {
+        DestroyCurrentOptionButtons();
         responses = new string[dialogueBase.currentResponseOptions.Length];
         dialogueBase.currentResponseOptions.CopyTo(responses.AsSpan());
         Debug.Log("UISpawnResponseButtons");
@@ -99,27 +94,15 @@ public class UI_DialogueCanvas : MonoBehaviour
 
         foreach (var item in responses)
         {
-
-            Button response = Instantiate(buttonPrefab,responseBox.transform);
-            RectTransform buttonTransform = response.GetComponent<RectTransform>();
-            buttonTransform.anchorMin = new Vector2(0.5f, 1);
-            buttonTransform.anchorMax = new Vector2(0.5f, 1);
-            buttonTransform.pivot = new Vector2(0.5f, 1);
-            buttonTransform.anchoredPosition  = new Vector2(0, startY);
-            startY -= offset;
             string[] capturedOptions = dialogueBase.currentDialogueLineData.branchID.Split('|');
             string selectedOption = capturedOptions[index];
-            response.onClick.AddListener(()=>ResponseClicked(selectedOption));
+            CreateResponseButton(item,selectedOption,startY,offset);
+            startY -= offset;
             index++;
-            // response.GetComponent<Text>().text = item.ToString();
-
-            response.GetComponentInChildren<TextMeshProUGUI>().SetText(item);
-            Debug.Log(item);
         }
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
-        hasButtons = true;
-        
+        hasButtons = true;  
     }
 
     private void ResponseClicked(string option)
@@ -129,21 +112,42 @@ public class UI_DialogueCanvas : MonoBehaviour
         Cursor.visible = false;
         DestroyCurrentOptionButtons(); Debug.Log("destroycalled");
         dialogueBase.ProgressDialogue();
-        //ProgressDialogueCanvas();
-
-        
-
     }
 
     private void DestroyCurrentOptionButtons()
     {
-        foreach (Transform child in responseBox.transform)
+        foreach (RectTransform child in responseBox.transform)
         {
             Destroy(child.gameObject);
         }
         hasButtons = false;
     }
 
+    private Button CreateResponseButton(string text, string branchOption, float startY,float offset)
+    {
+        Button response = Instantiate(buttonPrefab, responseBox.transform);
+        RectTransform buttonTransform = response.GetComponent<RectTransform>();
 
+        SetButtonTransform(buttonTransform,startY,offset);
+        SetButtonText(response, text);
+
+        response.onClick.AddListener(() => ResponseClicked(branchOption));
+        return response;
+    }
+
+    private void SetButtonTransform(RectTransform transform, float startY,float offset)
+    {
+        transform.anchorMin = new Vector2(0.5f, 1);
+        transform.anchorMax = new Vector2(0.5f, 1);
+        transform.pivot = new Vector2(0.5f, 1);
+        transform.anchoredPosition = new Vector2(0, startY);
+
+    }
+
+    private void SetButtonText(Button button, string text)
+    {
+        var labelText = button.GetComponentInChildren<TextMeshProUGUI>();
+        if (labelText != null) labelText.SetText(text);
+    }
 
 }
