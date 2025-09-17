@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Threading.Tasks;
 
-public class Q_KillComponent : MonoBehaviour, I_QuestMechanicInterface
+public class Q_KillComponent : MonoBehaviour, IQuestMechanic
 {
     public string objectiveID;
     public QuestLog questLog;

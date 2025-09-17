@@ -29,11 +29,13 @@ public class UI_RaceReward: MonoBehaviour
             raceTimeText.SetText(raceBase.raceData.raceTime.ToString());
         
     }
-
+    //compares best race time with given and updates if faster
     private void UpdateRaceBestTime()
     {
 
     }
+
+    //gives rewards to player
     private void AcceptReward()
     {
         raceBase.completedRaces.Add(raceBase.raceData);

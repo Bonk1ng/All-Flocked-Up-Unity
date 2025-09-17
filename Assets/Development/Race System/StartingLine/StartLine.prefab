@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &5541805171113576058
+--- !u!1 &6909031803317974054
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,49 +8,40 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2860118451943743015}
-  - component: {fileID: 1788233968044709415}
-  m_Layer: 14
-  m_Name: RaceOfBase
-  m_TagString: Race
+  - component: {fileID: 9121920773215204467}
+  - component: {fileID: 3310554137780401966}
+  m_Layer: 0
+  m_Name: StartLine
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2860118451943743015
+--- !u!4 &9121920773215204467
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5541805171113576058}
+  m_GameObject: {fileID: 6909031803317974054}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -11.17108, y: -0, z: 13.49822}
+  m_LocalPosition: {x: 3.26551, y: 0, z: 0.06501}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1788233968044709415
+--- !u!114 &3310554137780401966
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5541805171113576058}
+  m_GameObject: {fileID: 6909031803317974054}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66de0dfe436971145b2774b001e54e57, type: 3}
+  m_Script: {fileID: 11500000, guid: 9f580967e2062704da9f9a73687dc62e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  checkpointPrefab: {fileID: 310355979867609614, guid: 4a3bbf3990b38cb4482920ce643ebdde, type: 3}
-  currentRaceGiver: {fileID: 0}
-  activeCheckpoints: []
-  checkpointTransforms: []
-  checkpointIndex: 0
-  completedRaces: []
-  raceTimer: 0
-  currentRaceStartingLine: {fileID: 0}
-  currentRacerList: []
-  racerPrefab: {fileID: 8496618418923381616, guid: 3e8929eba5e003146af121b272d486f9, type: 3}
+  raceID: Race001
