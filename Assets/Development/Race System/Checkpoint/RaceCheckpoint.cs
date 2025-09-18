@@ -15,6 +15,12 @@ public class RaceCheckpoint : MonoBehaviour
         {
             raceBase.UpdateCheckpoints(checkpointNumber);
         }
+
+    }
+
+    public void DestroyCheckpoint()
+    {
+        Destroy(this.gameObject);
     }
 
     //trigger enter will call above function and destroy checkpoint
@@ -23,7 +29,13 @@ public class RaceCheckpoint : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             TriggerCheckpoint();
-            Destroy(gameObject);
+        }
+
+        if (other.gameObject.CompareTag("Race"))
+        {
+            CPURacer racer = other.gameObject.GetComponent<CPURacer>();
+            racer.NextCheckpoint(); 
+
         }
     }
 }
