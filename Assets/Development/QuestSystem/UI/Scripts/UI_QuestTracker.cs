@@ -14,7 +14,7 @@ public class UI_QuestTracker : MonoBehaviour
     {
         
     }
-
+    
     public void TrackCurrentQuest()
     {
         questTrackerCanvas.SetActive(true);

@@ -15,21 +15,17 @@ public class UI_TrashCanvas : MonoBehaviour
         if(trashText ==null) InitCanvas();
     }
 
+    //sets text and button listeners
     public void InitCanvas()
     {
         trashText = GetComponent<TextMeshProUGUI>();
         reward1Button.onClick.AddListener(trashCanInstance.GiveRewardOne);
         reward2Button.onClick.AddListener(trashCanInstance.GiveRewardTwo);
     }
-
+    //call to destroy canvas
     public void DestroyCanvas()
     {
         Destroy(gameObject);
-    }
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     

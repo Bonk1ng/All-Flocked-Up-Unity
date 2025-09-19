@@ -12,7 +12,7 @@ public class RaceGiver : MonoBehaviour
         race = FindFirstObjectByType<RaceBase>();
     }
 
-
+    //called by PlayerInteraction... spawns the race giver canvas
     public void InteractWithRaceGiver()
     {
         race.currentRaceGiver = this;

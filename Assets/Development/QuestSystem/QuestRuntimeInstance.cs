@@ -47,14 +47,17 @@ public class QuestRuntimeInstance
 
 
     }
+
+    //gets and sets QuestID to variable
     public string GetQuestID(string questid) => questID;
 
+    //gets the quest mechanic gameobjects associated to that questID
     public void GetQuestObjects()
     {
 
         questMechanicsObjects.Clear();
-        I_QuestMechanicInterface[] mechanics = Object.FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
-    .OfType<I_QuestMechanicInterface>()
+        IQuestMechanic[] mechanics = Object.FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
+    .OfType<IQuestMechanic>()
     .ToArray();
         foreach (var mechanic in mechanics)
         {
@@ -91,7 +94,7 @@ public class QuestRuntimeInstance
         Debug.Log("Stage Completed");
     }
 
-    
+    //checks if stages are completed and completed quest if true
     public bool CheckStageComplete()
     {
         var objectives = GetCurrentObjectives();
@@ -123,13 +126,13 @@ public class QuestRuntimeInstance
             CompleteQuest();
         }
     }
-
+    //calls the quest log function to remove quest
     public void CompleteQuest()
     {
         questLog.CheckForCompletedQuests();
     }
 
-    
+    //called if quest if failed and prompts player to cancel or retry
     public void QuestFailed()
     {
         questLog.OnQuestFailed(this);

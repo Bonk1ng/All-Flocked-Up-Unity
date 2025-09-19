@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Q_ItemToLocation : MonoBehaviour, I_QuestMechanicInterface
+public class Q_ItemToLocation : MonoBehaviour, IQuestMechanic
 {
     public string objectiveID;
 

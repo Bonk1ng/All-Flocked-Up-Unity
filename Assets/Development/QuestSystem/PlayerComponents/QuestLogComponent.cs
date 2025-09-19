@@ -17,7 +17,7 @@ public class QuestLog : MonoBehaviour
     public float currentTime;
     [SerializeField] private UI_CanvasController canvasController;
 
-
+    //checks if quest in timed and shows the timer when  quest started
     private void GetIsQuestTimed(QuestDetails quest, QuestRuntimeInstance instance)
     {
         if (quest.isQuestTimed)
@@ -26,14 +26,14 @@ public class QuestLog : MonoBehaviour
             canvasController.ShowTimer();
         }
     }
-
+    //starts the timer
     private void StartQuestTimer(float questTime, QuestRuntimeInstance instance)
     {
         currentTime = questTime;
         questTimerStarted = true;
 
     }
-
+    //checks if timer = 0 and updates time... call for if quest failed to remove quest from activeQuest list 
     private void CheckTimerState(QuestRuntimeInstance quest)
     {
 
@@ -74,7 +74,7 @@ public class QuestLog : MonoBehaviour
     }
 
 
-
+    //if playuer doesnt have quest already it creates QuestRuntimeInstance from QuestData and calls StartQuest() in that instance
     public void AcceptQuest(QuestDetails questData,QuestGiver questGiver)
     {
         if (hasQuest) { return; }
@@ -97,7 +97,8 @@ public class QuestLog : MonoBehaviour
         GetIsQuestTimed(questData, instance);
         
     }
-
+    //updates the quest Objective... call this on quest mechanics or anytime you want to complete an objective... send the objectiveID and number of times completed (usually 1 but can be other if needed)
+    //otherwise checks if quest is completed
     public void UpdateQuestObjective(string objectiveID, int amount)
     {
         foreach (var quest in activeQuests)
@@ -110,6 +111,7 @@ public class QuestLog : MonoBehaviour
         CheckForCompletedQuests();
     }
 
+    //shows the quest notif when an objective is completed
     public void OnObjectiveUpdated(QuestRuntimeInstance quest, string objectiveID, int newValue)
     {
         // purely update UI / notify player
@@ -118,6 +120,7 @@ public class QuestLog : MonoBehaviour
         Debug.Log($"Quest {quest.questData.questName} objective {objectiveID} progress: {newValue}");
     }
 
+    //checks through activeQuests for completed quest and shows rewards.Removed from activeQuests and added to completedQuests list... also destroys the questgiver component form the NPC so it remains just a dialogue NPC
     public void CheckForCompletedQuests()
     {
         for (int i = activeQuests.Count - 1; i >= 0; i--)
@@ -137,32 +140,37 @@ public class QuestLog : MonoBehaviour
         }
     }
 
+    //checks if player has quest and returns bool
     public bool HasQuest(QuestDetails quest)
     {
         return activeQuests.Exists(q => q.questData == quest);
     }
 
+    //checks if quest is in completedQuests list
     public bool HasCompleted(QuestDetails quest)
     {
         return completedQuests.Contains(quest);
     }
 
+    //checks both above functions at the same time
     public bool HasQuestOrCompleted(QuestDetails quest)
     {
         return HasQuest(quest) || HasCompleted(quest);
     }
 
+    //returns bool for if quest is completed
     public bool IsQuestCompleted(QuestDetails quest)
     {
         QuestRuntimeInstance instance = GetQuestInstance(quest);
         return instance != null && instance.IsComplete;
     }
 
+    //returns the current quest instance (runtime instance)
     public QuestRuntimeInstance GetQuestInstance(QuestDetails quest)
     {
         return activeQuests.Find(q => q.questData == quest);
     }
-
+    //marks the quest turned in as adds to completedQuest list
     public void MarkQuestTurnedIn(QuestDetails quest)
     {
         var questInstance = GetQuestInstance(quest);
