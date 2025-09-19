@@ -5,6 +5,7 @@ public class PlayerFlightMovement : MonoBehaviour
 {
     GroundCheck groundCheck;
     Rigidbody playerBody;
+    StaminaSystem playerStamina;
 
     bool isFlying = false;
     bool gliding = true;
@@ -15,6 +16,7 @@ public class PlayerFlightMovement : MonoBehaviour
 
     [Header("Flap Variables: ")]
     [SerializeField] float flapUpHeight = 5f;
+    [SerializeField] float flapStaminaAmount = 2f;
 
     [Header("Movement Variables: ")]
     [SerializeField] float rotateSpeed = 80f;
@@ -33,6 +35,7 @@ public class PlayerFlightMovement : MonoBehaviour
     void Start()
     {
         playerBody = GetComponent<Rigidbody>();
+        playerStamina = GetComponent<StaminaSystem>();
         groundCheck = GetComponentInChildren<GroundCheck>();
 
         flapUpVelocity = Mathf.Sqrt(Mathf.Abs(Physics.gravity.y) * flapUpHeight);
@@ -121,7 +124,8 @@ public class PlayerFlightMovement : MonoBehaviour
     {
         if (isFlying)
         {
-            playerBody.linearVelocity = new Vector3(playerBody.linearVelocity.x, flapUpVelocity, playerBody.linearVelocity.z);
+            if (playerStamina.UseStamina(flapStaminaAmount))
+                playerBody.linearVelocity = new Vector3(playerBody.linearVelocity.x, flapUpVelocity, playerBody.linearVelocity.z);
         }
     }
 
