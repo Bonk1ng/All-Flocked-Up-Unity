@@ -16,9 +16,9 @@ GameObject:
   - component: {fileID: 4974346078480595732}
   - component: {fileID: 8496618418923381616}
   - component: {fileID: 7656391809866942071}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: TestCPURacer
-  m_TagString: Untagged
+  m_TagString: Race
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -170,6 +170,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetLocation: []
+  index: 0
   currentLocation: {fileID: 0}
   raceBase: {fileID: 0}
   navAgentComponent: {fileID: 0}

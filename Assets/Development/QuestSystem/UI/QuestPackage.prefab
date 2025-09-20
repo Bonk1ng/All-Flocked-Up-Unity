@@ -58,3 +58,16 @@ MonoBehaviour:
   activeLocationNotifInstance: {fileID: 0}
   questLogCanvas: {fileID: 6368815328901718887, guid: a674d11e25a29d04f974d7e292a236f8, type: 3}
   activeLogInstance: {fileID: 0}
+  dialogueCanvas: {fileID: 0}
+  activeDialogueInstance: {fileID: 0}
+  dialogueResponses: []
+  trashCanvas: {fileID: 0}
+  activeTrashInstance: {fileID: 0}
+  raceGiverCanvas: {fileID: 2793775808448263488, guid: 2e972cc05ee8e234ea34af77b0e573e4, type: 3}
+  raceGiverInstance: {fileID: 0}
+  raceRewardCanvas: {fileID: 1459131974207716007, guid: ae848762e7cc33b419b5866f1bfdc227, type: 3}
+  raceRewardInstance: {fileID: 0}
+  raceFailCanvas: {fileID: 7786899535867227638, guid: b18d349877bd80a448cf558189fe3896, type: 3}
+  raceFailInstance: {fileID: 0}
+  raceCountdownCanvas: {fileID: 218592972201708335, guid: addc7747b14bc29408ffd86801dcbd20, type: 3}
+  activeCountdownInstance: {fileID: 0}

@@ -48,6 +48,7 @@ public class RaceData : ScriptableObject
             }
 
         }
+        startLine.SetRotationToCheckpoint(checkpointSpawns[0]);
         Debug.Log(startLine);
         return startLine;
 
