@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class UI_CanvasController : MonoBehaviour
@@ -45,9 +46,14 @@ public class UI_CanvasController : MonoBehaviour
 
     [SerializeField] private UI_RaceReward raceRewardCanvas;
     public UI_RaceReward raceRewardInstance;
+    public Dictionary<GameObject, float> standings = new Dictionary<GameObject, float>();
+   
 
     [SerializeField] private UI_RaceFail raceFailCanvas;
     public UI_RaceFail raceFailInstance;
+
+    [SerializeField] private UI_RaceCountdown raceCountdownCanvas;
+    public UI_RaceCountdown activeCountdownInstance;
 
     //cursor on
     public void ShowPlayerCursor()
@@ -227,6 +233,7 @@ public class UI_CanvasController : MonoBehaviour
     public void OpenRaceGiver()
     {
         raceGiverInstance = Instantiate(raceGiverCanvas);
+        ShowPlayerCursor();
     }
     //race giver canvas
     public void CloseRaceGiver()
@@ -235,12 +242,14 @@ public class UI_CanvasController : MonoBehaviour
         {
             raceGiverInstance.CloseRaceGiver();
             raceGiverInstance = null;
+            HidePlayerCursor();
         }
     }
     //race rewards canavas
     public void OpenRaceRewards()
     {
         raceRewardInstance = Instantiate(raceRewardCanvas);
+        ShowPlayerCursor();
     }
     //race rewards canvas
     public void CloseRaceRewards()
@@ -249,12 +258,15 @@ public class UI_CanvasController : MonoBehaviour
         {
             Destroy(raceRewardInstance);
             raceRewardInstance = null;
+            HidePlayerCursor();
         }
     }
     //race fail canvas
     public void OpenRaceFail()
     {
         raceFailInstance = Instantiate(raceFailCanvas);
+        SendStandings();
+        ShowPlayerCursor() ;
     }
     //race fail canvas
     public void CloseRaceFail()
@@ -263,7 +275,25 @@ public class UI_CanvasController : MonoBehaviour
         {
             Destroy(raceFailInstance);
             raceFailInstance = null;
+            HidePlayerCursor();
         }
+    }
+
+    public void OpenCountdownCanvas()
+    {
+        activeCountdownInstance = Instantiate(raceCountdownCanvas);
+    }
+
+    public void CollectRaceStandings(GameObject racer, float time)
+    {
+        standings.Add(racer, time);
+        //raceRewardInstance.racerList.Add
+    }
+
+    public void SendStandings()
+    {
+
+        raceRewardInstance.racerList.Equals(standings);
     }
 
 }

@@ -29,6 +29,8 @@ public class CPURacer : MonoBehaviour
     [SerializeField] private float weight;
     [SerializeField] private float stamina;
 
+    public float finishTime;
+
 
     //on load
     public void Awake()
@@ -44,7 +46,7 @@ public class CPURacer : MonoBehaviour
         raceBase = FindFirstObjectByType<RaceBase>();
         SetRacerStats();
         GetCheckpoints();
-        isMoving = true;
+        //isMoving = true;
 
 
     }
@@ -72,7 +74,7 @@ public class CPURacer : MonoBehaviour
     {
         for(int num = index; num < targetLocation.Count;num++)
         {
-            Debug.Log(targetLocation[num].name); Debug.Log(currentLocation);
+           // Debug.Log(targetLocation[num].name); Debug.Log(currentLocation);
             MoveToLocation(targetLocation[num]);
 
 

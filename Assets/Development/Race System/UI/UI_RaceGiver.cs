@@ -44,7 +44,6 @@ public class UI_RaceGiver : MonoBehaviour
     public void CloseRaceGiver()
     {
         Destroy(this.gameObject);
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+
     }
 }

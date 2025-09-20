@@ -405,7 +405,7 @@ GameObject:
   - component: {fileID: 2682747961194654393}
   - component: {fileID: 5734333514902442654}
   m_Layer: 5
-  m_Name: RaceTimeText
+  m_Name: RaceStatusText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -589,8 +589,9 @@ MonoBehaviour:
   retryButton: {fileID: 1913566659638393691}
   cancelButton: {fileID: 4991224843154422471}
   raceNameText: {fileID: 1465093188922565308}
-  raceTimeText: {fileID: 5734333514902442654}
+  raceStatusText: {fileID: 5734333514902442654}
   raceRequiredTime: {fileID: 6535241791234870832}
+  race: {fileID: 0}
 --- !u!223 &1462317274913318137
 Canvas:
   m_ObjectHideFlags: 0
@@ -719,7 +720,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Accept Race
+  m_text: Retry Race
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -803,7 +804,7 @@ GameObject:
   - component: {fileID: 2683235794380981273}
   - component: {fileID: 1913566659638393691}
   m_Layer: 5
-  m_Name: AcceptButton
+  m_Name: RetryButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

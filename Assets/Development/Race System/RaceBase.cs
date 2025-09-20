@@ -5,10 +5,12 @@ using UnityEditor.Rendering;
 using System.Drawing;
 using System.Linq;
 using Unity.VisualScripting;
+using System.Diagnostics.CodeAnalysis;
 
 public class RaceBase : MonoBehaviour
 {
     [SerializeField] private GameObject playerRef=>GetPlayer();
+    [SerializeField] private UI_CanvasController canvasController;
     public RaceData raceData => GetRaceData(currentRaceGiver.raceData);
     [SerializeField] private RaceCheckpoint checkpointPrefab;
     public RaceGiver currentRaceGiver;
@@ -16,19 +18,51 @@ public class RaceBase : MonoBehaviour
     public List<Transform> checkpointTransforms = new();
     public int checkpointIndex = 1;
     public List<RaceData> completedRaces = new();
+    public bool raceStarted;
+    private bool raceFailed;
 
     [SerializeField] private float raceTimer;
     [SerializeField] private float currentTime;
     [SerializeField] private bool timerStarted;
+    [SerializeField] private bool countdownStarted;
+    [SerializeField] private bool countdownComplete;
     [SerializeField] private StartingLine currentRaceStartingLine => raceData.GetStartLine();
     public StartingLine raceStartLine=>currentRaceStartingLine;
     [SerializeField] private List<CPURacer> currentRacerList = new();
     [SerializeField] private CPURacer racerPrefab;
+    [SerializeField] private List<GameObject> completedRacer = new();
+    public float playerFinishTime;
 
+    public float countdown = 5;
+    public float recordTime;
+
+    private void Awake()
+    {
+        canvasController = FindFirstObjectByType<UI_CanvasController>();
+    }
     private void Update()
     {
-        UpdateRaceTimer();
+        if (countdownStarted && countdown >= 0) { StartRaceCountdown(); return; }
+        else if (countdown<=0 &&!timerStarted){SetRacerMovement(); StartRaceTimer(raceData.raceTime); }
+        else if (timerStarted && currentTime >= 0) { UpdateRaceTimer(); }
+        else { return; }
     }
+
+    private void StartRaceCountdown()
+    {
+        
+        if (countdownStarted)
+        {
+            countdown -= Time.deltaTime;
+            return;
+        }
+        else if (countdown <= 0)
+        { countdownComplete = true;
+        }
+
+
+    }
+
     private float StartRaceTimer(float raceTime)
     {
         currentTime = raceTime;
@@ -42,8 +76,11 @@ public class RaceBase : MonoBehaviour
         if (timerStarted)
         {
             currentTime -= Time.deltaTime;
+            if(currentTime <= 0 && !raceFailed) { raceFailed = true; RaceFailed(); }
         }
-        else return;
+        
+        
+
     }
 
     private GameObject GetPlayer()
@@ -75,19 +112,35 @@ public class RaceBase : MonoBehaviour
     {
         GetRaceData(currentRaceGiver.raceData);
         StartRace();
+        countdownStarted = true;
+       
     }
 
     public void StartRace()
     {
+        canvasController.OpenCountdownCanvas();
+        raceStarted = true;
         GetCheckpointLocationAndClear();
         Debug.Log("Race Started");
-        UI_CanvasController canvas = FindFirstObjectByType<UI_CanvasController>();
-        canvas.CloseRaceGiver();
+        canvasController.CloseRaceGiver();
         Debug.Log("canvasClosed");
         checkpointIndex = 1;
         SetStartLine();
         SpawnCPURacers();
-        StartRaceTimer(raceData.raceTime);
+
+
+    }
+
+    private void SetRacerMovement()
+    {
+            countdownComplete = true;
+            foreach (var racer in currentRacerList)
+            {
+                racer.StartMoving();
+               // Debug.Log(racer.isMoving);
+            }
+
+        
     }
 
     private void SpawnCheckpoints()
@@ -109,36 +162,34 @@ public class RaceBase : MonoBehaviour
         {
             if (hitPoint != checkpointIndex) { Debug.Log("Wrong or Last Checkpoint Missed"); return; }
             checkpointIndex++;
-            Debug.Log("Checkpoint Hit");
-            Debug.Log(activeCheckpoints.Count);
+            // Debug.Log("Checkpoint Hit");
+            //Debug.Log(activeCheckpoints.Count);
             if (activeCheckpoints.Count == 1)
             {
                 RaceCompleted();
             }
-            if(currentTime == 0)
-            {
-                RaceFailed();
-            }
+
             activeCheckpoints.RemoveAt(0);
         }
     }
 
     private void RaceCompleted()
     {
-        UI_CanvasController canvas = FindFirstObjectByType<UI_CanvasController>();
-        canvas.OpenRaceRewards();
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
-        DestroyCheckpoints();
+        GetRaceResults();
+        canvasController.OpenRaceRewards();
+        //DestroyCheckpoints();
+        raceStarted = false;
         
     }
 
     private void RaceFailed()
     {
-        Debug.Log("RaceFailed");
-        UI_CanvasController canvas = FindFirstObjectByType<UI_CanvasController>();
-        canvas.OpenRaceFail();
+        
+        raceStarted = false;
+        canvasController.OpenRaceFail();
 
+       
+        
     }
 
 
@@ -202,6 +253,61 @@ public class RaceBase : MonoBehaviour
     private void SpawnRaceWalls()
     {
 
+    }
+
+    public void ResetRace()
+    {
+        countdown = 5;
+        countdownComplete = false;
+        timerStarted = false;
+        DestroyRacers();
+        raceFailed = false;
+        Debug.Log("ResetCalled");
+        StartRace();
+    }
+
+    private void DestroyRacers()
+    {
+        foreach (var racer in currentRacerList)
+        {
+            Destroy(racer.gameObject);
+        }
+        currentRacerList.Clear();
+    }
+
+    public void AddRacerToCompleted(GameObject racer)
+    {
+        if (!completedRacer.Contains(racer))
+        {
+            completedRacer.Add( racer );
+            Debug.Log(racer);
+        }
+       
+    }
+
+    private void GetRaceResults()
+    {
+        for (int i = 0; i < completedRacer.Count; i++)
+        {
+            var racer = completedRacer[i];
+            if (racer.CompareTag("Race")){
+                var time = racer.GetComponent<CPURacer>().finishTime;
+                SendToResultCanvas(racer, time);
+                Debug.Log("AddedCPU");
+            }
+            else if (racer.CompareTag("Player"))
+            {
+                var time = playerFinishTime;
+                SendToResultCanvas(racer, time);
+                Debug.Log("AddedPlayer");
+            }
+            
+        }
+    }
+
+    public void SendToResultCanvas(GameObject racer, float time)
+    {
+        canvasController.CollectRaceStandings(racer, time);
     }
 
 }
