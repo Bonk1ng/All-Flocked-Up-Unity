@@ -2,6 +2,9 @@ using UnityEngine;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 
+//this is what holds all of the race info... to create a race, create>scriptableObjects>races and make a race data
+//then fill in info
+
 [CreateAssetMenu(fileName = "RaceData", menuName = "Scriptable Objects/RaceData")]
 public class RaceData : ScriptableObject
 {
@@ -13,7 +16,10 @@ public class RaceData : ScriptableObject
     public int raceRewards;
     public List<Transform> checkpointLocations = new();
     public List< RaceCheckpoint>  checkpointSpawns = new();
+    public int numberOfCPURacers;
+    public StartingLine startLine;
 
+    //gets the checkpoints for given race based on raceID
     public void GetCheckPoints()
     {
         checkpointSpawns.Clear();
@@ -26,6 +32,25 @@ public class RaceData : ScriptableObject
             }
             else continue;
         }
+
+    }
+
+    //gets startLine gameobject and uses transform for starting location spawning
+    public StartingLine GetStartLine()
+    {
+        StartingLine[] line = Object.FindObjectsByType<StartingLine>(FindObjectsSortMode.None);
+        foreach(var obj in line)
+        {
+            if (obj.raceID == raceID)
+            {
+                startLine = obj;
+
+            }
+
+        }
+        startLine.SetRotationToCheckpoint(checkpointSpawns[0]);
+        //Debug.Log(startLine);
+        return startLine;
 
     }
     

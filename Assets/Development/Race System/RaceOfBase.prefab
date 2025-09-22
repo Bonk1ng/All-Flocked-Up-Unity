@@ -49,4 +49,8 @@ MonoBehaviour:
   activeCheckpoints: []
   checkpointTransforms: []
   checkpointIndex: 0
+  completedRaces: []
   raceTimer: 0
+  currentRaceStartingLine: {fileID: 0}
+  currentRacerList: []
+  racerPrefab: {fileID: 8496618418923381616, guid: 3e8929eba5e003146af121b272d486f9, type: 3}

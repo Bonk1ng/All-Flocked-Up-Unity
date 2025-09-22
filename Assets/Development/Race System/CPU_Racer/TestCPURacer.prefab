@@ -13,11 +13,12 @@ GameObject:
   - component: {fileID: 789010271510748661}
   - component: {fileID: 1050117789665848510}
   - component: {fileID: 8231575527815967251}
+  - component: {fileID: 4974346078480595732}
   - component: {fileID: 8496618418923381616}
   - component: {fileID: 7656391809866942071}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: TestCPURacer
-  m_TagString: Untagged
+  m_TagString: Race
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -140,6 +141,22 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 32
   m_CollisionDetection: 0
+--- !u!114 &4974346078480595732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3917498079525665470}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a6250b1aec145443aebcea927c056a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 5
+  acceleration: 5
+  weight: 5
+  stamina: 5
 --- !u!114 &8496618418923381616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -153,9 +170,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetLocation: []
+  index: 0
+  currentLocation: {fileID: 0}
   raceBase: {fileID: 0}
   navAgentComponent: {fileID: 0}
   isMoving: 0
+  detectObjectRange: 0
   detectLayer:
     serializedVersion: 2
     m_Bits: 32768
@@ -163,6 +183,15 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   groundRange: 0.2
+  isGrounded: 0
+  isJumping: 0
+  jumpHeight: 2
+  body: {fileID: 0}
+  racerStats: {fileID: 4974346078480595732}
+  speed: 0
+  accel: 0
+  weight: 0
+  stamina: 0
 --- !u!195 &7656391809866942071
 NavMeshAgent:
   m_ObjectHideFlags: 0

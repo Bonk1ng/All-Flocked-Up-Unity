@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Q_InteractComponent : MonoBehaviour, I_QuestMechanicInterface
+public class Q_InteractComponent : MonoBehaviour, IQuestMechanic
 {
     public string objectiveID;
     public QuestLog questLog;

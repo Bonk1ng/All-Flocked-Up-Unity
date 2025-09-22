@@ -20,7 +20,7 @@ public class PlayerInteraction : MonoBehaviour
             Debug.DrawRay(transform.position, transform.forward * interactionRange, Color.red);
             if (Physics.Raycast(transform.position, transform.forward, out hit, interactionRange, npcLayer))
             {
-                var questNPC = hit.collider.GetComponentInParent<QuestInteraction>();
+                var questNPC = hit.collider.GetComponentInParent<IQuestInteraction>();
                 if (questNPC != null)
                 {
                     canvasController.ShowQuestGiver(hit.collider.GetComponentInParent<QuestGiver>());
@@ -85,7 +85,7 @@ public class PlayerInteraction : MonoBehaviour
         RaycastHit lookHit;
         if (Physics.Raycast(transform.position, transform.forward, out lookHit, 6f, npcLayer))
         {
-            var questNPC = lookHit.collider.GetComponentInParent<QuestInteraction>();
+            var questNPC = lookHit.collider.GetComponentInParent<IQuestInteraction>();
             questNPC?.LookAtNPC();
         }
     }

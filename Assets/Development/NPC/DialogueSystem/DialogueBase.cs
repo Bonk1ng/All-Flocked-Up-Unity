@@ -26,8 +26,8 @@ public class DialogueBase : MonoBehaviour
     [SerializeField] private UI_CanvasController canvasController;
     [SerializeField] private bool typerComplete {  get; set; }
 
-    public string DIALOGUEFILENAME = "DialogueSpreadsheet.csv";
-    public List<DialogueLineData> dialogueList = new List<DialogueLineData>();
+    [SerializeField] private string DIALOGUEFILENAME = "DialogueSpreadsheet.csv";
+    [SerializeField]private List<DialogueLineData> dialogueList = new List<DialogueLineData>();
     public DialogueLineData currentDialogueLineData;
 
 
@@ -43,7 +43,7 @@ public class DialogueBase : MonoBehaviour
         LoadDialogueSheet();
 
     }
-
+    //loads the CSV and adds each line as a string into importedLines, trims each line into lineData and sets the currentDialogueLine based on currentDialogueIndex
     public void LoadDialogueSheet()
     {
         string filePath = Path.Combine(Application.streamingAssetsPath, "DialogueSpreadsheet.csv");
@@ -100,12 +100,12 @@ public class DialogueBase : MonoBehaviour
         TypeText(textSpeed);
         SendResponseOptions();
     }
-
+    //returns the desired dialogueLineData based on the given string ID
     public DialogueLineData GetDialogueLineByID(string id)
     {
         return dialogueList.Find(line => line.dialogueID == id);
     }
-
+    //Sets the currentDialogue variables based on string ID
     public void SetCurrentDialogue( string id)
     {
         DialogueLineData line = GetDialogueLineByID(id);
@@ -123,7 +123,7 @@ public class DialogueBase : MonoBehaviour
         currentResponseOptions = line.resposeOptions;
     }
     
-
+    //Sets the current dialogue and calls TypeText
     public void PrintDialogue(string dialogueLineID)
     {
         typerComplete = false;
@@ -139,6 +139,9 @@ public class DialogueBase : MonoBehaviour
         
         currentDialogueIndex++;
     }
+
+    //checks if the currentBranchID string contains the returned response ID or if the currentDialogueLine != returned response ID.
+    //if current continue status != "BREAK" it progresses to NextID... otherwise prints the responseID... all other paths clear the dialogue
     public void ProgressDialogue()
     {
         
@@ -160,6 +163,7 @@ public class DialogueBase : MonoBehaviour
         typerComplete = false;
     }
 
+    //calls the function from the dialogue canvas
     public void ClearDialogue()
     {
         canvasController.dialogueCanvas.ClearDialogueCanvas();
@@ -172,13 +176,15 @@ public class DialogueBase : MonoBehaviour
         return true;
     }
 
-
+    //sets the text speed to type (in ms)
     public int SetTextSpeed(int speed)
     {
         currentTextSpeed = speed;
         return currentTextSpeed;
     }
 
+    //turns the currentDialogueText string into an array and loops foreach letter and updates the canvas, then delays based on textSpeed sent in
+    //waits 2s after text done to show buttons
     public async void TypeText(int speed)
     {
         string temp = "";
@@ -199,13 +205,14 @@ public class DialogueBase : MonoBehaviour
         await Task.Delay(2000);
         ShowResponseButtons(true);
     }
-
+    //sends the current response options to the dialogue canvas
     public void SendResponseOptions()
     {
 
         canvasController.SendResponseOptions(currentResponseOptions);
     }
 
+    //calls function in dialogue canvas to show/spawn response buttons
     private void ShowResponseButtons(bool ready)
     {
         typerComplete = ready;

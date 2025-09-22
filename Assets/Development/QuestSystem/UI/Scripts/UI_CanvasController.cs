@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class UI_CanvasController : MonoBehaviour
@@ -45,18 +46,23 @@ public class UI_CanvasController : MonoBehaviour
 
     [SerializeField] private UI_RaceReward raceRewardCanvas;
     public UI_RaceReward raceRewardInstance;
+    public Dictionary<GameObject, float> standings = new Dictionary<GameObject, float>();
+   
 
     [SerializeField] private UI_RaceFail raceFailCanvas;
     public UI_RaceFail raceFailInstance;
 
+    [SerializeField] private UI_RaceCountdown raceCountdownCanvas;
+    public UI_RaceCountdown activeCountdownInstance;
 
+    //cursor on
     public void ShowPlayerCursor()
     {
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined;
         Debug.Log("Cursor Toggle ON");
     }
-
+    //cursor off
     public void HidePlayerCursor()
     {
         Cursor.visible = false;
@@ -64,13 +70,13 @@ public class UI_CanvasController : MonoBehaviour
         Debug.Log("Cursor Toggle OFF");
     }
 
-
+    //quest timer canvas
     public void ShowTimer()
     {
         activeTimerInstance = Instantiate(timerCanvas);
 
     }
-
+    //quest timer canvas
     public void EndTimer()
     {
         if (activeTimerInstance != null)
@@ -81,7 +87,7 @@ public class UI_CanvasController : MonoBehaviour
         }
 
     }
-
+    //quest giver canvas
     public void ShowQuestGiver(QuestGiver questGiver)
     {
         ShowPlayerCursor();
@@ -90,6 +96,7 @@ public class UI_CanvasController : MonoBehaviour
         
     }
 
+    //quest giver canvas
     public void DestroyQuestGiver()
     {
         if (questGiverCanvas != null)
@@ -99,13 +106,13 @@ public class UI_CanvasController : MonoBehaviour
             HidePlayerCursor();
         }
     }
-
+    //quest reward canvas
     public void ShowQuestReward()
     {
         activeRewardInstance=Instantiate(questRewardsCanvas);
         ShowPlayerCursor();
     }
-
+    //quest reward canvas
     public void DestroyQuestReward()
     {
         if (activeRewardInstance != null)
@@ -116,12 +123,13 @@ public class UI_CanvasController : MonoBehaviour
         }
     }
 
+    //quest tracker canvas
     public void ShowTracker()
     {
         activeTrackerInstance = Instantiate(questTrackerCanvas);
 
     }
-
+    //quest tracker canvas
     public void DestroyTracker()
     {
         if(activeTrackerInstance != null)
@@ -147,23 +155,24 @@ public class UI_CanvasController : MonoBehaviour
     }
 
     
-
+    //quest objective complete notif
     public bool OnQuestNotifShown()
     {
         return activeNotifInstance != null && activeNotifInstance.isActiveAndEnabled;
     }
-
+    //quest location notif
     //Timed Destroy
     public void ShowQuestLocationNotif()
     {
         activeLocationNotifInstance = Instantiate(questLocationNotifCanvas);
     }
-
+    //on quest notif shown bool
     public bool OnQuestLocationNotifShown()
     {
         return activeLocationNotifInstance!=null && activeLocationNotifInstance.isActiveAndEnabled;
     }
 
+    //quest log canvas
     public void ShowQuestLog()
     {
 
@@ -172,6 +181,7 @@ public class UI_CanvasController : MonoBehaviour
 
     }
 
+    //quest log canvas
     public void DestroyQuestLog()
     {
         if (activeLogInstance != null)
@@ -182,23 +192,24 @@ public class UI_CanvasController : MonoBehaviour
         }
     }
 
+    //dialogue canvas
     public void OpenDialogue()
     {
 
         dialogueCanvas.gameObject.SetActive(true);
 
     }
-
+    //dialogue response options transfer
     public void SendResponseOptions(string[] responses)
     {
         activeDialogueInstance.responses = responses;
     }
-
+    //dialogue response array transfer
     public string[] GetCurrentResponseOptions()
     {
         return dialogueResponses;
     }
-
+    //dialogue canvas
     public void CloseDialogue()
     {
         if(dialogueCanvas != null || dialogueCanvas.isActiveAndEnabled)
@@ -207,7 +218,7 @@ public class UI_CanvasController : MonoBehaviour
             dialogueCanvas.gameObject.SetActive(false);
         }
     }
-
+    //trash canvas
     public void ShowTrashPrompt()
     {
        activeTrashInstance= Instantiate(trashCanvas);
@@ -218,47 +229,81 @@ public class UI_CanvasController : MonoBehaviour
             activeTrashInstance = null;
         }
     }
-
+    //race giver canvas
     public void OpenRaceGiver()
     {
         raceGiverInstance = Instantiate(raceGiverCanvas);
+        ShowPlayerCursor();
     }
-
+    //race giver canvas
     public void CloseRaceGiver()
     {
         if(raceGiverInstance != null)
         {
             raceGiverInstance.CloseRaceGiver();
             raceGiverInstance = null;
+            HidePlayerCursor();
         }
     }
-
+    //race rewards canavas
     public void OpenRaceRewards()
     {
         raceRewardInstance = Instantiate(raceRewardCanvas);
+        SendStandings();
+        ShowPlayerCursor();
     }
-
+    //race rewards canvas
     public void CloseRaceRewards()
     {
         if(raceRewardInstance != null)
         {
             Destroy(raceRewardInstance);
             raceRewardInstance = null;
+            HidePlayerCursor();
+            
         }
     }
-
+    //race fail canvas
     public void OpenRaceFail()
     {
         raceFailInstance = Instantiate(raceFailCanvas);
+        SendStandings();
+        ShowPlayerCursor() ;
     }
-
+    //race fail canvas
     public void CloseRaceFail()
     {
         if(raceFailInstance != null)
         {
             Destroy(raceFailInstance);
             raceFailInstance = null;
+            HidePlayerCursor();
         }
+    }
+
+    public void OpenCountdownCanvas()
+    {
+        activeCountdownInstance = Instantiate(raceCountdownCanvas);
+    }
+
+    public void CollectRaceStandings(GameObject racer, float time)
+    {
+        if (!standings.ContainsKey(racer))
+        {
+            standings.Add(racer, time);
+            Debug.Log("Added to CC");
+        }
+        //raceRewardInstance.racerList.Add
+    }
+
+    public void SendStandings()
+    {
+
+        foreach(var racer in  standings)
+        {
+            raceRewardInstance.GetRaceStandings(racer.Key, racer.Value);
+        }
+            
     }
 
 }

@@ -1,7 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-public interface I_QuestMechanicInterface
+public interface IQuestMechanic
 {
     void GetQuestLog();
 
