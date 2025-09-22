@@ -2,10 +2,15 @@ using UnityEngine;
 using UnityEngine.AI;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Experimental.GraphView;
+using Unity.VisualScripting;
+using System.Net;
 
 public class CPURacer : MonoBehaviour 
 {
     public List<RaceCheckpoint> targetLocation;
+    public int index;
+    public int totalCheckpoints;
     [SerializeField] private RaceCheckpoint currentLocation;
     [SerializeField] private RaceBase raceBase;
     [SerializeField] private NavMeshAgent navAgentComponent;
@@ -25,6 +30,8 @@ public class CPURacer : MonoBehaviour
     [SerializeField] private float weight;
     [SerializeField] private float stamina;
 
+    public float finishTime;
+
 
     //on load
     public void Awake()
@@ -39,7 +46,9 @@ public class CPURacer : MonoBehaviour
         navAgentComponent = GetComponent<NavMeshAgent>();
         raceBase = FindFirstObjectByType<RaceBase>();
         SetRacerStats();
-        
+        GetCheckpoints();
+        //isMoving = true;
+
 
     }
     //raycasts for groundcheck and obstacle detection... if has targetlocation and isMoving then it moves
@@ -47,26 +56,50 @@ public class CPURacer : MonoBehaviour
     {
         GroundCheck();
         CheckForObstacles();
-        if (targetLocation != null && isMoving)
+        if (targetLocation != null && isMoving && index < targetLocation.Count)
         {
-            MoveToLocation();
+
+                currentLocation = targetLocation[index];
+                SetMoveToLocation(index);
+
+        }
+
+        if(index > targetLocation.Count-1)
+        {
+            //Set placing in race finish
+            StopMoving();
         }
     }
 
     //sets the location to move to
-    public void SetMoveToLocation(List<Transform> locations)
+    public void SetMoveToLocation(int index)
     {
-        for(int i = 0; i < locations.Count; i++)
+        int num;
+        for (num = index; num < targetLocation.Count;num++)
         {
-            targetLocation[i] = currentLocation;
+            // Debug.Log(targetLocation[num].name); Debug.Log(currentLocation);
+            MoveToLocation(targetLocation[num]);
         }
-        
+
     }
     //moves the nav agent to the location given
-    public void MoveToLocation()
+    public void MoveToLocation(RaceCheckpoint checkpoint)
     {
 
         navAgentComponent.SetDestination(currentLocation.transform.position);
+    }
+    //Stops nav agent movement
+    private void StopMoving()
+    {
+        navAgentComponent.isStopped = true;
+        navAgentComponent.speed = 0;
+        //says obsolete...it lies...it works... actually setting isStopped only stops movement and doesnt cancel velocity LOL...why unity
+        navAgentComponent.Stop();
+    }
+    public void NextCheckpoint()
+    {
+        index += 1 ;
+
     }
     //raycast to check for obstacles
     private void CheckForObstacles()
@@ -134,7 +167,7 @@ public class CPURacer : MonoBehaviour
     //gets the checkpoints for the race and orders them
     private void GetCheckpoints()
     {
-        raceBase.activeCheckpoints.CopyTo(targetLocation.ToArray());
+        raceBase.activeCheckpoints.ForEach(checkpoint => { targetLocation.Add(checkpoint); totalCheckpoints++; });
     }
     //Sets the racer stats to global current variables
     private void SetRacerStats()
@@ -194,5 +227,10 @@ public class CPURacer : MonoBehaviour
     private void SetRacerAcceleration()
     {
         navAgentComponent.acceleration = accel;
+    }
+
+    public void StartMoving()
+    {
+        isMoving = true;
     }
 }
