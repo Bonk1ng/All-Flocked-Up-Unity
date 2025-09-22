@@ -7,10 +7,11 @@ using UnityEngine.UI;
 public class PlayerGroundMovement : MonoBehaviour
 {
 
-    private Rigidbody playerBody;
-    private PlayerFlightMovement playerFlightMovement;
-    private static GroundCheck groundCheck;
-    private Transform cameraRef;
+    Rigidbody playerBody;
+    StaminaSystem playerStamina;
+    PlayerFlightMovement playerFlightMovement;
+    static GroundCheck groundCheck;
+    Transform cameraRef;
 
 
     // movement variables
@@ -51,6 +52,7 @@ public class PlayerGroundMovement : MonoBehaviour
     private void Awake()
     { 
         playerBody = GetComponent<Rigidbody>();
+        playerStamina = GetComponent<StaminaSystem>();
 
         stepRayUpper.transform.localPosition = new Vector3(stepRayUpper.transform.localPosition.x, stepHeight, stepRayUpper.transform.localPosition.z);
     }
@@ -140,16 +142,19 @@ public class PlayerGroundMovement : MonoBehaviour
 
     void Jump()
     {
-        // check if player is on the ground to jump
-        if (groundCheck.IsGrounded() && !isJumping)
+        if (!isFlying)
         {
-            isJumping = true;
-            // add verticle force to make the player jump
-            playerBody.AddForce(transform.up * jumpHeight);
-        }
-        else
-        {
-            InitiateFlight();
+            // check if player is on the ground to jump
+            if (groundCheck.IsGrounded() && !isJumping)
+            {
+                isJumping = true;
+                // add verticle force to make the player jump
+                playerBody.AddForce(transform.up * jumpHeight);
+            }
+            else
+            {
+                InitiateFlight();
+            }
         }
     }
 
@@ -258,6 +263,7 @@ public class PlayerGroundMovement : MonoBehaviour
     {
         isFlying = true;
         playerBody.useGravity = false;
+        playerStamina.CancelRegen();
         playerFlightMovement.InitiateFlight();
     }
 
@@ -265,6 +271,8 @@ public class PlayerGroundMovement : MonoBehaviour
     {
         isFlying = false;
         playerBody.useGravity = true;
+        if (groundCheck.IsGrounded())
+            playerStamina.RegenStamina();
     }
 
 }
