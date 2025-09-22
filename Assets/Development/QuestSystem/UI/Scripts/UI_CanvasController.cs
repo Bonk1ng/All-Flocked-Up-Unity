@@ -249,6 +249,7 @@ public class UI_CanvasController : MonoBehaviour
     public void OpenRaceRewards()
     {
         raceRewardInstance = Instantiate(raceRewardCanvas);
+        SendStandings();
         ShowPlayerCursor();
     }
     //race rewards canvas
@@ -259,6 +260,7 @@ public class UI_CanvasController : MonoBehaviour
             Destroy(raceRewardInstance);
             raceRewardInstance = null;
             HidePlayerCursor();
+            
         }
     }
     //race fail canvas
@@ -286,14 +288,22 @@ public class UI_CanvasController : MonoBehaviour
 
     public void CollectRaceStandings(GameObject racer, float time)
     {
-        standings.Add(racer, time);
+        if (!standings.ContainsKey(racer))
+        {
+            standings.Add(racer, time);
+            Debug.Log("Added to CC");
+        }
         //raceRewardInstance.racerList.Add
     }
 
     public void SendStandings()
     {
 
-        raceRewardInstance.racerList.Equals(standings);
+        foreach(var racer in  standings)
+        {
+            raceRewardInstance.GetRaceStandings(racer.Key, racer.Value);
+        }
+            
     }
 
 }
