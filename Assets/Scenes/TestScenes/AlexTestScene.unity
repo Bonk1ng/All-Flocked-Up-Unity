@@ -1006,6 +1006,37 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad676e2ee10f0ba42b95bd8c1f9bcb15, type: 3}
+--- !u!1 &1598800347
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1598800348}
+  m_Layer: 0
+  m_Name: TestTrafficLocation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1598800348
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1598800347}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 41.52283, y: 0.21, z: -25.08827}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1618091860
 GameObject:
   m_ObjectHideFlags: 0
@@ -1550,6 +1581,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7701797514658140639, guid: 6d41ee321cdc7c64e8884eb9af9017ab, type: 3}
+      propertyPath: currentLocation
+      value: 
+      objectReference: {fileID: 1598800348}
     - target: {fileID: 8564161501933474209, guid: 6d41ee321cdc7c64e8884eb9af9017ab, type: 3}
       propertyPath: m_Name
       value: SM_Vehicle_Car2
@@ -2725,6 +2760,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4826835077575613411, guid: 3ecd329ac9f183b4da48921bc64a8fda, type: 3}
+      propertyPath: currentLocation
+      value: 
+      objectReference: {fileID: 1598800348}
     - target: {fileID: 4844663369011623482, guid: 3ecd329ac9f183b4da48921bc64a8fda, type: 3}
       propertyPath: m_Name
       value: SM_Vehicle_Taxi
@@ -2900,6 +2939,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3064616213283757372, guid: 9a65831269c742e48b79eec5239f21ec, type: 3}
+      propertyPath: currentLocation
+      value: 
+      objectReference: {fileID: 1598800348}
     - target: {fileID: 5832189599842178218, guid: 9a65831269c742e48b79eec5239f21ec, type: 3}
       propertyPath: m_LocalPosition.x
       value: 38.25
@@ -3069,6 +3112,14 @@ PrefabInstance:
     - target: {fileID: 2201635015392773031, guid: 4baf244bbe097884ca5c7057c6e27c24, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5196996148677520627, guid: 4baf244bbe097884ca5c7057c6e27c24, type: 3}
+      propertyPath: currentLocation
+      value: 
+      objectReference: {fileID: 1598800348}
+    - target: {fileID: 5196996148677520627, guid: 4baf244bbe097884ca5c7057c6e27c24, type: 3}
+      propertyPath: playerLayer.m_Bits
+      value: 64
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3355,6 +3406,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9025984188806672203, guid: 68153272d7c5df043bb4fd489069a19c, type: 3}
+      propertyPath: currentLocation
+      value: 
+      objectReference: {fileID: 1598800348}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3582,3 +3637,4 @@ SceneRoots:
   - {fileID: 5495131443519539063}
   - {fileID: 8563731255030172991}
   - {fileID: 8911569617982269791}
+  - {fileID: 1598800348}
