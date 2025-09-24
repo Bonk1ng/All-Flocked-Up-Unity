@@ -80,17 +80,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24ff067467776394194e7b32aff8bb14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agent: {fileID: 0}
+  currentLocation: {fileID: 0}
+  nextLocation: {fileID: 0}
+  navAgent: {fileID: 0}
   vehicleSpeed: 0
   detectRadius: 0
   playerLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   enemyLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
+  trafficLayer:
+    serializedVersion: 2
+    m_Bits: 65536
   isStopped: 0
   isMoving: 0
+  detectObjectRange: 0
 --- !u!195 &8967037909070122656
 NavMeshAgent:
   m_ObjectHideFlags: 0
