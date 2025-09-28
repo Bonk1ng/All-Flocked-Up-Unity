@@ -333,16 +333,28 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: e2a27f956271d994682f6747ab5c8f85, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e2a27f956271d994682f6747ab5c8f85, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e2a27f956271d994682f6747ab5c8f85, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e2a27f956271d994682f6747ab5c8f85, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 38.366592
+      value: 38.1994
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e2a27f956271d994682f6747ab5c8f85, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.20999956
+      value: 2.1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e2a27f956271d994682f6747ab5c8f85, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -28.767788
+      value: -27.766474
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e2a27f956271d994682f6747ab5c8f85, type: 3}
       propertyPath: m_LocalRotation.w
@@ -372,9 +384,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e2a27f956271d994682f6747ab5c8f85, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e2a27f956271d994682f6747ab5c8f85, type: 3}
       propertyPath: m_Name
-      value: SM_TrafficLight_002
+      value: TRafficLightStraight
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -418,5 +434,9 @@ MonoBehaviour:
   greenLight: {fileID: 2943791956826961764}
   yellowLight: {fileID: 1348250653833886587}
   redLight: {fileID: 4925225814532109519}
-  currentLightState: 0
+  currentLightState: 2
   trafficManager: {fileID: 0}
+  state: 2
+  trafficLayer:
+    serializedVersion: 2
+    m_Bits: 65536

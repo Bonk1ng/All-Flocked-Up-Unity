@@ -9,7 +9,7 @@ public class TrafficManager : MonoBehaviour
     [SerializeField] private List<TrafficLightChanger> groupBLights;
     [SerializeField] private List<VehicleBase> vehicles;
 
-
+    public bool stopCarsAtLight;
 
     private void Awake()
     {
