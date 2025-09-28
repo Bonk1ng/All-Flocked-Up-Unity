@@ -88,5 +88,15 @@ public class PlayerInteraction : MonoBehaviour
             var questNPC = lookHit.collider.GetComponentInParent<IQuestInteraction>();
             questNPC?.LookAtNPC();
         }
+
+        else if (Input.GetKeyDown(KeyCode.I))
+        {
+            if (canvasController.activeWingventory== null)
+            {
+                Debug.Log("QuestLog Opened?");
+                canvasController.OpenWingventory();
+            }
+            else canvasController.CloseWingventory();
+        }
     }
 }

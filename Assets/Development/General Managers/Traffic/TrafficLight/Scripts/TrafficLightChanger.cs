@@ -13,6 +13,10 @@ public class TrafficLightChanger : MonoBehaviour
     [SerializeField] private TrafficManager trafficManager;
 
     public ETrafficLightState state = new();
+    private float detectionRange;
+    [SerializeField] private LayerMask trafficLayer;
+    private bool redLightStop;
+    private bool carInLane => CheckForCarsInLane();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -26,9 +30,15 @@ public class TrafficLightChanger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        CheckForCarsInLane();
         state = currentLightState;
         
         currentState?.UpdateTrafficState();
+        if (!redLightStop)
+        {
+            trafficManager.stopCarsAtLight = false;
+        }
+
 
     }
 
@@ -74,6 +84,7 @@ public class TrafficLightChanger : MonoBehaviour
                 currentState = new GreenState(this);
                 ChangeLightColor("Green");
                 Debug.Log("LightColorChangedGreen");
+                redLightStop = false;
                 break;
             case ETrafficLightState.Yellow:
                 currentState = new YellowState(this);
@@ -84,8 +95,23 @@ public class TrafficLightChanger : MonoBehaviour
                 currentState = new RedState(this);
                 ChangeLightColor("Red");
                 Debug.Log("LightColorChangedRed");
+                redLightStop = true;
                 break;
         }
         currentState.EnterTrafficState();
     }
+
+    public bool CheckForCarsInLane()
+    {
+        bool hasHit;
+        if (Physics.Raycast(transform.up * -5f, transform.forward * detectionRange, detectionRange, trafficLayer))
+        {
+            hasHit = true;
+            return hasHit;
+        }
+        hasHit = false;
+        return hasHit;
+    }
+
+
 }

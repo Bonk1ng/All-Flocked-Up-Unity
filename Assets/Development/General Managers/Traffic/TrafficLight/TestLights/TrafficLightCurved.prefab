@@ -333,16 +333,28 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 164b1b421767b2c4880aeb3b5a9ee94b, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 164b1b421767b2c4880aeb3b5a9ee94b, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 164b1b421767b2c4880aeb3b5a9ee94b, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 164b1b421767b2c4880aeb3b5a9ee94b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 40.541336
+      value: 35.02
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 164b1b421767b2c4880aeb3b5a9ee94b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.24
+      value: 2.1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 164b1b421767b2c4880aeb3b5a9ee94b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -28.637
+      value: -27.766474
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 164b1b421767b2c4880aeb3b5a9ee94b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -372,9 +384,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 164b1b421767b2c4880aeb3b5a9ee94b, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 164b1b421767b2c4880aeb3b5a9ee94b, type: 3}
       propertyPath: m_Name
-      value: SM_TrafficLight_001 (1)
+      value: TrafficLightCurved
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -415,6 +431,10 @@ MonoBehaviour:
   redLight: {fileID: 6136152890258656033}
   currentLightState: 0
   trafficManager: {fileID: 0}
+  state: 0
+  trafficLayer:
+    serializedVersion: 2
+    m_Bits: 65536
 --- !u!4 &8842378438215650980 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 164b1b421767b2c4880aeb3b5a9ee94b, type: 3}

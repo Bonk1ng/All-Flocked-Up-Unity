@@ -55,6 +55,9 @@ public class UI_CanvasController : MonoBehaviour
     [SerializeField] private UI_RaceCountdown raceCountdownCanvas;
     public UI_RaceCountdown activeCountdownInstance;
 
+    [SerializeField] private WingventoryCanvas wingventoryCanvas;
+    public WingventoryCanvas activeWingventory;
+
     //cursor on
     public void ShowPlayerCursor()
     {
@@ -304,6 +307,22 @@ public class UI_CanvasController : MonoBehaviour
             raceRewardInstance.GetRaceStandings(racer.Key, racer.Value);
         }
             
+    }
+
+    public void OpenWingventory()
+    {
+        activeWingventory = Instantiate(wingventoryCanvas);
+        ShowPlayerCursor();
+    }
+
+    public void CloseWingventory()
+    {
+        if(activeWingventory != null)
+        {
+            Destroy(activeWingventory);
+            activeWingventory = null;
+            HidePlayerCursor();
+        }
     }
 
 }
