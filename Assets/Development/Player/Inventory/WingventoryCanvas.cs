@@ -1,15 +1,19 @@
+using NUnit.Framework;
 using System.Runtime.InteropServices.WindowsRuntime;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class WingventoryCanvas : MonoBehaviour
 {
+    [Header("Canvas")]
     [SerializeField] private GameObject centerCanvas;
     [SerializeField] private GameObject leftCanvas;
     [SerializeField] private GameObject rightCanvas;
 
-
+    [Header("Buttons")]
     [SerializeField] private Button leftPageButton;
     [SerializeField] private Button rightPageButton;
     [SerializeField] private Button leftBackPageButton;
@@ -17,17 +21,27 @@ public class WingventoryCanvas : MonoBehaviour
     [SerializeField] private Button closeButton;
     [SerializeField] private Button accessoryPanelButton;
     [SerializeField] private Button mapButton;
-
+    [Header("Inv/Accessory")]
     [SerializeField] private PlayerWingventory playerWingventory;
+    [SerializeField] private Dictionary<GameObject, int> playerInvItems = new();
     [SerializeField] private UI_CanvasController canvasController;
     [SerializeField] private AccessoryPanelCanvas accessoryPanelPrefab;
-
+    [Header("Trinket")]
     [SerializeField] private int currentTrinketCount=>GetTrinketCount();
     [SerializeField] private TextMeshProUGUI trinketCountText;
+    [Header("ItemButtons")]
+    [SerializeField] private UI_ItemButton itemButtonPrefab;
+    public Dictionary<UI_ItemButton, int> currentItemButtons = new();
+    [SerializeField] private ScrollRect invBox;
+
+    [Header("QuestRef")]
+    [SerializeField] private QuestLog questLog;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        questLog = FindFirstObjectByType<QuestLog>();
         canvasController = FindFirstObjectByType<UI_CanvasController>();
+        playerWingventory = FindFirstObjectByType<PlayerWingventory>();
         GetTrinketCount();
         leftBackPageButton.onClick.AddListener(GoCenterPage);
         rightBackPageButton.onClick.AddListener(GoCenterPage);
@@ -39,6 +53,9 @@ public class WingventoryCanvas : MonoBehaviour
         leftCanvas.SetActive(false);
         rightCanvas.SetActive(false);
         SetTrinketText();
+        GetPlayerInv();
+        SpawnItemButton();
+        GoCenterPage();
     }
 
     // Update is called once per frame
@@ -92,7 +109,7 @@ public class WingventoryCanvas : MonoBehaviour
 
     private void GetCurrentQuestInfo()
     {
-
+        //questLog.activeQuests[0].
     }
 
     private void OpenMap()
@@ -108,5 +125,28 @@ public class WingventoryCanvas : MonoBehaviour
     private void CloseMap()
     {
 
+    }
+
+
+
+    private void SpawnItemButton()
+    {
+
+        foreach(var item in playerInvItems)
+        {
+            var button = invBox.content.AddComponent<UI_ItemButton>();
+            button.itemQuantityText.SetText(item.Value.ToString());
+            button.itemRef = item.Key;
+            //button.itemImage = item.Key;
+        }
+    }
+
+    private void GetPlayerInv()
+    {
+        var playerInv = FindFirstObjectByType<PlayerWingventory>().inventory;
+        foreach (var item in playerInv)
+        {
+            playerInvItems.Add(item.Key, item.Value);
+        }
     }
 }
