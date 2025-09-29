@@ -21,9 +21,11 @@ public class StaminaSystem : MonoBehaviour
         if (regenStamina)
         {
             currentStamina += staminaRegenSpeed * Time.deltaTime;
-            currentStamina = Mathf.Clamp(currentStamina, 0, MaxStamina);
             if (currentStamina >= MaxStamina)
+            {
+                currentStamina = MaxStamina;
                 regenStamina = false;
+            }
         }
     }
 
@@ -31,8 +33,8 @@ public class StaminaSystem : MonoBehaviour
     {
         if (currentStamina - amount >= 0)
         {
+            CancelRegen();
             currentStamina -= amount;
-            Debug.Log("Stamina Used: " + amount);
             return true;
         }
         else

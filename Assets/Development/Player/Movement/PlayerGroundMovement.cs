@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Rigidbody), typeof(PlayerFlightMovement))]
+[RequireComponent(typeof(Rigidbody), typeof(PlayerFlightMovement), typeof(StaminaSystem))]
 
 public class PlayerGroundMovement : MonoBehaviour
 {
@@ -19,9 +19,10 @@ public class PlayerGroundMovement : MonoBehaviour
     [SerializeField] float moveSpeed = 500f;
     [SerializeField] float maxSpeed = 4f;
     [SerializeField] float crouchSpeed = 2f;
+    [SerializeField] float sprintSpeed = 6f;
     [SerializeField] float jumpHeight = 150f;
 
-    float currentMaxSpeed;
+    [SerializeField]float currentMaxSpeed;
     float currentSpeed;
 
     [Header("Counter Movement: ")]
@@ -38,16 +39,21 @@ public class PlayerGroundMovement : MonoBehaviour
 
     [Header("Other Variables")]
     [SerializeField] float rotationLerpSpeed = 0.1f;
+    [SerializeField] float sprintStaminaAmount = 0.2f;
+    [SerializeField] float sprintTriggerStaminaTime = .5f;
 
 
     //playerInput
     float x, z;
-    bool jumping, crouching;
+    bool crouching, sprinting;
     bool isJumping = false;
     bool isFlying = false;
+    float sprintTimer = 0f;
 
     InputAction moveAction;
     InputAction jumpAction;
+    InputAction sprintAction;
+    InputAction crouchAction;
 
     private void Awake()
     { 
@@ -66,27 +72,32 @@ public class PlayerGroundMovement : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
+        currentMaxSpeed = maxSpeed;
+
         moveAction = InputSystem.actions.FindAction("Move");
         jumpAction = InputSystem.actions.FindAction("Jump");
+        sprintAction = InputSystem.actions.FindAction("Sprint");
+        crouchAction = InputSystem.actions.FindAction("Crouch");
+
+        PlayerInput();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!isFlying)
-            PlayerInput();
+       // if (!isFlying)
+           // PlayerInput();
     }
 
     void FixedUpdate()
     {
-        if (crouching)
-            currentMaxSpeed = crouchSpeed;
-        else
-            currentMaxSpeed = maxSpeed;
+        if (isFlying)
+            return;
 
         Movement();
-        if (jumping)
-            Jump();
+
+        if (sprinting)
+            Sprint();
 
         if (isJumping)
             if (groundCheck.IsGrounded())
@@ -95,22 +106,34 @@ public class PlayerGroundMovement : MonoBehaviour
 
     void PlayerInput()
     {
-        // check x and z axis movement
-        x = moveAction.ReadValue<Vector2>().x;
-        z = moveAction.ReadValue<Vector2>().y;
+        //x = moveAction.ReadValue<Vector2>().x;
+        //z = moveAction.ReadValue<Vector2>().y;
+
         // check if player hits spacebar
-        jumpAction.started += ctx => Jump();
+        jumpAction.performed += ctx => Jump();
         // check if player crouches with C or left Control
-        crouching = Input.GetKey(KeyCode.C) || Input.GetKey(KeyCode.LeftControl);
+        crouchAction.started += ctx => StartCrouch();
+        crouchAction.canceled += ctx => EndCrouch();
+        sprintAction.started += ctx => StartSprint();
+        sprintAction.canceled += ctx => EndSprint();
     }
 
     void Movement()
     {
+        if (isFlying)
+            return;
+
+        x = moveAction.ReadValue<Vector2>().x;
+        z = moveAction.ReadValue<Vector2>().y;
+
+        if (x == 0 && z == 0)
+            return;
+
         if (x != 0 || z != 0)
             StepClimb();
 
         //Set max speed
-        float maxSpeed = currentMaxSpeed;
+        //float maxSpeed = currentMaxSpeed;
 
         // add extra gravity to the player
         playerBody.AddForce(Vector3.down * Time.deltaTime * Physics.gravity.y);
@@ -125,10 +148,10 @@ public class PlayerGroundMovement : MonoBehaviour
         CounterMovement(x, z, mag);
 
         // check whether adding speed will bring player over max speed
-        if (x > 0 && xMag > maxSpeed) x = 0;
-        if (x < 0 && xMag < -maxSpeed) x = 0;
-        if (z > 0 && yMag > maxSpeed) z = 0;
-        if (z < 0 && yMag < -maxSpeed) z = 0;
+        if (x > 0 && xMag > currentMaxSpeed) x = 0;
+        if (x < 0 && xMag < -currentMaxSpeed) x = 0;
+        if (z > 0 && yMag > currentMaxSpeed) z = 0;
+        if (z < 0 && yMag < -currentMaxSpeed) z = 0;
 
 
         if (z > 0)
@@ -142,19 +165,79 @@ public class PlayerGroundMovement : MonoBehaviour
 
     void Jump()
     {
-        if (!isFlying)
+        if (isFlying)
+            return;
+
+        // check if player is on the ground to jump
+        if (groundCheck.IsGrounded() && !isJumping)
         {
-            // check if player is on the ground to jump
-            if (groundCheck.IsGrounded() && !isJumping)
-            {
-                isJumping = true;
-                // add verticle force to make the player jump
-                playerBody.AddForce(transform.up * jumpHeight);
-            }
-            else
-            {
-                InitiateFlight();
-            }
+            isJumping = true;
+            // add verticle force to make the player jump
+            playerBody.AddForce(transform.up * jumpHeight);
+        }
+        else
+        {
+            InitiateFlight();
+        }
+        
+    }
+
+    void StartCrouch()
+    {
+        if (isFlying || sprinting)
+            return;
+
+        if (!crouching)
+        {
+            crouching = true;
+            currentMaxSpeed = crouchSpeed;
+        }
+    }
+
+    void EndCrouch()
+    {
+        if (crouching)
+        {
+            crouching = false;
+            currentMaxSpeed = maxSpeed;
+        }
+    }
+
+    void StartSprint()
+    {
+        if (isFlying || crouching)
+            return;
+
+        if (playerStamina.UseStamina(sprintStaminaAmount))
+        {
+            sprinting = true;
+            currentMaxSpeed = sprintSpeed;
+        }
+    }
+
+    void Sprint()
+    {
+        if (!sprinting)
+            return;
+
+        if (sprintTimer < sprintTriggerStaminaTime)
+            sprintTimer += Time.deltaTime;
+        else if (sprintTimer >= sprintTriggerStaminaTime)
+        {
+            sprintTimer -= sprintTriggerStaminaTime;
+            if (!playerStamina.UseStamina(sprintStaminaAmount))
+                EndSprint();
+        }
+
+    }
+
+    void EndSprint()
+    {
+        if (sprinting)
+        {
+            sprinting = false;
+            currentMaxSpeed = maxSpeed;
+            playerStamina.RegenStamina();
         }
     }
 
