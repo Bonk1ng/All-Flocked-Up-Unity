@@ -215,5 +215,11 @@ public class ConsumableBase : MonoBehaviour
     {
 
     }
+
+    public void UseConsumable()
+    {
+        ConsumableEffect(consumableType);
+        Destroy(gameObject);
+    }
     
 }
