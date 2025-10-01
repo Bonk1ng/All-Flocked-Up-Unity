@@ -33,6 +33,7 @@ public class WingventoryCanvas : MonoBehaviour
     [SerializeField] private UI_ItemButton itemButtonPrefab;
     public Dictionary<UI_ItemButton, int> currentItemButtons = new();
     [SerializeField] private ScrollRect invBox;
+    [SerializeField]private List<ScrollRect> itemBoxes = new();
 
     [Header("QuestRef")]
     [SerializeField] private QuestLog questLog;
@@ -43,6 +44,7 @@ public class WingventoryCanvas : MonoBehaviour
         canvasController = FindFirstObjectByType<UI_CanvasController>();
         playerWingventory = FindFirstObjectByType<PlayerWingventory>();
         GetTrinketCount();
+        GetItemBoxes();
         leftBackPageButton.onClick.AddListener(GoCenterPage);
         rightBackPageButton.onClick.AddListener(GoCenterPage);
         leftPageButton.onClick.AddListener(GoLeftPage);
@@ -88,6 +90,7 @@ public class WingventoryCanvas : MonoBehaviour
     private void CloseWingventory()
     {
         canvasController.CloseWingventory();
+        Destroy(this.gameObject);
     }
 
     private int GetTrinketCount()
@@ -127,17 +130,30 @@ public class WingventoryCanvas : MonoBehaviour
 
     }
 
-
+    private void GetItemBoxes()
+    {
+        ScrollRect[] boxes = GetComponentsInChildren<ScrollRect>();
+        foreach(var box in boxes)
+        {
+            itemBoxes.Add(box);
+        }
+    }
 
     private void SpawnItemButton()
     {
-
+        var boxIndex = 0;
         foreach(var item in playerInvItems)
         {
-            var button = invBox.content.AddComponent<UI_ItemButton>();
+            var buttonObj = Instantiate(itemButtonPrefab, itemBoxes[boxIndex].viewport.transform,false);
+            var button = buttonObj.GetComponent<UI_ItemButton>();
+            buttonObj.transform.localPosition = Vector3.zero;
+            buttonObj.transform.localRotation = Quaternion.identity;
+
+
             button.itemQuantityText.SetText(item.Value.ToString());
             button.itemRef = item.Key;
             //button.itemImage = item.Key;
+            boxIndex++;
         }
     }
 

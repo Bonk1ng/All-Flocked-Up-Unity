@@ -786,6 +786,7 @@ MonoBehaviour:
   itemQuantityText: {fileID: 5143416612784070491}
   useButton: {fileID: 6976042811142105126}
   dropButton: {fileID: 4563701804760800492}
+  itemRef: {fileID: 0}
 --- !u!222 &7980785078448108259
 CanvasRenderer:
   m_ObjectHideFlags: 0
