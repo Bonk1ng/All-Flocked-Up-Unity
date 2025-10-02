@@ -1635,6 +1635,9 @@ MonoBehaviour:
   raceLayer:
     serializedVersion: 2
     m_Bits: 16384
+  nestLayer:
+    serializedVersion: 2
+    m_Bits: 131072
   questLog: {fileID: 5256277540902806047}
   canvasController: {fileID: 0}
 --- !u!114 &5360852943576176621
