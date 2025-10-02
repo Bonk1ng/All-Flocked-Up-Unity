@@ -9,23 +9,25 @@ public class NestController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        GetSmallNestObjects();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void ActivateMainNest()
     {
+        if (!mainNest.isActiveNest)
+        {
 
+        }
     }
 
     private void GetSmallNestObjects()
     {
-
+        SmallNest[] nestList=Object.FindObjectsByType<SmallNest>(FindObjectsSortMode.None) as SmallNest[];
+        foreach(var nest in nestList)
+        {
+            smallNests.Add(nest, nest.isActiveNest);
+        }
     }
 
     public void ActiveSmallNestObject()

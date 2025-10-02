@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 30100751238497638}
   - component: {fileID: 8989317581198711848}
   - component: {fileID: 2826857010237674189}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: SmallNestPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48,9 +48,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   activeRadius: 0
+  stickBuilder: {fileID: 55203937426653590, guid: ad71cc71e15f7f349977c4a36cb1360c, type: 3}
+  isActiveNest: 0
   mesh: {fileID: 0}
   NestMaterial: {fileID: 0}
-  isActive: 0
 --- !u!33 &30100751238497638
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -114,7 +115,7 @@ SphereCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0

@@ -9,6 +9,7 @@ public class PlayerInteraction : MonoBehaviour
     public LayerMask dialogueLayer;
     public LayerMask trashLayer;
     public LayerMask raceLayer;
+    public LayerMask nestLayer;
     public QuestLog questLog; // assign in Inspector
     public UI_CanvasController canvasController;
 
@@ -69,6 +70,13 @@ public class PlayerInteraction : MonoBehaviour
                     Debug.Log(hit.ToString() + "RaceGiver");
                 }
             }
+
+
+            if (Physics.Raycast(transform.position, transform.forward, out hit, 6f, nestLayer))
+            {
+                var nestObj = hit.collider.GetComponentInParent<NestBase>();
+                nestObj?.InteractWithNest();
+            }
         }
         //TAB for quest log...will change this later to new input system
        else if (Input.GetKeyDown(KeyCode.Tab))
@@ -98,5 +106,7 @@ public class PlayerInteraction : MonoBehaviour
             }
             else canvasController.CloseWingventory();
         }
+
+
     }
 }

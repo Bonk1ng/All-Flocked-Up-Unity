@@ -6,37 +6,62 @@ public class NestBase : MonoBehaviour
     [Header("BaseClassRefs")]
     private GameObject playerRef;
     [SerializeField] private float activeRadius;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        playerRef = FindFirstObjectByType<PlayerGroundMovement>().gameObject;
-    }
+    [SerializeField] private StickBuilder stickBuilder;
+    public bool isActiveNest;
+    private UI_CanvasController canvasController;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    
+
     protected void ShowNest()
     {
-
+        gameObject.SetActive(true);
     }
 
     protected void HideNest()
     {
+        gameObject.SetActive(false);
+    }
 
+
+    public void InteractWithNest()
+    {
+        if (!isActiveNest)
+        {
+            SpawnStickBuilder();
+        }
+        else OpenNestMenu();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        ShowNest();
+        if (other.gameObject.CompareTag("Player"))
+        {
+            playerRef = other.gameObject;
+            ShowNest();
+        }
+
     }
 
     private void OnTriggerExit(Collider other)
     {
-        HideNest();
+        if (other.gameObject.CompareTag("Player"))
+        {
+            HideNest();
+        }
     }
 
+    private void SpawnStickBuilder()
+    {
+        stickBuilder = Instantiate(stickBuilder, transform);
+        stickBuilder.nestBaseRef = this;
+    }
+
+    private void OpenNestMenu()
+    {
+        if (isActiveNest)
+        {
+            canvasController = FindFirstObjectByType<UI_CanvasController>();
+            canvasController.OpenNestMenu();
+        }
+    }
 
 }

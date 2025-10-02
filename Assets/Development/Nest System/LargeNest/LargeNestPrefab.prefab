@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6807173536631133177}
   - component: {fileID: 6250569024277830549}
   - component: {fileID: 4735467087738525870}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: LargeNestPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 5.51096, y: 0.76, z: 19.83768}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -48,6 +48,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   activeRadius: 0
+  stickBuilder: {fileID: 55203937426653590, guid: ad71cc71e15f7f349977c4a36cb1360c, type: 3}
+  isActiveNest: 0
   mesh: {fileID: 0}
   material: {fileID: 0}
 --- !u!33 &6807173536631133177
@@ -113,7 +115,7 @@ SphereCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0

@@ -4,8 +4,8 @@ public class SmallNest :  NestBase
 {
     [Header("SmallNestRefs")]
     [SerializeField] private MeshFilter mesh;
-    [SerializeField] private Material NestMaterial;
-    [SerializeField] private bool isActive = false;
+    [SerializeField] private Material nestMaterial;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -16,5 +16,21 @@ public class SmallNest :  NestBase
     void Update()
     {
         
+    }
+
+    private void ChangeNestMesh()
+    {
+        
+    }
+
+    private void ChangeNestMaterial()
+    {
+
+    }
+
+    private void BuildNest()
+    {
+        ChangeNestMaterial();
+        ChangeNestMesh();
     }
 }
