@@ -43,20 +43,19 @@ public class UI_CanvasController : MonoBehaviour
     [Header("RaceCanvas")]
     [SerializeField] private UI_RaceGiver raceGiverCanvas;
     public UI_RaceGiver raceGiverInstance;
-
     [SerializeField] private UI_RaceReward raceRewardCanvas;
     public UI_RaceReward raceRewardInstance;
     public Dictionary<GameObject, float> standings = new Dictionary<GameObject, float>();
-   
-
     [SerializeField] private UI_RaceFail raceFailCanvas;
     public UI_RaceFail raceFailInstance;
-
     [SerializeField] private UI_RaceCountdown raceCountdownCanvas;
     public UI_RaceCountdown activeCountdownInstance;
-
+    [Header("Wingventory")]
     [SerializeField] private WingventoryCanvas wingventoryCanvas;
     public WingventoryCanvas activeWingventory;
+    [Header("NestMenu")]
+    [SerializeField] private UI_NestMenu nestMenuCanvas;
+    public UI_NestMenu activeNestInstance;
 
     //cursor on
     public void ShowPlayerCursor()
@@ -323,6 +322,23 @@ public class UI_CanvasController : MonoBehaviour
             activeWingventory = null;
             HidePlayerCursor();
         }
+    }
+
+    public void OpenNestMenu()
+    {
+        activeNestInstance = Instantiate(nestMenuCanvas);
+        ShowPlayerCursor();
+    }
+
+    public void CloseNestMenu()
+    {
+        if(activeNestInstance != null)
+        {
+            Destroy(activeNestInstance);
+            activeNestInstance = null;
+            HidePlayerCursor();
+        }
+
     }
 
 }
