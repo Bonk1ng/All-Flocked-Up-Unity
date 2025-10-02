@@ -37,6 +37,8 @@ public class WingventoryCanvas : MonoBehaviour
 
     [Header("QuestRef")]
     [SerializeField] private QuestLog questLog;
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
