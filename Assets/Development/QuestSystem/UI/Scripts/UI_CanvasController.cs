@@ -327,6 +327,7 @@ public class UI_CanvasController : MonoBehaviour
     public void OpenNestMenu()
     {
         activeNestInstance = Instantiate(nestMenuCanvas);
+        activeNestInstance.canvasController = this; 
         ShowPlayerCursor();
     }
 
