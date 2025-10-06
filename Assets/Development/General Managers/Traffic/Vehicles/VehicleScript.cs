@@ -17,15 +17,15 @@ public class VehicleScript :  VehicleBase
         base.Update();
     }
 
-    protected override void SetMoveToLocation(Transform location)
+    protected override void SetMoveToLocation(WaypointNode location)
     {
-        currentLocation = location;
+        base.SetMoveToLocation(location);
     }
 
     //call this to run like wind
     protected override void MoveVehicleToLocation()
     {
-        base.navAgent.SetDestination(currentLocation.position);
+        base.MoveVehicleToLocation();
     }
 
     protected override void StopVehicle()
@@ -35,24 +35,13 @@ public class VehicleScript :  VehicleBase
 
     protected override void CheckForCollisions()
     {
-        RaycastHit hit;
-        if (Physics.SphereCast(transform.position, 5f, transform.forward * detectObjectRange, out hit, trafficLayer))
-        {
-            StopVehicle();
-            HonkHorn();
-        }
-        if (Physics.SphereCast(transform.position, 5f, transform.forward * detectObjectRange, out hit, playerLayer))
-        {
-            StopVehicle();
-            HonkHorn();
-        }
-        if (Physics.SphereCast(transform.position, 5f, transform.forward * detectObjectRange, out hit, enemyLayer))
-        {
-            StopVehicle();
-            HonkHorn();
-        }
+        base.CheckForCollisions();
     }
 
+    protected override void CheckNextTrafficLight()
+    {
+        base.CheckNextTrafficLight();
+    }
     protected override void HonkHorn()
     {
         //add horn SFX/possible headlight VFX? 
