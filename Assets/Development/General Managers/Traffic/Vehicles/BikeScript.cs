@@ -20,12 +20,12 @@ public class BikeScript : VehicleBase
     }
 
     //call this to run like wind
-    protected override void MoveVehicleToLocation()
+    public override void MoveVehicleToLocation()
     {
         base.MoveVehicleToLocation();
     }
 
-    protected override void StopVehicle()
+    public override void StopVehicle()
     {
         base.navAgent.isStopped = true;
     }
@@ -35,10 +35,6 @@ public class BikeScript : VehicleBase
         base.CheckForCollisions();
     }
 
-    protected override void CheckNextTrafficLight()
-    {
-        base.CheckNextTrafficLight();
-    }
     protected override void HonkHorn()
     {
         //add horn SFX/possible headlight VFX? 

@@ -1,4 +1,6 @@
+using NUnit.Framework;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class TrafficLightChanger : MonoBehaviour
 {
@@ -13,10 +15,13 @@ public class TrafficLightChanger : MonoBehaviour
     [SerializeField] private TrafficManager trafficManager;
 
     public ETrafficLightState state = new();
-    private float detectionRange;
+    [SerializeField]private float detectionRange = 2f;
+    [SerializeField] private Vector3 detectRayOffset = new Vector3(0,4,0);
     [SerializeField] private LayerMask trafficLayer;
-    private bool redLightStop;
-    private bool carInLane => CheckForCarsInLane();
+    [SerializeField]private bool redLightStop;
+
+    private TrafficLightTrigger trigger;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -24,20 +29,21 @@ public class TrafficLightChanger : MonoBehaviour
         greenLight.SetActive(false);
         yellowLight.SetActive(false);
         redLight.SetActive(false);
-
+        trigger = GetComponentInChildren<TrafficLightTrigger>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        CheckForCarsInLane();
+
         state = currentLightState;
         
         currentState?.UpdateTrafficState();
-        if (!redLightStop)
+        if (redLightStop)
         {
-            trafficManager.stopCarsAtLight = false;
+
         }
+
 
 
     }
@@ -85,32 +91,23 @@ public class TrafficLightChanger : MonoBehaviour
                 ChangeLightColor("Green");
                 Debug.Log("LightColorChangedGreen");
                 redLightStop = false;
+                trigger.redLightBox.enabled = false;
                 break;
             case ETrafficLightState.Yellow:
                 currentState = new YellowState(this);
                 ChangeLightColor("Yellow");
                 Debug.Log("LightColorChangedYellow");
+                trigger.redLightBox.enabled = false;
                 break;
             case ETrafficLightState.Red:
                 currentState = new RedState(this);
                 ChangeLightColor("Red");
                 Debug.Log("LightColorChangedRed");
                 redLightStop = true;
+                trigger.redLightBox.enabled = true;
                 break;
         }
         currentState.EnterTrafficState();
-    }
-
-    public bool CheckForCarsInLane()
-    {
-        bool hasHit;
-        if (Physics.Raycast(transform.up * -5f, transform.forward * detectionRange, detectionRange, trafficLayer))
-        {
-            hasHit = true;
-            return hasHit;
-        }
-        hasHit = false;
-        return hasHit;
     }
 
 
