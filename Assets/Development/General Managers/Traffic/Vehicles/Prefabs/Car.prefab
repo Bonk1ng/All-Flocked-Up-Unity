@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1129132032353857531}
   m_Layer: 16
   m_Name: Car
-  m_TagString: Untagged
+  m_TagString: Vehicle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -68,11 +68,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97fcbceebfd7c094f8714d586b1782fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentNode: {fileID: 0}
   currentLocation: {fileID: 0}
   nextLocation: {fileID: 0}
   navAgent: {fileID: 4550492946090882327}
   vehicleSpeed: 2
-  detectRadius: 20
+  detectRadius: 10
   playerLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -90,6 +91,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 262144
   lightHit: 0
+  currentLight: {fileID: 0}
 --- !u!1001 &8979354184962412314
 PrefabInstance:
   m_ObjectHideFlags: 0

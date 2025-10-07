@@ -11,6 +11,7 @@ TagManager:
   - QuestInteract
   - Consumable
   - Race
+  - Vehicle
   layers:
   - Default
   - TransparentFX

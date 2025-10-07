@@ -12,7 +12,7 @@ public class VehicleBase :MonoBehaviour
     [SerializeField] private Transform nextLocation;
     [SerializeField] protected NavMeshAgent navAgent;
     [SerializeField] private float vehicleSpeed;
-    [SerializeField] protected float detectRadius=20f;
+    [SerializeField] protected float detectRadius=2f;
     [SerializeField] protected LayerMask playerLayer;
     [SerializeField] protected LayerMask enemyLayer;
     [SerializeField] protected LayerMask trafficLayer;
@@ -20,10 +20,12 @@ public class VehicleBase :MonoBehaviour
     [SerializeField] private bool isMoving;
     private List<WaypointConnection> connections = new();
 
-    [SerializeField] protected float detectObjectRange=1000f;
+    [SerializeField] protected float detectObjectRange=2f;
     [SerializeField] protected ETrafficLightState closestLightState;
     [SerializeField] protected LayerMask lightLayer;
     [SerializeField] protected bool lightHit;
+    [SerializeField] private TrafficLightChanger currentLight;
+    [SerializeField]private Vector3 offset = new Vector3(1,0,0);
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected virtual void Start()
     {
@@ -35,7 +37,6 @@ public class VehicleBase :MonoBehaviour
     protected virtual void Update()
     {
         CheckForCollisions();
-        CheckNextTrafficLight();
 
         if (currentNode == null)
         {
@@ -55,19 +56,20 @@ public class VehicleBase :MonoBehaviour
     }
 
     //call this to run like wind
-    protected virtual void MoveVehicleToLocation()
+    public virtual void MoveVehicleToLocation()
     {
         if (currentNode == null || navAgent == null)
             return;
 
         navAgent.isStopped = false;
-        navAgent.SetDestination(currentNode.transform.position);
+        navAgent.SetDestination(currentNode.transform.position + offset);
 
     }
 
-    protected virtual void StopVehicle()
+    public virtual void StopVehicle()
     {
         navAgent.isStopped = true;
+        Debug.Log("Stopping");
     }
 
     protected virtual void CheckForCollisions()
@@ -83,39 +85,12 @@ public class VehicleBase :MonoBehaviour
         }
         else
         {
-            if (navAgent.isStopped)
+            if (!navAgent.isStopped)
                 MoveVehicleToLocation();
         }
     }
 
-    protected virtual void CheckNextTrafficLight()
-    {
-        RaycastHit hit;
-        if (Physics.SphereCast(transform.position, detectRadius, transform.forward, out hit, detectObjectRange, lightLayer))
-        {
-            var hitLight = hit.collider.GetComponent<TrafficLightChanger>();
-            if (hitLight)
-            {
-                closestLightState = hitLight.state;
-                lightHit = true;
-                Debug.DrawLine(transform.position, hit.point, Color.red);
 
-                switch (hitLight.state)
-                {
-                    case ETrafficLightState.Red:
-                        StopVehicle();
-                        break;
-                    case ETrafficLightState.Yellow:
-                        navAgent.speed = vehicleSpeed * 0.5f;
-                        break;
-                    case ETrafficLightState.Green:
-                        navAgent.speed = vehicleSpeed;
-                        navAgent.isStopped = false;
-                        break;
-                }
-            }
-        }
-    }
 
     protected void ChooseNextDirection(WaypointNode node)
     {
@@ -128,9 +103,11 @@ public class VehicleBase :MonoBehaviour
             return;
 
         var randomIndex = Random.Range(0, connections.Count);
-        var nextNode = connections[randomIndex].node;
-        SetMoveToLocation(nextNode);
-        MoveVehicleToLocation();
+
+            var nextNode = connections[randomIndex].node;
+            SetMoveToLocation(nextNode);
+            MoveVehicleToLocation();
+        
     }
 
     protected virtual void HonkHorn()
