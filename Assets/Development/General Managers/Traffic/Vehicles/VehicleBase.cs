@@ -7,9 +7,8 @@ using UnityEngine.Rendering.Universal;
 
 public class VehicleBase :MonoBehaviour
 {
-    [SerializeField] private WaypointNode currentNode;
-    [SerializeField]protected Transform currentLocation;
-    [SerializeField] private Transform nextLocation;
+    public WaypointNode currentNode;
+    [SerializeField] private WaypointNode previousNode;
     [SerializeField] protected NavMeshAgent navAgent;
     [SerializeField] private float vehicleSpeed;
     [SerializeField] protected float detectRadius=2f;
@@ -18,14 +17,11 @@ public class VehicleBase :MonoBehaviour
     [SerializeField] protected LayerMask trafficLayer;
     [SerializeField] private bool isStopped;
     [SerializeField] private bool isMoving;
-    private List<WaypointConnection> connections = new();
+   [SerializeField] private List<WaypointConnection> connections = new();
+
 
     [SerializeField] protected float detectObjectRange=2f;
-    [SerializeField] protected ETrafficLightState closestLightState;
-    [SerializeField] protected LayerMask lightLayer;
-    [SerializeField] protected bool lightHit;
-    [SerializeField] private TrafficLightChanger currentLight;
-    [SerializeField]private Vector3 offset = new Vector3(1,0,0);
+    [SerializeField]private Vector3 offset = new Vector3(20,0,0);
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected virtual void Start()
     {
@@ -99,13 +95,16 @@ public class VehicleBase :MonoBehaviour
         foreach (var connection in node.connections)
             connections.Add(connection);
 
+        if (previousNode != null)
+            connections.RemoveAll(c => c.node == previousNode);
+
         if (connections.Count == 0)
             return;
 
         var randomIndex = Random.Range(0, connections.Count);
-
-            var nextNode = connections[randomIndex].node;
-            SetMoveToLocation(nextNode);
+        var nextNode = connections[randomIndex].node;
+        previousNode = currentNode;
+        SetMoveToLocation(nextNode);
             MoveVehicleToLocation();
         
     }
