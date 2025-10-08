@@ -44,3 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e4109e0117285b45bbf0e876ce6d45e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trafficLights: []
+  groupALights: []
+  groupBLights: []
+  waypoints: []
+  numberOfCars: 0
+  vehicleTypes: []
+  vehicles: []

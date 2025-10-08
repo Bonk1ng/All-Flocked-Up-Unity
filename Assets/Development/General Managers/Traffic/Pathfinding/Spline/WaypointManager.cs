@@ -34,6 +34,10 @@ public class WaypointManager : EditorWindow
         {
             CreateWaypoint();
         }
+        if (GUILayout.Button("Branch"))
+        {
+            BranchLane();
+        }
     }
 
     void CreateWaypoint()
@@ -49,19 +53,36 @@ public class WaypointManager : EditorWindow
 
             waypoint.transform.position = waypoint.previousWaypoint.transform.position;
             waypoint.transform.forward = waypoint.previousWaypoint.transform.forward;
+
         }
 
         Selection.activeObject = waypoint.gameObject;
     }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+    void BranchLane()
     {
-        
+        if(Selection.activeGameObject == null)
+        {
+            EditorUtility.DisplayDialog("Select a waypoint","Select ONE","NOW","OR NOT?");
+            return;
+        }
+
+        Waypoint selectedPoint = Selection.activeGameObject.GetComponent<Waypoint>();
+        if (selectedPoint == null)
+        {
+            EditorUtility.DisplayDialog("Select an actual waypoint", "a REAL ONE", "NOW", "OR NOT?");
+            return;
+        }
+
+        GameObject branchObj = new GameObject("Branch" + waypointRoot.childCount,typeof(Waypoint));
+        branchObj.transform.SetParent(waypointRoot, false);
+
+        Waypoint branchWaypoint = branchObj.GetComponent<Waypoint>();
+        branchWaypoint.transform.position = selectedPoint.transform.position + selectedPoint.transform.right *5f;
+        branchWaypoint.transform.forward = selectedPoint.transform.forward;
+
+        selectedPoint.branches.Add(branchWaypoint);
+        Selection.activeObject = branchWaypoint.gameObject;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
