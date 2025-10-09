@@ -7,23 +7,18 @@ using UnityEngine.Rendering.Universal;
 
 public class VehicleBase :MonoBehaviour
 {
-    [SerializeField] private WaypointNode currentNode;
-    [SerializeField]protected Transform currentLocation;
-    [SerializeField] private Transform nextLocation;
+    public Waypoint currentNode;
+    [SerializeField] private Waypoint previousNode;
     [SerializeField] protected NavMeshAgent navAgent;
     [SerializeField] private float vehicleSpeed;
-    [SerializeField] protected float detectRadius=20f;
+    [SerializeField] protected float detectRadius=2f;
     [SerializeField] protected LayerMask playerLayer;
     [SerializeField] protected LayerMask enemyLayer;
     [SerializeField] protected LayerMask trafficLayer;
     [SerializeField] private bool isStopped;
     [SerializeField] private bool isMoving;
-    private List<WaypointConnection> connections = new();
-
-    [SerializeField] protected float detectObjectRange=1000f;
-    [SerializeField] protected ETrafficLightState closestLightState;
-    [SerializeField] protected LayerMask lightLayer;
-    [SerializeField] protected bool lightHit;
+    [SerializeField] private List<WaypointConnection> connections = new();
+    [SerializeField] protected float detectObjectRange=2f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected virtual void Start()
     {
@@ -35,7 +30,6 @@ public class VehicleBase :MonoBehaviour
     protected virtual void Update()
     {
         CheckForCollisions();
-        CheckNextTrafficLight();
 
         if (currentNode == null)
         {
@@ -43,19 +37,20 @@ public class VehicleBase :MonoBehaviour
             return;
         }
 
-        if (!navAgent.pathPending && navAgent.remainingDistance < 1f)
+        if (navAgent.remainingDistance < 5f)
         {
             ChooseNextDirection(currentNode);
         }
+
     }
 
-    protected virtual void SetMoveToLocation(WaypointNode location)
+    protected virtual void SetMoveToLocation(Waypoint location)
     {
         currentNode = location;
     }
 
     //call this to run like wind
-    protected virtual void MoveVehicleToLocation()
+    public virtual void MoveVehicleToLocation()
     {
         if (currentNode == null || navAgent == null)
             return;
@@ -65,9 +60,10 @@ public class VehicleBase :MonoBehaviour
 
     }
 
-    protected virtual void StopVehicle()
+    public virtual void StopVehicle()
     {
         navAgent.isStopped = true;
+        Debug.Log("Stopping");
     }
 
     protected virtual void CheckForCollisions()
@@ -83,54 +79,35 @@ public class VehicleBase :MonoBehaviour
         }
         else
         {
-            if (navAgent.isStopped)
+            if (!navAgent.isStopped)
                 MoveVehicleToLocation();
         }
     }
 
-    protected virtual void CheckNextTrafficLight()
-    {
-        RaycastHit hit;
-        if (Physics.SphereCast(transform.position, detectRadius, transform.forward, out hit, detectObjectRange, lightLayer))
-        {
-            var hitLight = hit.collider.GetComponent<TrafficLightChanger>();
-            if (hitLight)
-            {
-                closestLightState = hitLight.state;
-                lightHit = true;
-                Debug.DrawLine(transform.position, hit.point, Color.red);
 
-                switch (hitLight.state)
-                {
-                    case ETrafficLightState.Red:
-                        StopVehicle();
-                        break;
-                    case ETrafficLightState.Yellow:
-                        navAgent.speed = vehicleSpeed * 0.5f;
-                        break;
-                    case ETrafficLightState.Green:
-                        navAgent.speed = vehicleSpeed;
-                        navAgent.isStopped = false;
-                        break;
-                }
-            }
-        }
-    }
 
-    protected void ChooseNextDirection(WaypointNode node)
+    protected void ChooseNextDirection(Waypoint node)
     {
         connections.Clear();
 
         foreach (var connection in node.connections)
             connections.Add(connection);
 
-        if (connections.Count == 0)
-            return;
+        if (connections.Count == 0 && node.nextWaypoint != null)
+        {
+            connections.Add(new WaypointConnection { node = node.nextWaypoint });
 
-        var randomIndex = Random.Range(0, connections.Count);
-        var nextNode = connections[randomIndex].node;
+        }
+        else Destroy(this.gameObject);
+        
+        int randomIndex = Random.Range(0, connections.Count);
+        Waypoint nextNode = connections[randomIndex].node;
+        if (nextNode == null)
+            return;
+        previousNode = currentNode;
         SetMoveToLocation(nextNode);
         MoveVehicleToLocation();
+        
     }
 
     protected virtual void HonkHorn()

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &365290969110452751
+--- !u!1 &496094354608932325
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,46 +8,44 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7837287458853210749}
-  - component: {fileID: 52536186287684504}
+  - component: {fileID: 8220608007540343380}
+  - component: {fileID: 757354182240166085}
   m_Layer: 0
-  m_Name: TrafficManager
+  m_Name: WaypointPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7837287458853210749
+--- !u!4 &8220608007540343380
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 365290969110452751}
+  m_GameObject: {fileID: 496094354608932325}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 23.68048, y: 0.21, z: -27.85856}
+  m_LocalPosition: {x: 26.32, y: 0.2, z: 34.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &52536186287684504
+--- !u!114 &757354182240166085
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 365290969110452751}
+  m_GameObject: {fileID: 496094354608932325}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e4109e0117285b45bbf0e876ce6d45e, type: 3}
+  m_Script: {fileID: 11500000, guid: d5465663482b6824b8c1a1b2ed60f986, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trafficLights: []
-  groupALights: []
-  groupBLights: []
-  waypoints: []
-  numberOfCars: 0
-  vehicleTypes: []
-  vehicles: []
+  previousWaypoint: {fileID: 0}
+  nextWaypoint: {fileID: 0}
+  branches: []
+  connections: []
+  width: 1

@@ -14,18 +14,18 @@ public class BusScript : VehicleBase
         
     }
 
-    protected override void SetMoveToLocation(WaypointNode location)
+    protected override void SetMoveToLocation(Waypoint location)
     {
 
     }
 
     //call this to run like wind
-    protected override void MoveVehicleToLocation()
+    public override void MoveVehicleToLocation()
     {
         base.MoveVehicleToLocation();
     }
 
-    protected override void StopVehicle()
+    public override void StopVehicle()
     {
         base.navAgent.isStopped = true;
     }
@@ -33,11 +33,6 @@ public class BusScript : VehicleBase
     protected override void CheckForCollisions()
     {
         base.CheckForCollisions();
-    }
-
-    protected override void CheckNextTrafficLight()
-    {
-        base.CheckNextTrafficLight();
     }
 
     protected override void HonkHorn()

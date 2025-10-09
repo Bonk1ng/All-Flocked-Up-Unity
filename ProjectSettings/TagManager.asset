@@ -11,6 +11,8 @@ TagManager:
   - QuestInteract
   - Consumable
   - Race
+  - Vehicle
+  - Traffic
   layers:
   - Default
   - TransparentFX
@@ -32,9 +34,9 @@ TagManager:
   - Nest
   - TrafficLight
   - TrafficWaypoints
-  - 
-  - 
-  - 
+  - Map
+  - Poopable
+  - Projectile
   - 
   - 
   - 

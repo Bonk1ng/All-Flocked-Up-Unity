@@ -7,9 +7,12 @@ public class TrafficManager : MonoBehaviour
     [SerializeField] private List<TrafficLightChanger> trafficLights;
     [SerializeField] private List<TrafficLightChanger> groupALights;
     [SerializeField] private List<TrafficLightChanger> groupBLights;
+    [SerializeField] private List<Waypoint> waypoints;
+    [SerializeField] private int numberOfCars;
+    [SerializeField] private List<VehicleBase> vehicleTypes = new();
     [SerializeField] private List<VehicleBase> vehicles;
 
-    public bool stopCarsAtLight;
+
 
     private void Awake()
     {
@@ -18,10 +21,10 @@ public class TrafficManager : MonoBehaviour
     void Start()
     {
         InitLights();
-        FindCarsInScene();
         GroupTrafficLights();
+        FindWaypoints();
 
-
+        SpawnCarsAtWaypoints();
         foreach (var light in groupALights)
         {
             light.ChangeLightState(new GreenState(light), ETrafficLightState.Green);
@@ -31,7 +34,8 @@ public class TrafficManager : MonoBehaviour
         {
             light.ChangeLightState(new RedState(light), ETrafficLightState.Red);
         }
-        
+
+
 
     }
 
@@ -49,23 +53,39 @@ public class TrafficManager : MonoBehaviour
         trafficLights.AddRange(FindObjectsByType<TrafficLightChanger>(FindObjectsSortMode.None));
     }
 
+    private void FindWaypoints()
+    {
+        var waypointsArray = FindObjectsByType<Waypoint>(FindObjectsSortMode.None);
+        foreach (var waypoint in waypointsArray)
+        {
+            if (waypoint.CompareTag("Traffic"))
+            {
+                waypoints.Add(waypoint);
+            }
+
+        }
+        Debug.Log("CheckforWaypoints");
+    }
+
     private void GroupTrafficLights()
     {
         for (int i = 0; i < trafficLights.Count;)
         {
-            groupALights.Add(trafficLights[i]);
-            i++;
-            groupBLights.Add(trafficLights[i]);
-            i++;
+            if (trafficLights[i].name.Contains("TrafficLightCurved"))
+            {
+                groupALights.Add(trafficLights[i]);
+                i++;
+            }
+            else
+            {
+                groupBLights.Add(trafficLights[i]);
+                i++;
+            }
         }
         trafficLights.Clear();
     }
 
-    private void FindCarsInScene()
-    {
-        vehicles.Clear();
-        vehicles.AddRange(FindObjectsByType<VehicleBase>(FindObjectsSortMode.None));
-    }
+
 
     public void ChangeGroupALightState(ITrafficInterface state, ETrafficLightState lightState) { 
         foreach(var light in groupALights)
@@ -85,6 +105,21 @@ public class TrafficManager : MonoBehaviour
 
             light.ChangeLightState( state, lightState);
         }
+    }
+
+    private void SpawnCarsAtWaypoints()
+    {
+
+        for(int i = 0; i < numberOfCars; i++)
+        {
+            var car = Instantiate(vehicleTypes[Random.Range(0, vehicleTypes.Count)]);
+            vehicles.Add(car);
+            var randomIndex = Random.Range(0,waypoints.Count);
+            var transform = waypoints[randomIndex].transform.position;
+            car.transform.position = transform; 
+            car.currentNode = waypoints[randomIndex];
+        }
+        Debug.Log("CarsSpawned");
     }
 
 
