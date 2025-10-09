@@ -27,7 +27,7 @@ public class WaypointNode : MonoBehaviour
         {
             if (Physics.Raycast(transform.position, dir, out RaycastHit hit, 20f, trafficWaypoints))
             {
-                var hitNode = hit.collider.GetComponent<WaypointNode>();
+                var hitNode = hit.collider.GetComponent<Waypoint>();
                 if (hitNode != null && hitNode != this)
                 {
                     var connection = new WaypointConnection

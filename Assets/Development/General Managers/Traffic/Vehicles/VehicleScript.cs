@@ -17,7 +17,7 @@ public class VehicleScript :  VehicleBase
         base.Update();
     }
 
-    protected override void SetMoveToLocation(WaypointNode location)
+    protected override void SetMoveToLocation(Waypoint location)
     {
         base.SetMoveToLocation(location);
     }

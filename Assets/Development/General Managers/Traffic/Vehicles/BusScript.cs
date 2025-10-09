@@ -14,7 +14,7 @@ public class BusScript : VehicleBase
         
     }
 
-    protected override void SetMoveToLocation(WaypointNode location)
+    protected override void SetMoveToLocation(Waypoint location)
     {
 
     }

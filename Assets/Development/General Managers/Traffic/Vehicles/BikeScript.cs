@@ -14,7 +14,7 @@ public class BikeScript : VehicleBase
         
     }
 
-    protected override void SetMoveToLocation(WaypointNode location)
+    protected override void SetMoveToLocation(Waypoint location)
     {
 
     }

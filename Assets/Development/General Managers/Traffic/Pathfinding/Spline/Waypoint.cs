@@ -1,3 +1,6 @@
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -29,5 +32,24 @@ public class Waypoint : MonoBehaviour
             if (branch != null)
                 Gizmos.DrawLine(transform.position, branch.transform.position);
         }
+
+
+#if UNITY_EDITOR
+        if(nextWaypoint != null)
+        {
+            float size = 5f;
+            Handles.color = Color.red;
+            Handles.DrawAAPolyLine(size, transform.position, nextWaypoint.transform.position);
+
+            Vector3 arrowDirection = (nextWaypoint.transform.position - transform.position).normalized;
+            float arrowSize = 0.5f;
+
+            Vector3 rightArm = Quaternion.LookRotation(arrowDirection) * Quaternion.Euler(0, 120, 0) * Vector3.forward;
+            Vector3 leftArm = Quaternion.LookRotation(arrowDirection) * Quaternion.Euler(0, -120, 0) * Vector3.forward;
+
+            Handles.DrawLine(nextWaypoint.transform.position, nextWaypoint.transform.position + rightArm * arrowSize);
+            Handles.DrawLine(nextWaypoint.transform.position, nextWaypoint.transform.position + leftArm * arrowSize);
+        }
+#endif
     }
 }

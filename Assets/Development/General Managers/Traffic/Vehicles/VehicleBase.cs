@@ -7,8 +7,8 @@ using UnityEngine.Rendering.Universal;
 
 public class VehicleBase :MonoBehaviour
 {
-    public WaypointNode currentNode;
-    [SerializeField] private WaypointNode previousNode;
+    public Waypoint currentNode;
+    [SerializeField] private Waypoint previousNode;
     [SerializeField] protected NavMeshAgent navAgent;
     [SerializeField] private float vehicleSpeed;
     [SerializeField] protected float detectRadius=2f;
@@ -17,11 +17,8 @@ public class VehicleBase :MonoBehaviour
     [SerializeField] protected LayerMask trafficLayer;
     [SerializeField] private bool isStopped;
     [SerializeField] private bool isMoving;
-   [SerializeField] private List<WaypointConnection> connections = new();
-
-
+    [SerializeField] private List<WaypointConnection> connections = new();
     [SerializeField] protected float detectObjectRange=2f;
-    [SerializeField]private Vector3 offset = new Vector3(20,0,0);
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected virtual void Start()
     {
@@ -40,13 +37,14 @@ public class VehicleBase :MonoBehaviour
             return;
         }
 
-        if (!navAgent.pathPending && navAgent.remainingDistance < 1f)
+        if (navAgent.remainingDistance < 5f)
         {
             ChooseNextDirection(currentNode);
         }
+
     }
 
-    protected virtual void SetMoveToLocation(WaypointNode location)
+    protected virtual void SetMoveToLocation(Waypoint location)
     {
         currentNode = location;
     }
@@ -58,7 +56,7 @@ public class VehicleBase :MonoBehaviour
             return;
 
         navAgent.isStopped = false;
-        navAgent.SetDestination(currentNode.transform.position + offset);
+        navAgent.SetDestination(currentNode.transform.position);
 
     }
 
@@ -88,24 +86,27 @@ public class VehicleBase :MonoBehaviour
 
 
 
-    protected void ChooseNextDirection(WaypointNode node)
+    protected void ChooseNextDirection(Waypoint node)
     {
         connections.Clear();
 
         foreach (var connection in node.connections)
             connections.Add(connection);
 
-        if (previousNode != null)
-            connections.RemoveAll(c => c.node == previousNode);
+        if (connections.Count == 0 && node.nextWaypoint != null)
+        {
+            connections.Add(new WaypointConnection { node = node.nextWaypoint });
 
-        if (connections.Count == 0)
+        }
+        else Destroy(this.gameObject);
+        
+        int randomIndex = Random.Range(0, connections.Count);
+        Waypoint nextNode = connections[randomIndex].node;
+        if (nextNode == null)
             return;
-
-        var randomIndex = Random.Range(0, connections.Count);
-        var nextNode = connections[randomIndex].node;
         previousNode = currentNode;
         SetMoveToLocation(nextNode);
-            MoveVehicleToLocation();
+        MoveVehicleToLocation();
         
     }
 

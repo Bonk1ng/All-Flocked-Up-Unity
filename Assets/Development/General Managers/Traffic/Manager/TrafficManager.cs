@@ -7,7 +7,7 @@ public class TrafficManager : MonoBehaviour
     [SerializeField] private List<TrafficLightChanger> trafficLights;
     [SerializeField] private List<TrafficLightChanger> groupALights;
     [SerializeField] private List<TrafficLightChanger> groupBLights;
-    [SerializeField] private List<WaypointNode> waypoints;
+    [SerializeField] private List<Waypoint> waypoints;
     [SerializeField] private int numberOfCars;
     [SerializeField] private List<VehicleBase> vehicleTypes = new();
     [SerializeField] private List<VehicleBase> vehicles;
@@ -22,8 +22,9 @@ public class TrafficManager : MonoBehaviour
     {
         InitLights();
         GroupTrafficLights();
+        FindWaypoints();
 
-
+        SpawnCarsAtWaypoints();
         foreach (var light in groupALights)
         {
             light.ChangeLightState(new GreenState(light), ETrafficLightState.Green);
@@ -33,8 +34,7 @@ public class TrafficManager : MonoBehaviour
         {
             light.ChangeLightState(new RedState(light), ETrafficLightState.Red);
         }
-        FindWaypoints();
-        SpawnCarsAtWaypoints();
+
 
 
     }
@@ -55,21 +55,32 @@ public class TrafficManager : MonoBehaviour
 
     private void FindWaypoints()
     {
-        var waypointsArray = FindObjectsByType<WaypointNode>(FindObjectsSortMode.None);
-        foreach(var waypoint in waypointsArray)
+        var waypointsArray = FindObjectsByType<Waypoint>(FindObjectsSortMode.None);
+        foreach (var waypoint in waypointsArray)
         {
-            waypoints.Add(waypoint);
+            if (waypoint.CompareTag("Traffic"))
+            {
+                waypoints.Add(waypoint);
+            }
+
         }
+        Debug.Log("CheckforWaypoints");
     }
 
     private void GroupTrafficLights()
     {
         for (int i = 0; i < trafficLights.Count;)
         {
-            groupALights.Add(trafficLights[i]);
-            i++;
-            groupBLights.Add(trafficLights[i]);
-            i++;
+            if (trafficLights[i].name.Contains("TrafficLightCurved"))
+            {
+                groupALights.Add(trafficLights[i]);
+                i++;
+            }
+            else
+            {
+                groupBLights.Add(trafficLights[i]);
+                i++;
+            }
         }
         trafficLights.Clear();
     }
@@ -108,6 +119,7 @@ public class TrafficManager : MonoBehaviour
             car.transform.position = transform; 
             car.currentNode = waypoints[randomIndex];
         }
+        Debug.Log("CarsSpawned");
     }
 
 
