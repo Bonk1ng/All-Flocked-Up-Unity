@@ -12,6 +12,7 @@ TagManager:
   - Consumable
   - Race
   - Vehicle
+  - Traffic
   layers:
   - Default
   - TransparentFX
