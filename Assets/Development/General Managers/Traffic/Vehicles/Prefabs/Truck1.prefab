@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8568736702299793114}
   m_Layer: 0
   m_Name: Truck1
-  m_TagString: Untagged
+  m_TagString: Vehicle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -68,8 +68,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97fcbceebfd7c094f8714d586b1782fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentLocation: {fileID: 0}
-  nextLocation: {fileID: 0}
+  currentNode: {fileID: 0}
+  previousNode: {fileID: 0}
   navAgent: {fileID: 2855666984066758406}
   vehicleSpeed: 0
   detectRadius: 0
@@ -84,12 +84,8 @@ MonoBehaviour:
     m_Bits: 65536
   isStopped: 0
   isMoving: 0
+  connections: []
   detectObjectRange: 0
-  closestLightState: 0
-  lightLayer:
-    serializedVersion: 2
-    m_Bits: 262144
-  lightHit: 0
 --- !u!1001 &1177272147598497466
 PrefabInstance:
   m_ObjectHideFlags: 0

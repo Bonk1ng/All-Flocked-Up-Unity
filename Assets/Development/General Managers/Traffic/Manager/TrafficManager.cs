@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using JetBrains.Annotations;
+using Unity.VisualScripting;
 
 public class TrafficManager : MonoBehaviour
 {
@@ -11,6 +14,8 @@ public class TrafficManager : MonoBehaviour
     [SerializeField] private int numberOfCars;
     [SerializeField] private List<VehicleBase> vehicleTypes = new();
     [SerializeField] private List<VehicleBase> vehicles;
+    public float timer;
+
 
 
 
@@ -18,13 +23,14 @@ public class TrafficManager : MonoBehaviour
     {
         
     }
-    void Start()
+    async void Start()
     {
         InitLights();
         GroupTrafficLights();
         FindWaypoints();
 
         SpawnCarsAtWaypoints();
+        await System.Threading.Tasks.Task.Yield();
         foreach (var light in groupALights)
         {
             light.ChangeLightState(new GreenState(light), ETrafficLightState.Green);
@@ -42,10 +48,15 @@ public class TrafficManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        timer -= Time.deltaTime;
 
-
+        if (timer <= 0)
+        {
+            SwitchLightGroups();
+        }
     }
+
+
 
     private void InitLights()
     {
@@ -53,6 +64,10 @@ public class TrafficManager : MonoBehaviour
         trafficLights.AddRange(FindObjectsByType<TrafficLightChanger>(FindObjectsSortMode.None));
     }
 
+    private void SetLights()
+    {
+
+    }
     private void FindWaypoints()
     {
         var waypointsArray = FindObjectsByType<Waypoint>(FindObjectsSortMode.None);
@@ -104,6 +119,32 @@ public class TrafficManager : MonoBehaviour
         {
 
             light.ChangeLightState( state, lightState);
+        }
+    }
+
+    private void SwitchLightGroups()
+    {
+        if (groupALights.Count == 0 || groupBLights.Count == 0)
+            return;
+
+        var groupAState = groupALights[0].state;
+        if (groupAState ==ETrafficLightState.Green)
+        {
+            ChangeGroupALightState(new RedState(groupALights[0]), ETrafficLightState.Yellow);
+            ChangeGroupBLightState(new GreenState(groupBLights[0]), ETrafficLightState.Red);
+            timer = 10f;
+        }
+        if (groupAState == ETrafficLightState.Yellow)
+        {
+            ChangeGroupALightState(new RedState(groupALights[0]), ETrafficLightState.Red);
+            ChangeGroupBLightState(new GreenState(groupBLights[0]), ETrafficLightState.Green);
+            timer = 3f;
+        }
+        else if (groupAState == ETrafficLightState.Red)
+        {
+            ChangeGroupALightState(new GreenState(groupALights[0]), ETrafficLightState.Green);
+            ChangeGroupBLightState(new RedState(groupBLights[0]), ETrafficLightState.Yellow);
+            timer = 10f;
         }
     }
 
