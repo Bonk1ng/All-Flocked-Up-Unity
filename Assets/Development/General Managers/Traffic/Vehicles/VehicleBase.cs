@@ -70,7 +70,7 @@ public class VehicleBase :MonoBehaviour
     public virtual void StopVehicle()
     {
         navAgent.isStopped = true;
-        Debug.Log("Stopping");
+        //Debug.Log("Stopping");
     }
 
     protected virtual void CheckForCollisions()

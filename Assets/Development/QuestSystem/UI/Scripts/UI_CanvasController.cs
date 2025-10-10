@@ -56,6 +56,10 @@ public class UI_CanvasController : MonoBehaviour
     [Header("NestMenu")]
     [SerializeField] private UI_NestMenu nestMenuCanvas;
     public UI_NestMenu activeNestInstance;
+    [Header("ShopUI")]
+    [SerializeField] private ShopConfirmUI shopUICanvas;
+    public ShopConfirmUI activeShopCanvas;
+    public ShopLocation shopLocationRef; 
 
     //cursor on
     public void ShowPlayerCursor()
@@ -340,6 +344,24 @@ public class UI_CanvasController : MonoBehaviour
             HidePlayerCursor();
         }
 
+    }
+
+    public void OpenShopUI(ShopItem item)
+    {
+        activeShopCanvas = Instantiate(shopUICanvas);
+        activeShopCanvas.shopLocation = shopLocationRef;
+        activeShopCanvas.currentItem = item;
+        ShowPlayerCursor();
+    }
+
+    public void CloseShopUI()
+    {
+        if(shopUICanvas != null)
+        {
+            Destroy(activeShopCanvas);
+            activeShopCanvas = null;
+            HidePlayerCursor();
+        }
     }
 
 }
