@@ -12,7 +12,7 @@ public class TrafficLightChanger : MonoBehaviour
     [Header("SystemRefs")]
     [SerializeField] private ETrafficLightState currentLightState;
     [SerializeField] private ITrafficInterface currentState;
-    [SerializeField] private TrafficManager trafficManager;
+    public TrafficManager trafficManager;
 
     public ETrafficLightState state = new();
     [SerializeField]private float detectionRange = 2f;
@@ -21,9 +21,9 @@ public class TrafficLightChanger : MonoBehaviour
     [SerializeField]private bool redLightStop;
 
     private TrafficLightTrigger trigger;
+    public float lightTimer;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
         trafficManager = FindFirstObjectByType<TrafficManager>();
         greenLight.SetActive(false);
@@ -35,24 +35,21 @@ public class TrafficLightChanger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        GetCurrentLightTimer();
+        state = currentLightState;     
 
-        state = currentLightState;
-        
-        currentState?.UpdateTrafficState();
-        if (redLightStop)
-        {
+    }
 
-        }
-
-
-
+    public void GetCurrentLightTimer()
+    {
+        lightTimer = trafficManager.timer;
     }
 
     public void ChangeLightState(ITrafficInterface state, ETrafficLightState lightState)
     {
         currentState?.ExitTrafficState();
-        currentState = state;
         currentLightState = lightState;
+        currentState = state;
         currentState.EnterTrafficState();
         SetState();
     }

@@ -69,8 +69,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentNode: {fileID: 0}
-  currentLocation: {fileID: 0}
-  nextLocation: {fileID: 0}
+  previousNode: {fileID: 0}
   navAgent: {fileID: 4550492946090882327}
   vehicleSpeed: 2
   detectRadius: 10
@@ -85,13 +84,8 @@ MonoBehaviour:
     m_Bits: 65536
   isStopped: 0
   isMoving: 0
+  connections: []
   detectObjectRange: 0
-  closestLightState: 0
-  lightLayer:
-    serializedVersion: 2
-    m_Bits: 262144
-  lightHit: 0
-  currentLight: {fileID: 0}
 --- !u!1001 &8979354184962412314
 PrefabInstance:
   m_ObjectHideFlags: 0
