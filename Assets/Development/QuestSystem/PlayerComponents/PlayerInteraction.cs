@@ -82,7 +82,8 @@ public class PlayerInteraction : MonoBehaviour
             if (Physics.Raycast(transform.position, transform.forward, out hit, interactionRange, shopLayer))
             {
                 var shopObj = hit.collider.GetComponentInParent<ShopLocation>();
-                shopObj?.InteractWithShop();
+                var box = hit.collider as BoxCollider ?? hit.collider.GetComponentInParent<BoxCollider>();
+                shopObj?.InteractWithShop(box);
             }
         }
         //TAB for quest log...will change this later to new input system

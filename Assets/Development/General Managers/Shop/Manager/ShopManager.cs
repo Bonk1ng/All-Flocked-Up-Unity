@@ -12,13 +12,9 @@ public class ShopManager : MonoBehaviour
     [SerializeField] protected float resetTimer;
     [SerializeField] protected bool resetFlag;
 
-    private void Awake()
-    {
-  
-    }
-
     protected virtual void Start()
     {
+
         GetSlots();
         resetTimer = timerLength;
         foreach (var item in shopItems)
@@ -55,13 +51,6 @@ public class ShopManager : MonoBehaviour
         else { resetTimer = timerLength; resetFlag = true; }
     }
 
-    public void InteractWithShop()
-    {
 
-    }
 
-    protected void ExitShop()
-    {
-
-    }
 }
