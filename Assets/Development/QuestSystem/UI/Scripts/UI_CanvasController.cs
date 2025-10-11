@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class UI_CanvasController : MonoBehaviour
@@ -59,7 +61,14 @@ public class UI_CanvasController : MonoBehaviour
     [Header("ShopUI")]
     [SerializeField] private ShopConfirmUI shopUICanvas;
     public ShopConfirmUI activeShopCanvas;
-    public ShopLocation shopLocationRef; 
+    public ShopLocation shopLocationRef;
+    [Header("MainMenu")]
+    [SerializeField] private UI_MainMenu mainMenuCanvas;
+    public UI_MainMenu activeMainMenu;
+    [Header("PauseMenu")]
+    [SerializeField] private UI_PauseMenu pauseMenuCanvas;
+    public UI_PauseMenu activePauseMenu;
+
 
     //cursor on
     public void ShowPlayerCursor()
@@ -349,8 +358,8 @@ public class UI_CanvasController : MonoBehaviour
     public void OpenShopUI(ShopItem item)
     {
         activeShopCanvas = Instantiate(shopUICanvas);
-        activeShopCanvas.shopLocation = shopLocationRef;
         activeShopCanvas.currentItem = item;
+        activeShopCanvas.canvasController = this;
         ShowPlayerCursor();
     }
 
@@ -362,6 +371,16 @@ public class UI_CanvasController : MonoBehaviour
             activeShopCanvas = null;
             HidePlayerCursor();
         }
+    }
+
+    public void PauseGame()
+    {
+
+    }
+
+    public void ResumeGame()
+    {
+
     }
 
 }
