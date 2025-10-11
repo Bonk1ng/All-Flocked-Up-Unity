@@ -7,6 +7,9 @@ public class ShopLocation : ShopManager
     [SerializeField] protected Dictionary<GameObject, int> currentItemList = new();
     [SerializeField] protected List<ShopItem> items = new();
     [SerializeField] private UI_CanvasController canvasController;
+    [SerializeField] private PlayerWingventory inventoryRef;
+    public ShopItem currentBoughtItem;
+
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -15,6 +18,7 @@ public class ShopLocation : ShopManager
         base.Start();
         SpawnItemsInSlots();
         canvasController = FindFirstObjectByType<UI_CanvasController>();
+        inventoryRef = FindFirstObjectByType<PlayerWingventory>();
     }
 
     // Update is called once per frame
@@ -45,10 +49,10 @@ public class ShopLocation : ShopManager
         {
             if (slot.GetComponent<BoxCollider>() == interacted)
             {
-                var item = items[index];
-                Debug.Log(item);
+                currentBoughtItem = items[index];
+                Debug.Log(currentBoughtItem);
                 Debug.Log(items[index]);
-                canvasController.OpenShopUI(item);
+                canvasController.OpenShopUI(currentBoughtItem);
                 canvasController.shopLocationRef = this.GetComponent<ShopLocation>(); 
             }
             index++;
@@ -73,9 +77,9 @@ public class ShopLocation : ShopManager
 
     }
 
-    public void BuyAndRemoveItem()
+    public void BuyAndRemoveItem(ShopItem item)
     {
-
+        inventoryRef.inventory.Add(item.gameObject,1);
     }
 
 

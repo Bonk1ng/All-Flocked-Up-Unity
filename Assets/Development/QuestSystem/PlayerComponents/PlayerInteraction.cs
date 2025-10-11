@@ -115,6 +115,16 @@ public class PlayerInteraction : MonoBehaviour
             else canvasController.CloseWingventory();
         }
 
+        else if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (canvasController.activePauseMenu == null)
+            {
+                Debug.Log("QuestLog Opened?");
+                canvasController.PauseGame();
+            }
+            else canvasController.ResumeGame();
+        }
+
 
     }
 }

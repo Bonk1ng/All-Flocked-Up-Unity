@@ -11,6 +11,8 @@ public class ShopManager : MonoBehaviour
     [SerializeField] protected float timerLength;
     [SerializeField] protected float resetTimer;
     [SerializeField] protected bool resetFlag;
+    [SerializeField] protected GameObject edgarPrefab;
+    [SerializeField] protected Transform edgarTransform;
 
     protected virtual void Start()
     {
@@ -21,6 +23,7 @@ public class ShopManager : MonoBehaviour
         {
             itemDictionary = shopItems.ToDictionary(item => item.gameObject, item => item.cost);
         }
+        SpawnEdgar();
 
     }
 
@@ -49,6 +52,12 @@ public class ShopManager : MonoBehaviour
             resetFlag = false;
         }
         else { resetTimer = timerLength; resetFlag = true; }
+    }
+
+    protected void SpawnEdgar()
+    {
+        var edgar = Instantiate(edgarPrefab);
+        edgar.transform.position = edgarTransform.position;
     }
 
 
