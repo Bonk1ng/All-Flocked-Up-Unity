@@ -375,12 +375,25 @@ public class UI_CanvasController : MonoBehaviour
 
     public void PauseGame()
     {
-
+        if(activePauseMenu== null)
+        {
+            activePauseMenu =Instantiate(pauseMenuCanvas);
+            ShowPlayerCursor() ;
+            Time.timeScale = 0;
+            
+        }
     }
 
     public void ResumeGame()
     {
-
+        if(activePauseMenu!= null)
+        {
+            Time.timeScale = 1;
+            activePauseMenu.ClosePauseUI();
+            Destroy(activePauseMenu);
+            activePauseMenu = null;
+            HidePlayerCursor() ;
+        }
     }
 
 }

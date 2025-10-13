@@ -13,6 +13,7 @@ public class PlayerInteraction : MonoBehaviour
     public LayerMask shopLayer;
     public QuestLog questLog; // assign in Inspector
     public UI_CanvasController canvasController;
+    public bool gamePaused;
 
     void Update()
     {
@@ -115,11 +116,11 @@ public class PlayerInteraction : MonoBehaviour
             else canvasController.CloseWingventory();
         }
 
-        else if (Input.GetKeyDown(KeyCode.Escape))
+        else if (Input.GetKeyDown(KeyCode.O))
         {
-            if (canvasController.activePauseMenu == null)
+            if (!gamePaused && canvasController.activePauseMenu == null)
             {
-                Debug.Log("QuestLog Opened?");
+                Debug.Log("GamePaused?");
                 canvasController.PauseGame();
             }
             else canvasController.ResumeGame();
