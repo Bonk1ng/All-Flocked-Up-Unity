@@ -1,3 +1,5 @@
+using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,12 +23,6 @@ public class UI_PauseMenu : MonoBehaviour
         settingsButton.onClick.AddListener(OnSettingsOpen);
         controlsButton.onClick.AddListener(OnControlsOpen);
         saveQuitButton.onClick.AddListener(OnSaveAndQuit);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     protected virtual void OnSettingsOpen()
@@ -71,8 +67,13 @@ public class UI_PauseMenu : MonoBehaviour
         Destroy(this.gameObject);
     }
 
+    //update this later to save game on close.... should prompt saveconfirm/slot
     protected void OnSaveAndQuit()
     {
-
+#if UNITY_EDITOR
+UnityEditor.EditorApplication.isPlaying = false;
+#else        
+Application.Quit();
+#endif
     }
 }

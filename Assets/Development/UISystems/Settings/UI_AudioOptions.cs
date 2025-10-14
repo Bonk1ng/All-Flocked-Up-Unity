@@ -1,3 +1,4 @@
+using FMODUnity;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,21 +16,17 @@ public class UI_AudioOptions : UI_SettingsMenu
     [SerializeField] private TextMeshProUGUI dialogueVolText;
     [SerializeField] private Toggle focusMuteToggle;
     [SerializeField] private TMP_Dropdown outputDropdown;
+    [SerializeField] private FMODEventMixerBehaviour mixerRef;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     protected void OnMainVolChanged(float value)
     {
-
+        mixerRef.volume = value;
     }
 
     protected void SetMainVol()

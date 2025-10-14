@@ -31,11 +31,6 @@ public class UI_SettingsMenu : UI_PauseMenu
         accessBackButton.onClick.AddListener(OpenAccessOptions);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     protected new void OnSettingsOpen()
     {
