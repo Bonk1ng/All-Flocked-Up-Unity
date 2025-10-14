@@ -1,6 +1,10 @@
+using NUnit.Framework;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Utilities;
 
 public class UI_ControlsMenu : UI_PauseMenu
 {
@@ -14,8 +18,15 @@ public class UI_ControlsMenu : UI_PauseMenu
     [SerializeField] private RectTransform remapBox;
     [SerializeField] private Button confirmRemapButton;
     [SerializeField] private Button cancelRemapButton;
-    [SerializeField] private TMP_Dropdown ControlImageDropdown;
+    [SerializeField] private TMP_Dropdown controlImageDropdown;
+    [SerializeField] private Image controlImage;
+    [SerializeField] private Sprite keyboardImage;
+    [SerializeField] private Sprite gamepadImage;
     [SerializeField] private Button rebindButton;
+    [Header("Keybinds")]
+    [SerializeField] private Transform keybindContainer;
+    [SerializeField] private GameObject keybindBoxPrefab;
+    [SerializeField] private InputActionAsset inputActions;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -23,12 +34,41 @@ public class UI_ControlsMenu : UI_PauseMenu
         confirmRemapButton.onClick.AddListener(ConfirmRemap);
         cancelRemapButton.onClick.AddListener(CancelRemap);
         rebindButton.onClick.AddListener(OpenRemap);
+        InitControlImageDD();
+        InitKeybindBox();
+        InitMouseSensSlider();
+        InitControllerSensSlider();
     }
 
-    // Update is called once per frame
-    void Update()
+
+    protected void InitMouseSensSlider()
     {
-        
+
+    }
+
+    protected void OnMouseSensChanged()
+    {
+
+    }
+
+    protected void ApplyMouseSens()
+    {
+
+    }
+
+    protected void InitControllerSensSlider()
+    {
+
+    }
+
+    protected void OnControllerSensChanged()
+    {
+
+    }
+
+    protected void ApplyControllerSens()
+    {
+
     }
 
     protected new void OnControlsOpen()
@@ -38,16 +78,90 @@ public class UI_ControlsMenu : UI_PauseMenu
 
     protected void ConfirmRemap()
     {
-
+        remapParent.SetActive(false);
     }
 
     protected void CancelRemap()
     {
-
+        remapParent.SetActive(false);
     }
 
     protected void OpenRemap()
     {
+        remapParent.SetActive(true);
+    }
 
+    protected void InitControlImageDD()
+    {
+        controlImageDropdown.ClearOptions();
+        var options = new List<string>
+        {
+            "Keyboard/Mouse",
+            "Gamepad"
+        };
+        controlImageDropdown.AddOptions(options);
+        int index = PlayerPrefs.GetInt("ControlImage");
+        controlImageDropdown.value = index;
+        controlImageDropdown.RefreshShownValue();
+
+        SetControlImage(index);
+        PlayerPrefs.SetInt("ControlImage",index);
+        PlayerPrefs.Save();
+
+        controlImageDropdown.onValueChanged.AddListener(OnControlImageChanged);
+    }
+
+    protected void OnControlImageChanged(int index)
+    {
+        switch (index)
+        {
+            case 0:SetControlImage(0); break;
+            case 1:SetControlImage(1); break;
+        }
+    }
+
+    protected void SetControlImage(int index)
+    {
+        if (index == 0)
+        {
+            controlImage.sprite = keyboardImage;
+        }
+        else { controlImage.sprite = gamepadImage; }
+    }
+
+    protected Dictionary<string,string> GetAllKeybinds(InputActionAsset inputActions)
+    {
+       var keybinds = new Dictionary<string,string>();
+        foreach(var map in inputActions.actionMaps) 
+        {
+            foreach(var action in map)
+            {
+                foreach(var binding in action.bindings)
+                {
+                    if(binding.isComposite || binding.isPartOfComposite)
+                    {
+                        keybinds[action.name] = binding.ToDisplayString();
+                    }
+                }
+            }
+        }
+        return keybinds;
+    }
+
+    protected void InitKeybindBox()
+    {
+        var keybinds = GetAllKeybinds(inputActions);
+        foreach (Transform child in keybindContainer)
+        {
+            Destroy(child.gameObject);
+        }
+        foreach(var bind in keybinds)
+        {
+            var box = Instantiate(keybindBoxPrefab, keybindContainer);
+            var texts = box.GetComponentInChildren<TextMeshProUGUI>();
+            //texts[0].SetText(key.Key);
+           // texts[1].SetText(key.Value);
+
+        }
     }
 }

@@ -47,7 +47,7 @@ public class UI_CanvasController : MonoBehaviour
     public UI_RaceGiver raceGiverInstance;
     [SerializeField] private UI_RaceReward raceRewardCanvas;
     public UI_RaceReward raceRewardInstance;
-    public Dictionary<GameObject, float> standings = new Dictionary<GameObject, float>();
+    public Dictionary<GameObject, float> standings = new();
     [SerializeField] private UI_RaceFail raceFailCanvas;
     public UI_RaceFail raceFailInstance;
     [SerializeField] private UI_RaceCountdown raceCountdownCanvas;

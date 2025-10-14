@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UI_MainMenu : MonoBehaviour
 {
@@ -6,20 +7,14 @@ public class UI_MainMenu : MonoBehaviour
     [SerializeField] private GameObject mainCanvas;
     [SerializeField] private GameObject settingsCanvas;
     [SerializeField] private GameObject controlsCanvas;
-    [SerializeField] private bool settingsOpen=>OnSettingsOpen();
-    [SerializeField] private bool controlsOpen=>OnControlsOpen();
+    private bool settingsOpen=>OnSettingsOpen();
+    private bool controlsOpen=>OnControlsOpen();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         mainCanvas.SetActive(true);
         settingsCanvas.SetActive(false);
         controlsCanvas.SetActive(false);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     protected bool OnSettingsOpen()
@@ -52,5 +47,29 @@ public class UI_MainMenu : MonoBehaviour
             controlsCanvas.SetActive(false);
             return false;
         }
+    }
+    //maybe link to a game manager/event manager... could help for starting
+    protected void StartNewGame()
+    {
+        Destroy(this.gameObject);
+    }
+
+    protected void CheckForSavedGame()
+    {
+
+    }
+
+    protected void LoadGame()
+    {
+
+    }
+
+    protected void QuitGame()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else        
+Application.Quit();
+#endif
     }
 }
