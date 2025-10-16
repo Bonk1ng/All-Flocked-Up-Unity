@@ -138,10 +138,9 @@ public class UI_ControlsMenu : UI_PauseMenu
             {
                 foreach(var binding in action.bindings)
                 {
-                    if(binding.isComposite || binding.isPartOfComposite)
-                    {
+
                         keybinds[action.name] = binding.ToDisplayString();
-                    }
+                    
                 }
             }
         }
@@ -150,6 +149,7 @@ public class UI_ControlsMenu : UI_PauseMenu
 
     protected void InitKeybindBox()
     {
+        var offset = 100;
         var keybinds = GetAllKeybinds(inputActions);
         foreach (Transform child in keybindContainer)
         {
@@ -158,9 +158,10 @@ public class UI_ControlsMenu : UI_PauseMenu
         foreach(var bind in keybinds)
         {
             var box = Instantiate(keybindBoxPrefab, keybindContainer);
-            var texts = box.GetComponentInChildren<TextMeshProUGUI>();
-            //texts[0].SetText(key.Key);
-           // texts[1].SetText(key.Value);
+            var button = box.GetComponent<UI_RemapButton>();
+            button.actionText.SetText(bind.Key);
+            button.keyText.SetText(bind.Value);
+            box.transform.localPosition += new Vector3(0, offset, 0);
 
         }
     }

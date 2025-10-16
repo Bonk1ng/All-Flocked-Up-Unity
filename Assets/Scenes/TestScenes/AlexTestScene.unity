@@ -6332,6 +6332,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: MainMenuPrefab
       objectReference: {fileID: 0}
+    - target: {fileID: 3875358890247477771, guid: e41ea0bea3ce8d54b90793a8209cf593, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4534867404627214810, guid: e41ea0bea3ce8d54b90793a8209cf593, type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 5549085539161988247, guid: e41ea0bea3ce8d54b90793a8209cf593, type: 3}
       propertyPath: m_LocalPosition.x
       value: 960
@@ -8051,6 +8059,14 @@ PrefabInstance:
       propertyPath: respawnTarget
       value: 
       objectReference: {fileID: 1785255402}
+    - target: {fileID: 8524410934233700579, guid: 12e22784bd499694aa434fb0359fcf83, type: 3}
+      propertyPath: field of view
+      value: 81.20259
+      objectReference: {fileID: 0}
+    - target: {fileID: 8524410934233700579, guid: 12e22784bd499694aa434fb0359fcf83, type: 3}
+      propertyPath: m_FocalLength
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 8524410934233700579, guid: 12e22784bd499694aa434fb0359fcf83, type: 3}
       propertyPath: m_projectionMatrixMode
       value: 2
