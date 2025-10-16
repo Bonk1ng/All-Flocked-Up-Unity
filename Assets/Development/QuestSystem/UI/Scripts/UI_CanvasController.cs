@@ -65,11 +65,15 @@ public class UI_CanvasController : MonoBehaviour
     [Header("MainMenu")]
     [SerializeField] private UI_MainMenu mainMenuCanvas;
     public UI_MainMenu activeMainMenu;
+    public Transform mainMenuSpawnPoint;
     [Header("PauseMenu")]
     [SerializeField] private UI_PauseMenu pauseMenuCanvas;
     public UI_PauseMenu activePauseMenu;
 
-
+    private void Start()
+    {
+        SpawnMainMenu();
+    }
     //cursor on
     public void ShowPlayerCursor()
     {
@@ -393,6 +397,27 @@ public class UI_CanvasController : MonoBehaviour
             Destroy(activePauseMenu);
             activePauseMenu = null;
             HidePlayerCursor() ;
+        }
+    }
+
+    public void SpawnMainMenu()
+    {
+        if (activeMainMenu == null)
+        {
+            activeMainMenu = Instantiate(mainMenuCanvas,mainMenuSpawnPoint);
+            ShowPlayerCursor();
+            Debug.Log("Spawned");
+        }
+        Debug.Log("Called");
+    }
+
+    public void DestroyMainMenu()
+    {
+        if(activeMainMenu != null)
+        {
+            Destroy(activeMainMenu);
+            activeMainMenu = null;
+            HidePlayerCursor();
         }
     }
 
