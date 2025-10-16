@@ -13,6 +13,7 @@ TagManager:
   - Race
   - Vehicle
   - Traffic
+  - Human
   layers:
   - Default
   - TransparentFX
