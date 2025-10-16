@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
+using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 
 public class UI_ControlsMenu : UI_PauseMenu
 {
@@ -27,6 +29,10 @@ public class UI_ControlsMenu : UI_PauseMenu
     [SerializeField] private Transform keybindContainer;
     [SerializeField] private GameObject keybindBoxPrefab;
     [SerializeField] private InputActionAsset inputActions;
+    [SerializeField] private GameObject rebindNotifPrefab;
+    [SerializeField] private GameObject currentNotif;
+    [SerializeField] private bool isRebinding = false;
+    [SerializeField] private string currentAction = " ";
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -38,6 +44,11 @@ public class UI_ControlsMenu : UI_PauseMenu
         InitKeybindBox();
         InitMouseSensSlider();
         InitControllerSensSlider();
+    }
+
+    private void Update()
+    {
+        DetectKeypress();        
     }
 
 
@@ -139,8 +150,12 @@ public class UI_ControlsMenu : UI_PauseMenu
                 foreach(var binding in action.bindings)
                 {
 
-                        keybinds[action.name] = binding.ToDisplayString();
-                    
+                    if (!binding.isComposite && !string.IsNullOrEmpty(binding.path))
+                    {
+                        string display = binding.ToDisplayString();
+                        keybinds[action.name] = display;
+                        break;
+                    }
                 }
             }
         }
@@ -149,7 +164,6 @@ public class UI_ControlsMenu : UI_PauseMenu
 
     protected void InitKeybindBox()
     {
-        var offset = 100;
         var keybinds = GetAllKeybinds(inputActions);
         foreach (Transform child in keybindContainer)
         {
@@ -161,8 +175,58 @@ public class UI_ControlsMenu : UI_PauseMenu
             var button = box.GetComponent<UI_RemapButton>();
             button.actionText.SetText(bind.Key);
             button.keyText.SetText(bind.Value);
-            box.transform.localPosition += new Vector3(0, offset, 0);
+            button.controlsRef = this;
 
         }
+    }
+
+    public void CheckForRebindPressed(string action)
+    {
+        if (isRebinding) return;
+        currentAction = action;
+        ShowRebindNotif(action);
+        isRebinding = true;
+    }
+
+    protected void ShowRebindNotif(string action)
+    {
+        currentNotif = Instantiate(rebindNotifPrefab,remapParent.transform);
+        var rebind = currentNotif.GetComponent<UI_RebindNotif>();
+        rebind.actionText.SetText(action);
+        rebind.newKeyText.SetText("Press any key...");
+    }
+
+    protected void UpdateNotif(string key)
+    {
+        if(currentNotif == null) return;
+        var rebind = currentNotif.GetComponent<UI_RebindNotif>();
+        rebind.newKeyText.SetText(key);
+        Task.Delay(2000);
+        Destroy(currentNotif.gameObject);
+    }
+
+    protected void DetectKeypress()
+    {
+        if (!isRebinding) return;
+        if (Keyboard.current.anyKey.wasPressedThisFrame)
+        {
+            foreach (var key in Keyboard.current.allKeys)
+            {
+                if (key.wasPressedThisFrame)
+                {
+                    string keyName = key.displayName;
+                    ApplyKeybind(keyName);
+                    break;
+                }
+            }
+        }
+    }
+
+    protected void ApplyKeybind(string keyName)
+    {
+        UpdateNotif(keyName);
+        //PlayerPrefs.SetString(currentAction + " Key", keyName);
+        //PlayerPrefs.Save();
+        isRebinding = false;
     }
 }
