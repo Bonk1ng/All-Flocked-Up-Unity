@@ -1,57 +1,76 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class UI_MainMenu : MonoBehaviour
 {
-
+    [SerializeField] private UI_CanvasController canvasController;
     [SerializeField] private GameObject mainCanvas;
     [SerializeField] private GameObject settingsCanvas;
     [SerializeField] private GameObject controlsCanvas;
-    private bool settingsOpen=>OnSettingsOpen();
-    private bool controlsOpen=>OnControlsOpen();
+    [SerializeField] private Button startButton;
+    [SerializeField] private Button loadButton;
+    [SerializeField] private Button settingsButton;
+    [SerializeField] private Button controlsButton;
+    [SerializeField] private Button quitButton;
+    private bool settingsOpen;
+    private bool controlsOpen;
+    private GameObject playerRef;
+    [SerializeField] private Transform playerSpawnPoint;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         mainCanvas.SetActive(true);
         settingsCanvas.SetActive(false);
         controlsCanvas.SetActive(false);
+        startButton.onClick.AddListener(StartNewGame);
+        loadButton.onClick.AddListener(CheckForSavedGame);
+        settingsButton.onClick.AddListener(OnSettingsOpen);
+        controlsButton.onClick.AddListener(OnControlsOpen);
+        quitButton.onClick.AddListener(QuitGame);
+        canvasController = FindFirstObjectByType<UI_CanvasController>();
+        playerRef = FindFirstObjectByType<PlayerFlightMovement>().gameObject;
+        playerRef.transform.position = playerSpawnPoint.transform.position;
+        playerRef.transform.rotation  = playerSpawnPoint.transform.rotation;
     }
 
-    protected bool OnSettingsOpen()
+    protected void OnSettingsOpen()
     {
         if (settingsCanvas == null)
         {
             mainCanvas.SetActive(false);
             settingsCanvas.SetActive(true);
-            return true;
+            settingsOpen = true;
+  
         }
         else
         {
             mainCanvas.SetActive(!settingsOpen);
             settingsCanvas.SetActive(false);
-            return false;
+            settingsOpen = false;
         }
     }
 
-    protected bool OnControlsOpen()
+    protected void OnControlsOpen()
     {
         if (controlsCanvas == null)
         {
             mainCanvas.SetActive(false);
             controlsCanvas.SetActive(true);
-            return true;
+            controlsOpen = true;
         }
         else
         {
             mainCanvas.SetActive(!controlsOpen);
             controlsCanvas.SetActive(false);
-            return false;
+            controlsOpen= false;
         }
     }
-    //maybe link to a game manager/event manager... could help for starting
+
     protected void StartNewGame()
     {
         Destroy(this.gameObject);
+        canvasController.DestroyMainMenu();
     }
 
     protected void CheckForSavedGame()
