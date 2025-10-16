@@ -6334,7 +6334,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3875358890247477771, guid: e41ea0bea3ce8d54b90793a8209cf593, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4534867404627214810, guid: e41ea0bea3ce8d54b90793a8209cf593, type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
@@ -6882,10 +6882,6 @@ PrefabInstance:
     - target: {fileID: 4138462709808246638, guid: 2de4f8f46be578641b95ab584560d46a, type: 3}
       propertyPath: m_Name
       value: PauseMenuPrefab
-      objectReference: {fileID: 0}
-    - target: {fileID: 4138462709808246638, guid: 2de4f8f46be578641b95ab584560d46a, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
