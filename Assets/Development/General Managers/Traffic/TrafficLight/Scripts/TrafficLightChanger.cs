@@ -86,20 +86,17 @@ public class TrafficLightChanger : MonoBehaviour
             case ETrafficLightState.Green:
                 currentState = new GreenState(this);
                 ChangeLightColor("Green");
-                Debug.Log("LightColorChangedGreen");
                 redLightStop = false;
                 trigger.redLightBox.enabled = false;
                 break;
             case ETrafficLightState.Yellow:
                 currentState = new YellowState(this);
                 ChangeLightColor("Yellow");
-                Debug.Log("LightColorChangedYellow");
                 trigger.redLightBox.enabled = false;
                 break;
             case ETrafficLightState.Red:
                 currentState = new RedState(this);
                 ChangeLightColor("Red");
-                Debug.Log("LightColorChangedRed");
                 redLightStop = true;
                 trigger.redLightBox.enabled = true;
                 break;

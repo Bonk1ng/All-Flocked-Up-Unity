@@ -81,6 +81,6 @@ public class SaveSlotManager
     public static string GetSlotPath(int slot)
     {
         string basePath = Application.persistentDataPath + "/Saves/";
-        return Path.Combine(basePath, $"SaveSlot_{slot}.json");
+        return Path.Combine(basePath, $"SaveSlot_{slot}.dat");
     }
 }

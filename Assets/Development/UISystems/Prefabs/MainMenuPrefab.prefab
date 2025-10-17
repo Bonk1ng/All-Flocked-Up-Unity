@@ -6826,6 +6826,8 @@ MonoBehaviour:
   saveQuitButton: {fileID: 0}
   settingsOpen: 0
   controlsOpen: 0
+  saveWindowPrefab: {fileID: 0}
+  currentSaveWindow: {fileID: 0}
   closeControlsButton: {fileID: 6680504825147023437}
   mouseSensSlider: {fileID: 847095726977939210}
   meshSensText: {fileID: 643248222354079731}
@@ -7694,6 +7696,8 @@ MonoBehaviour:
   saveQuitButton: {fileID: 0}
   settingsOpen: 0
   controlsOpen: 0
+  saveWindowPrefab: {fileID: 0}
+  currentSaveWindow: {fileID: 0}
   closeSettingsButton: {fileID: 0}
   videoButton: {fileID: 0}
   videoBackButton: {fileID: 0}
@@ -11745,6 +11749,8 @@ MonoBehaviour:
   controlsButton: {fileID: 730647625372103014}
   quitButton: {fileID: 7404545036216809049}
   playerSpawnPoint: {fileID: 667508157962814232}
+  saveWindowPrefab: {fileID: 7828307387324049543, guid: b2df90bb95c7666468d3bf625b37d722, type: 3}
+  currentSaveWindow: {fileID: 0}
 --- !u!1 &3890110968644765622
 GameObject:
   m_ObjectHideFlags: 0
@@ -13473,6 +13479,8 @@ MonoBehaviour:
   saveQuitButton: {fileID: 0}
   settingsOpen: 0
   controlsOpen: 0
+  saveWindowPrefab: {fileID: 0}
+  currentSaveWindow: {fileID: 0}
   closeSettingsButton: {fileID: 0}
   videoButton: {fileID: 0}
   videoBackButton: {fileID: 0}
@@ -20880,6 +20888,8 @@ MonoBehaviour:
   saveQuitButton: {fileID: 0}
   settingsOpen: 0
   controlsOpen: 0
+  saveWindowPrefab: {fileID: 0}
+  currentSaveWindow: {fileID: 0}
   closeSettingsButton: {fileID: 0}
   videoButton: {fileID: 0}
   videoBackButton: {fileID: 0}
@@ -22938,6 +22948,8 @@ MonoBehaviour:
   saveQuitButton: {fileID: 0}
   settingsOpen: 0
   controlsOpen: 0
+  saveWindowPrefab: {fileID: 0}
+  currentSaveWindow: {fileID: 0}
   closeSettingsButton: {fileID: 5208142269328374725}
   videoButton: {fileID: 3318306632158235209}
   videoBackButton: {fileID: 4521872237972751779}
