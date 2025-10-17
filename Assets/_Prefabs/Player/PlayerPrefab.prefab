@@ -715,6 +715,9 @@ PrefabInstance:
       addedObject: {fileID: 5682136442268613181}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 4441602835408521351}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 4585154954453579094}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
       insertIndex: -1
@@ -794,6 +797,7 @@ MonoBehaviour:
     m_Bits: 8388608
   questLog: {fileID: 5256277540902806047}
   canvasController: {fileID: 0}
+  gamePaused: 0
 --- !u!114 &5360852943576176621
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -938,6 +942,28 @@ MonoBehaviour:
   headSlot: {fileID: 8988307341082137951}
   neckSlot: {fileID: 1590545607276878289}
   monocleSlot: {fileID: 2272326430613247002}
+--- !u!114 &4441602835408521351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608166696854051247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 903be37ec4ee7ae4283df8f9b8ac2261, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  saveData:
+    version: 
+    playerName: 
+    level: 0
+    health: 0
+    position: {x: 0, y: 0, z: 0}
+    trinkets: 0
+  saveSlot: 0
+  maxTime: 60
+  timer: 60
 --- !u!54 &4585154954453579094
 Rigidbody:
   m_ObjectHideFlags: 0
