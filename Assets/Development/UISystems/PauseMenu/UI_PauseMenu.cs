@@ -14,6 +14,7 @@ public class UI_PauseMenu : MonoBehaviour
     [SerializeField] protected bool settingsOpen;
     [SerializeField] protected bool controlsOpen;
     [SerializeField] protected GameObject saveWindowPrefab;
+    [SerializeField] protected GameObject currentSaveWindow;
 
 
 
@@ -76,7 +77,12 @@ public class UI_PauseMenu : MonoBehaviour
         //SaveData data = new SaveData();
         //SaveSlotManager.SaveToSlot(0, data, true);
 
-        Instantiate(saveWindowPrefab,mainCanvas.gameObject.transform);
+        currentSaveWindow = Instantiate(saveWindowPrefab,mainCanvas.gameObject.transform);
+        var comp = currentSaveWindow.GetComponent<UI_SaveWindow>();
+        comp.isQuitting = true;
+        
 
     }
+
+
 }

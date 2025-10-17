@@ -51,4 +51,9 @@ public class PlayerSaveLoadHandler : MonoBehaviour
         saveData = loaded;
         Debug.Log($"Loaded player from slot {saveSlot}");
     }
+
+    public void ApplyLoadedData()
+    {
+
+    }
 }

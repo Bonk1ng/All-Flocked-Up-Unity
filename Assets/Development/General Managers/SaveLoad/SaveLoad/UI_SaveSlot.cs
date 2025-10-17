@@ -1,3 +1,5 @@
+using System;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,8 +15,10 @@ public class UI_SaveSlot : MonoBehaviour
     public Button saveLoadButton;
 
     private SaveSlotInfo slotInfo;
-    private UI_SaveWindow saveWindow;
+    public UI_SaveWindow saveWindow;
     public bool isSaving;
+
+
 
     private void CheckSaveLoad()
     {
@@ -31,42 +35,70 @@ public class UI_SaveSlot : MonoBehaviour
         saveWindow = window;
         isSaving = saving;
 
-        UpdateSlotUI();
+        if (slotInfo.exists)
+            UpdateSlotUI(slotInfo.playerName, slotInfo.lastSaved.ToString("g"));
+        else
+            UpdateSlotUI("Empty Slot", "--/--/--");
 
-        saveLoadButton.onClick.AddListener(() =>
+    }
+
+    private void Start()
+    {
+        if (isSaving)
         {
-            if (isSaving && slotInfo.exists)
-            {
-                // Confirm overwrite
-                saveWindow.OpenConfirmWindow(this);
-            }
-            else
-            {
-                CheckSaveLoad();
-            }
-        });
+            playerNameText.text = slotInfo.exists ? slotInfo.playerName : "Empty Slot";
+            lastSaveText.text = slotInfo.exists ? slotInfo.lastSaved.ToString() : "--/--/--";
+        }
+        else
+        {
+            playerNameText.text = slotInfo.exists ? slotInfo.playerName : "Empty Slot";
+            lastSaveText.text = slotInfo.exists ? slotInfo.lastSaved.ToString() : "--/--/--";
+        }
     }
     private void GetSlot()
     {
 
     }
 
-    private void CallSave()
+    public void CallSave()
     {
         SaveData data = FindFirstObjectByType<PlayerSaveLoadHandler>().saveData;
         SaveSlotManager.SaveToSlot(slotInfo.slotIndex, data, true);
-        UpdateSlotUI();
+        UpdateSlotUI(data.playerName,data.lastSaved.ToString());
+        Debug.Log("SaveButtonPressed");
+        saveWindow.DestroyWindow();
     }
 
-    private void CallLoad()
+    public void CallLoad()
     {
-        SaveData loadedData = SaveSlotManager.LoadFromSlot(slotInfo.slotIndex, true);
+        {
+            Debug.Log("ButtonPressed");
+
+            SaveData loadedData = SaveSlotManager.LoadFromSlot(slotInfo.slotIndex, true);
+            Debug.Log(loadedData);
+            if (loadedData != null)
+            {
+                Debug.Log("SlotFound");
+                var handler = FindFirstObjectByType<PlayerSaveLoadHandler>();
+                handler.saveData = loadedData;
+                handler.ApplyLoadedData(); 
+
+                saveWindow.DestroyWindow();
+                Debug.Log("SlotLoaded");
+            }
+            else
+            {
+                Debug.LogWarning($"No save found for slot {slotInfo.slotIndex}");
+            }
+        }
     }
 
-    private void UpdateSlotUI()
+    private void UpdateSlotUI(string name, string time)
     {
-        playerNameText.text = slotInfo.exists ? slotInfo.playerName : "Empty Slot";
-        lastSaveText.text = slotInfo.exists ? slotInfo.lastSaved.ToString() : "--/--/--";
+        playerNameText.text = name;
+        lastSaveText.text = time;
     }
+
+
 
 }

@@ -7,13 +7,15 @@ using UnityEngine;
 
 public static class SaveLoadBase
 {
-    private static string basePath = Application.persistentDataPath + "/Saves/";
+    private static string basePath = "";
     private static string encryptionKey = "ChangeThisKeyToSomethingSecure123!"; 
     public static string currentVersion = "1.0.0";
 
 
+
     public static void Save(SaveData data, int slot = 0, bool encrypt = false)
     {
+        basePath = Application.persistentDataPath + "/Saves/";
         if (!Directory.Exists(basePath))
             Directory.CreateDirectory(basePath);
 
@@ -72,6 +74,7 @@ public static class SaveLoadBase
 
     public static string[] GetAllSaves()
     {
+        basePath = Application.persistentDataPath + "/Saves/";
         if (!Directory.Exists(basePath)) return Array.Empty<string>();
         return Directory.GetFiles(basePath, "SaveSlot_*.dat");
     }
