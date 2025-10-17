@@ -13,6 +13,8 @@ public class UI_PauseMenu : MonoBehaviour
     [SerializeField] protected Button saveQuitButton;
     [SerializeField] protected bool settingsOpen;
     [SerializeField] protected bool controlsOpen;
+    [SerializeField] protected GameObject saveWindowPrefab;
+
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -70,12 +72,11 @@ public class UI_PauseMenu : MonoBehaviour
     //update this later to save game on close.... should prompt saveconfirm/slot
     protected void OnSaveAndQuit()
     {
-        SaveData data = new SaveData();
-        SaveSlotManager.SaveToSlot(0, data, true);
-#if UNITY_EDITOR
-UnityEditor.EditorApplication.isPlaying = false;
-#else        
-Application.Quit();
-#endif
+        //for testing slots
+        //SaveData data = new SaveData();
+        //SaveSlotManager.SaveToSlot(0, data, true);
+
+        Instantiate(saveWindowPrefab,mainCanvas.gameObject.transform);
+
     }
 }
