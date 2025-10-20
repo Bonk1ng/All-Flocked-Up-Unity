@@ -302,7 +302,6 @@ public class PlayerGroundMovement : MonoBehaviour
             if (!Physics.Raycast(stepRayUpper.transform.position, transform.TransformDirection(Vector3.forward), out hitUpper, stepCastDistance))
             {
                 playerBody.position -= new Vector3(0f, -stepSmoothing * Time.deltaTime, 0f);
-                hitUpper.game
             }
         }
 
