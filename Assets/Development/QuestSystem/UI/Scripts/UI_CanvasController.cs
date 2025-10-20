@@ -69,6 +69,12 @@ public class UI_CanvasController : MonoBehaviour
     [Header("PauseMenu")]
     [SerializeField] private UI_PauseMenu pauseMenuCanvas;
     public UI_PauseMenu activePauseMenu;
+    [Header("BugReporter")]
+    [SerializeField] private UI_BugReporter bugReporterCanvas;
+    public UI_BugReporter activeBugReporter;
+    [Header("DebugMenu")]
+    [SerializeField] private UI_DebugMenu debugMenuCanvas;
+    public UI_DebugMenu activeDebugMenu;
 
     private void Start()
     {
@@ -417,6 +423,46 @@ public class UI_CanvasController : MonoBehaviour
         {
             Destroy(activeMainMenu);
             activeMainMenu = null;
+            HidePlayerCursor();
+        }
+    }
+
+    public void OpenBugReporter()
+    {
+        if (activeBugReporter == null)
+        {
+            activeBugReporter = Instantiate(bugReporterCanvas);
+            ShowPlayerCursor();
+            Time.timeScale = 0;
+        }
+    }
+
+    public void CloseBugReporter()
+    {
+        if(activeBugReporter != null)
+        {
+            Destroy(activeBugReporter);
+            activeBugReporter = null;
+            HidePlayerCursor();
+            Time.timeScale = 1;
+        }
+    }
+
+    public void OpenDebugMenu()
+    {
+        if(activeDebugMenu == null)
+        {
+            activeDebugMenu = Instantiate(debugMenuCanvas);
+            ShowPlayerCursor();
+        }
+    }
+
+    public void CloseDebugMenu()
+    {
+        if(activeDebugMenu != null)
+        {
+            Destroy(activeDebugMenu);
+            activeDebugMenu = null;
             HidePlayerCursor();
         }
     }
