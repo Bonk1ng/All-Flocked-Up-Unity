@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SteamInit : MonoBehaviour
 {
-    private static SteamManager instance;
+    private static SteamInit instance;
     private static bool isInitialized = false;
 
     public static bool Initialized => isInitialized;
