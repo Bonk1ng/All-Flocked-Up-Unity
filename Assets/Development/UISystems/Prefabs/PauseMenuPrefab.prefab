@@ -4576,6 +4576,7 @@ MonoBehaviour:
   settingsOpen: 0
   controlsOpen: 0
   saveWindowPrefab: {fileID: 0}
+  currentSaveWindow: {fileID: 0}
   closeSettingsButton: {fileID: 0}
   videoButton: {fileID: 0}
   videoBackButton: {fileID: 0}
@@ -6145,7 +6146,7 @@ RectTransform:
   - {fileID: 6422638633066197633}
   - {fileID: 431780538058800491}
   - {fileID: 6817739629906336813}
-  - {fileID: 8337750687634794928}
+  - {fileID: 3305900630700129184}
   m_Father: {fileID: 2990964832267641580}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -6721,81 +6722,6 @@ MonoBehaviour:
   m_Sprite: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 0
   m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!1 &2026404756922836279
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8337750687634794928}
-  - component: {fileID: 6855735032749446654}
-  - component: {fileID: 4283187637052227201}
-  m_Layer: 5
-  m_Name: MapImage
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &8337750687634794928
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2026404756922836279}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2472445870690305250}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 349, y: 0}
-  m_SizeDelta: {x: 950, y: 800}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &6855735032749446654
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2026404756922836279}
-  m_CullTransparentMesh: 1
---- !u!114 &4283187637052227201
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2026404756922836279}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 9cb879d177139b445afda98cf110c182, type: 2}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 0
-  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -12981,6 +12907,7 @@ MonoBehaviour:
   settingsOpen: 0
   controlsOpen: 0
   saveWindowPrefab: {fileID: 7828307387324049543, guid: b2df90bb95c7666468d3bf625b37d722, type: 3}
+  currentSaveWindow: {fileID: 0}
 --- !u!1 &4180687085257710775
 GameObject:
   m_ObjectHideFlags: 0
@@ -17657,6 +17584,7 @@ MonoBehaviour:
   settingsOpen: 0
   controlsOpen: 0
   saveWindowPrefab: {fileID: 0}
+  currentSaveWindow: {fileID: 0}
   closeControlsButton: {fileID: 3064017711021695418}
   mouseSensSlider: {fileID: 4195719535610937927}
   meshSensText: {fileID: 1422287524677685970}
@@ -22072,6 +22000,7 @@ MonoBehaviour:
   settingsOpen: 0
   controlsOpen: 0
   saveWindowPrefab: {fileID: 0}
+  currentSaveWindow: {fileID: 0}
   closeSettingsButton: {fileID: 8261269767667382794}
   videoButton: {fileID: 1794968300558989504}
   videoBackButton: {fileID: 1383960364875908452}
@@ -23138,6 +23067,7 @@ MonoBehaviour:
   settingsOpen: 0
   controlsOpen: 0
   saveWindowPrefab: {fileID: 0}
+  currentSaveWindow: {fileID: 0}
   closeSettingsButton: {fileID: 0}
   videoButton: {fileID: 0}
   videoBackButton: {fileID: 0}
@@ -25611,6 +25541,7 @@ MonoBehaviour:
   settingsOpen: 0
   controlsOpen: 0
   saveWindowPrefab: {fileID: 0}
+  currentSaveWindow: {fileID: 0}
   closeSettingsButton: {fileID: 0}
   videoButton: {fileID: 0}
   videoBackButton: {fileID: 0}
@@ -27500,6 +27431,78 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &8804977952652894244
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3305900630700129184}
+  - component: {fileID: 4998902059096159968}
+  - component: {fileID: 5870339464918733009}
+  m_Layer: 5
+  m_Name: MapImage
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &3305900630700129184
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8804977952652894244}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2472445870690305250}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 409, y: 0}
+  m_SizeDelta: {x: 1000, y: 800}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &4998902059096159968
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8804977952652894244}
+  m_CullTransparentMesh: 1
+--- !u!114 &5870339464918733009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8804977952652894244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Texture: {fileID: 8400000, guid: 5c019247c2a02134daf30d9637c99c76, type: 2}
+  m_UVRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
 --- !u!1 &8865273978219281700
 GameObject:
   m_ObjectHideFlags: 0

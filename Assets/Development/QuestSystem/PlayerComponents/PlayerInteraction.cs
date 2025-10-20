@@ -126,6 +126,35 @@ public class PlayerInteraction : MonoBehaviour
             else canvasController.ResumeGame();
         }
 
+        else if (Input.GetKeyDown(KeyCode.F10))
+        {
+            if(canvasController.activeBugReporter == null)
+            {
+                canvasController.OpenBugReporter();
+                Debug.Log("BugReporterOpened");
+            }
+            else
+            {
+                canvasController.CloseBugReporter();
+                Debug.Log("BugReporterClosed");
+            }
+
+        }
+
+        else if (Input.GetKeyDown(KeyCode.F9))
+        {
+            if(canvasController.activeBugReporter == null)
+            {
+                canvasController.OpenDebugMenu();
+                Debug.Log("DebugMenuOpened");
+            }
+            else
+            {
+                canvasController.CloseDebugMenu();
+                Debug.Log("DebugMenuClosed");
+            }
+        }
+
 
     }
 }

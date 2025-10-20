@@ -75,7 +75,6 @@ public class TrafficLightChanger : MonoBehaviour
             yellowLight.SetActive(false);
             redLight.SetActive(true);
         }
-        Debug.Log("LightColorChanged");
 
     }
 
