@@ -115,7 +115,7 @@ public class AI_Dog : MonoBehaviour, I_EnemyBase
                 if (biteCooldown <= 0)
                 {
                     BitePlayer();
-                    Debug.Log("KickCalled");
+                    Debug.Log("BiteCalled");
                     biteCooldown = 3f;
                     currentState = EnemyState.Chasing;
                 }
@@ -163,27 +163,6 @@ public class AI_Dog : MonoBehaviour, I_EnemyBase
     }
 
 
-
-
-    //void Patrol()
-    //{
-    //    if (patrolPoints.Length == 0) return;
-
-    //    Vector3 targetPos = patrolPoints[currentPointIndex].position;
-    //    targetPos.y = transform.position.y;
-
-    //    transform.position = Vector3.MoveTowards(transform.position, targetPos, patrolSpeed * Time.deltaTime);
-
-    //    Vector3 dir = (targetPos - transform.position).normalized;
-    //    dir.y = 0;
-    //    if (dir != Vector3.zero)
-    //        transform.forward = dir;
-
-    //    if (Vector3.Distance(transform.position, targetPos) < 0.2f)
-    //    {
-    //        currentPointIndex = (currentPointIndex + 1) % patrolPoints.Length;
-    //    }
-    //}
     protected void StopMove()
     {
         navAgent.isStopped = true;
@@ -218,15 +197,15 @@ public class AI_Dog : MonoBehaviour, I_EnemyBase
             transform.forward = dir;
     }
 
-    protected void BitePlayer()
+    protected async void BitePlayer()
     {
 
         var spawnedCollider = biteColliderParent.AddComponent<SphereCollider>();
         var comp = spawnedCollider.AddComponent<KickComponent>();
         comp.damage = 1;
-        //animator.SetTrigger("isKicking");
+        //animator.SetTrigger("isBiting");
         biteCooldown = 3f;
-        Task.Delay(3000);
+        await Task.Delay(3000);
         Destroy(spawnedCollider);
         Destroy(comp);
     }
@@ -273,24 +252,6 @@ public class AI_Dog : MonoBehaviour, I_EnemyBase
             TakeDamage(1);
         }
     }
-    //protected virtual void CheckForCollisions()
-    //{
-    //    RaycastHit hit;
-    //    int combinedMask = trafficLayer | playerLayer | enemyLayer;
-
-    //    if (Physics.Raycast(transform.position, transform.forward, out hit, detectObjectRange, combinedMask))
-    //    {
-    //        StopVehicle();
-    //        Debug.DrawLine(transform.position, hit.point, Color.yellow);
-    //    }
-    //    else
-    //    {
-    //        if (!navAgent.isStopped)
-    //            MoveVehicleToLocation();
-    //    }
-    //}
-
-
 
     protected void ChooseNextDirection(Waypoint node)
     {
@@ -304,7 +265,11 @@ public class AI_Dog : MonoBehaviour, I_EnemyBase
             connections.Add(new WaypointConnection { node = node.nextWaypoint });
 
         }
-        else Destroy(this.gameObject);
+        else
+        {
+            FindRandomWaypoint();
+            return;
+        }
 
         int randomIndex = Random.Range(0, connections.Count);
         Waypoint nextNode = connections[randomIndex].node;
