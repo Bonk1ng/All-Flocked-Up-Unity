@@ -22,7 +22,7 @@ public class AI_Cat : MonoBehaviour, I_EnemyBase
     [SerializeField] private GameObject swatColliderParent;
     [Header("Pounce")]
     public float pounceRange = 3f;
-    public float pounceForce = 10f;
+    public Vector3 pounceForce;
     public float pounceCooldown = 3f;
     [Header("Waypoints")]
     [SerializeField] private List<Waypoint> waypoints;
@@ -30,7 +30,7 @@ public class AI_Cat : MonoBehaviour, I_EnemyBase
     public Waypoint currentNode;
     [SerializeField] private Waypoint previousNode;
     [Header("Components")]
-    [SerializeField] protected NavMeshAgent navAgent;
+    [SerializeField] protected Rigidbody rigidbodyComp;
     [SerializeField] protected Animator animator;
     [SerializeField] protected bool isHit;
     [SerializeField] protected bool isStopped;
@@ -54,6 +54,7 @@ public class AI_Cat : MonoBehaviour, I_EnemyBase
         if (swatCooldown >= 0) swatCooldown -= Time.deltaTime;
         if (pounceCooldown >= 0) pounceCooldown -= Time.deltaTime;
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
+        float distanceToNode = Vector3.Distance(transform.position, currentNode.transform.position);
 
         switch (currentState)
         {
@@ -116,7 +117,7 @@ public class AI_Cat : MonoBehaviour, I_EnemyBase
         {
             case EnemyState.Patrolling:
                 MoveCatToLocation();
-                if (navAgent.remainingDistance < 5f)
+                if (distanceToNode < 1f)
                     ChooseNextDirection(currentNode);
                 break;
             case EnemyState.Chasing:
@@ -156,6 +157,7 @@ public class AI_Cat : MonoBehaviour, I_EnemyBase
 
     }
 
+
     private void FindWaypoints()
     {
         var waypointsArray = FindObjectsByType<Waypoint>(FindObjectsSortMode.None);
@@ -182,46 +184,28 @@ public class AI_Cat : MonoBehaviour, I_EnemyBase
     }
 
 
-
-
-    //void Patrol()
-    //{
-    //    if (patrolPoints.Length == 0) return;
-
-    //    Vector3 targetPos = patrolPoints[currentPointIndex].position;
-    //    targetPos.y = transform.position.y;
-
-    //    transform.position = Vector3.MoveTowards(transform.position, targetPos, patrolSpeed * Time.deltaTime);
-
-    //    Vector3 dir = (targetPos - transform.position).normalized;
-    //    dir.y = 0;
-    //    if (dir != Vector3.zero)
-    //        transform.forward = dir;
-
-    //    if (Vector3.Distance(transform.position, targetPos) < 0.2f)
-    //    {
-    //        currentPointIndex = (currentPointIndex + 1) % patrolPoints.Length;
-    //    }
-    //}
     protected void StopMove()
     {
-        navAgent.isStopped = true;
+        rigidbodyComp.linearVelocity = Vector3.zero;
     }
 
     protected async void HitReact()
     {
-        TakeDamage(1);
+        isHit = true;
         animator.SetTrigger("isHit");
-        await Task.Delay(3000);
+        TakeDamage(1);
+        await Task.Delay(1000);
+        isHit = false;
+        currentState = EnemyState.Retreat;
     }
 
     protected void Retreat()
     {
-        var centerPoint = transform.position;
         var radius = 5f;
         Vector3 randomDirection = Random.insideUnitSphere * radius;
-        Vector3 randomPosition = centerPoint + randomDirection;
-        navAgent.SetDestination(randomPosition);
+        randomDirection.y = 0f;
+        Vector3 randomPosition = transform.position + randomDirection;
+        rigidbodyComp.MovePosition(randomPosition);
     }
 
     protected void ChasePlayer()
@@ -237,7 +221,7 @@ public class AI_Cat : MonoBehaviour, I_EnemyBase
             transform.forward = dir;
     }
 
-    protected void SwatPlayer()
+    protected async void SwatPlayer()
     {
 
         var spawnedCollider = swatColliderParent.AddComponent<SphereCollider>();
@@ -245,16 +229,19 @@ public class AI_Cat : MonoBehaviour, I_EnemyBase
         comp.damage = 1;
         //animator.SetTrigger("isKicking");
         swatCooldown = 3f;
-        Task.Delay(3000);
+        await Task.Delay(3000);
         Destroy(spawnedCollider);
         Destroy(comp);
     }
 
     protected void Pounce()
     {
-        //// animator.SetTrigger("isThrowing");
-        //AddForce(objectSpawnPoint.forward * pounceForce, ForceMode.Impulse);
-        //pounceCooldown = 3f;
+        var rb = GetComponent<Rigidbody>();
+        rb.linearVelocity = Vector3.zero;
+        Vector3 dirToPlayer = (player.transform.position-transform.position).normalized;
+        dirToPlayer.y = 0;
+        Vector3 force = dirToPlayer * pounceForce.z + Vector3.up * pounceForce.y;
+        rigidbodyComp.AddForce(force,ForceMode.Impulse);
     }
 
 
@@ -278,17 +265,18 @@ public class AI_Cat : MonoBehaviour, I_EnemyBase
     //call this to run like wind
     public virtual void MoveCatToLocation()
     {
-        if (currentNode == null || navAgent == null)
+        if (currentNode == null || rigidbodyComp == null)
             return;
 
-        navAgent.isStopped = false;
-        navAgent.SetDestination(currentNode.transform.position);
+        Vector3 direction = (currentNode.transform.position - transform.position).normalized;
+        rigidbodyComp.MovePosition(transform.position + direction * patrolSpeed * Time.deltaTime);
+        transform.forward = direction;
 
     }
 
     public virtual void StopVehicle()
     {
-        navAgent.isStopped = true;
+        rigidbodyComp.linearVelocity = Vector3.zero;
         //Debug.Log("Stopping");
     }
 
@@ -300,23 +288,6 @@ public class AI_Cat : MonoBehaviour, I_EnemyBase
             TakeDamage(1);
         }
     }
-    //protected virtual void CheckForCollisions()
-    //{
-    //    RaycastHit hit;
-    //    int combinedMask = trafficLayer | playerLayer | enemyLayer;
-
-    //    if (Physics.Raycast(transform.position, transform.forward, out hit, detectObjectRange, combinedMask))
-    //    {
-    //        StopVehicle();
-    //        Debug.DrawLine(transform.position, hit.point, Color.yellow);
-    //    }
-    //    else
-    //    {
-    //        if (!navAgent.isStopped)
-    //            MoveVehicleToLocation();
-    //    }
-    //}
-
 
 
     protected void ChooseNextDirection(Waypoint node)
@@ -331,7 +302,11 @@ public class AI_Cat : MonoBehaviour, I_EnemyBase
             connections.Add(new WaypointConnection { node = node.nextWaypoint });
 
         }
-        else Destroy(this.gameObject);
+        else
+        {
+            FindRandomWaypoint();
+            return;
+        }
 
         int randomIndex = Random.Range(0, connections.Count);
         Waypoint nextNode = connections[randomIndex].node;

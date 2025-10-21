@@ -17,6 +17,7 @@ TagManager:
   - Cat
   - Dog
   - Hawk
+  - Poop
   layers:
   - Default
   - TransparentFX
