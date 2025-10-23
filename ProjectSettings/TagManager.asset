@@ -18,6 +18,8 @@ TagManager:
   - Dog
   - Hawk
   - Poop
+  - Racoon
+  - BorderHawkZone
   layers:
   - Default
   - TransparentFX
@@ -43,7 +45,7 @@ TagManager:
   - Poopable
   - Projectile
   - Shop
-  - 
+  - Climbable
   - 
   - 
   - 

@@ -1,5 +1,4 @@
-using System.Linq;
-using Unity.VisualScripting;
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
@@ -239,3 +238,4 @@ public class WaypointManager : EditorWindow
         }
     }
 }
+#endif

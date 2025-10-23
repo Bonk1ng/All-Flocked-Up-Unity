@@ -87,3 +87,5 @@ MonoBehaviour:
   activeBugReporter: {fileID: 0}
   debugMenuCanvas: {fileID: 5171268176112099914, guid: 23260bc0a9398064eba8e104f1af877f, type: 3}
   activeDebugMenu: {fileID: 0}
+  mainMapCanvas: {fileID: -4341762546410491242, guid: 9abd090a286817541bc69320fa6b1519, type: 3}
+  activeMapCanvas: {fileID: 0}

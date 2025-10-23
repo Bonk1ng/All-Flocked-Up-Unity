@@ -155,6 +155,20 @@ public class PlayerInteraction : MonoBehaviour
             }
         }
 
+        else if (Input.GetKeyDown(KeyCode.M))
+        {
+            if(canvasController.activeMapCanvas == null)
+            {
+                canvasController.OpenMainMap();
+                Debug.Log("MapOpened");
+            }
+            else
+            {
+                canvasController.CloseMainMap();
+                Debug.Log("MapClosed");
+            }
+        }
+
 
     }
 }
