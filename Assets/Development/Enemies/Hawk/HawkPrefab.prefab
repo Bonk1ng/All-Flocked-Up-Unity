@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 8995452210591828025}
   - component: {fileID: 2731065155510599901}
   - component: {fileID: 5373272833264877447}
-  - component: {fileID: 6701070014278313478}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -87,27 +86,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &6701070014278313478
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 148658598895698529}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6833614328920040753
 GameObject:
   m_ObjectHideFlags: 0
@@ -119,7 +97,6 @@ GameObject:
   - component: {fileID: 2771721497001021995}
   - component: {fileID: 6641492630855401733}
   - component: {fileID: 1115386461897827293}
-  - component: {fileID: 6812876571787942680}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: Untagged
@@ -196,29 +173,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &6812876571787942680
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6833614328920040753}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7379204067732023456
 GameObject:
   m_ObjectHideFlags: 0
@@ -269,7 +223,14 @@ MonoBehaviour:
   isCooper: 0
   takeOffForce: {x: 0, y: 3, z: 6}
   detectionRange: 5
+  distanceToPlayerSqr: 0
   loseSightRange: 8
+  patrolRadius: 10
+  flySpeed: 10
+  turnSpeed: 3
+  altitude: 8
+  altChangeSpeed: 2
+  maxVelocity: 15
   diveRange: 1
   diveCooldown: 3
   diveCollider: {fileID: 0}

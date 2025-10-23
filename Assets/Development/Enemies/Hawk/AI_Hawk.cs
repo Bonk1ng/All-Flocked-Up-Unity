@@ -13,8 +13,16 @@ public class AI_Hawk : MonoBehaviour,I_EnemyBase
     [Header("Detection")]
     public float detectionRange = 5f;
     public float loseSightRange = 8f;
+    private Vector3 patrolTarget;
+    [SerializeField] private float patrolRadius = 10f;
     private bool isHit;
     private bool isStopped;
+    [Header("Flying")]
+    [SerializeField] private float flySpeed = 10f;
+    [SerializeField] private float turnSpeed = 3f;
+    [SerializeField] private float altitude = 8f;
+    [SerializeField] private float altChangeSpeed = 2f;
+    [SerializeField] private float maxVelocity = 15f;
     [Header("Dive")]
     public float diveRange = 1f;
     private float diveForce = 20f;
@@ -33,11 +41,15 @@ public class AI_Hawk : MonoBehaviour,I_EnemyBase
     {
         birdRB = GetComponent<Rigidbody>(); 
         player = FindFirstObjectByType<PlayerGroundMovement>().gameObject;
+        birdRB.useGravity = false;
+        birdRB.linearDamping = 0.2f;
     }
 
     // Update is called once per frame
     void Update()
     {
+        diveCooldown -= Time.deltaTime;
+        rollCooldown -= Time.deltaTime;
         switch (currentType)
         {
             case birdType.CooperHawk:
@@ -46,7 +58,7 @@ public class AI_Hawk : MonoBehaviour,I_EnemyBase
                 break;
             case birdType.RedTailHawk:
                 currentType=birdType.RedTailHawk;
-                UpdateRedTail();
+                UpdateCooper();
                 break;
 
         }
@@ -256,15 +268,31 @@ public class AI_Hawk : MonoBehaviour,I_EnemyBase
         }
     }
 
+    protected void KeepAltitude()
+    {
+        if(Physics.Raycast(transform.position,Vector3.down, out RaycastHit hit, 50f))
+        {
+            float targetY = hit.point.y + altitude;
+            float altOffset = targetY-transform.position.y;
+            birdRB.AddForce(Vector3.up * altOffset * altChangeSpeed, ForceMode.Acceleration);
+        }
+    }
+
     protected void DetectPlayer()
     {
-
+        if (player == null) return;
+        float distanceToPlayer = Vector3.Distance(transform.position,player.transform.position);
+        if (distanceToPlayer <= detectionRange)
+        {
+            if(currentState == EnemyState.Patrolling)
+            {
+                currentState = EnemyState.Chasing;
+            }
+        }
     }
 
     protected void TakeOff()
     {
-        var rb = GetComponent<Rigidbody>();
-        rb.linearVelocity = Vector3.zero;
         Vector3 dirToPlayer = (player.transform.position - transform.position).normalized;
         dirToPlayer.y = 0;
         Vector3 force = dirToPlayer * takeOffForce.z + Vector3.up * takeOffForce.y;
@@ -273,29 +301,56 @@ public class AI_Hawk : MonoBehaviour,I_EnemyBase
 
     protected void Fly()
     {
-
+        birdRB.linearVelocity = transform.forward * flySpeed;
     }
 
     protected void Patrol()
     {
+        if(Vector3.Distance(transform.position,patrolTarget)>2f||patrolTarget == Vector3.zero)
+        {
+            Vector2 randomRad = Random.insideUnitCircle * patrolRadius;
+            patrolTarget = new Vector3(
+                transform.position.x + randomRad.x,
+                transform.position.y + Random.Range(-2f, 2f),
+                transform.position.z + randomRad.y);
+        };
 
+        Vector3 dirToTarget = (patrolTarget-transform.position).normalized;
+        Quaternion targetRot = Quaternion.LookRotation(dirToTarget);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, turnSpeed * Time.deltaTime);
+
+        Fly();
     }
 
     protected void ChasePlayer()
     {
-        Vector3 dirToPlayer = (player.transform.position-transform.position).normalized;
-        birdRB.AddForce(dirToPlayer, ForceMode.Acceleration);
+        KeepAltitude();
+        Vector3 diveDir = (player.transform.position - transform.position).normalized;
+        Quaternion targetRot = Quaternion.LookRotation(diveDir);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * turnSpeed);
+        birdRB.linearVelocity = transform.forward * flySpeed;
+
+        if (diveCooldown <= 0)
+        {
+            currentState = EnemyState.Dive;
+        }
     }
 
     protected void Dive()
     {
+
         Vector3 diveDir = (player.transform.position- transform.position).normalized;
-        birdRB.AddForce(diveDir * diveForce, ForceMode.Impulse);
+        birdRB.AddForce(diveDir*flySpeed*2f, ForceMode.Impulse);
+        diveCooldown = 3f;
+        currentState = EnemyState.Chasing;
+        
     }
 
     protected void Roll()
     {
-        birdRB.AddForce(Vector3.up*rollForce,ForceMode.Impulse);
+        birdRB.AddTorque(transform.forward * 300f, ForceMode.Impulse);
+        rollCooldown = 3f;
+        currentState = EnemyState.Chasing;
     }
 
     protected void Perch()
@@ -305,17 +360,24 @@ public class AI_Hawk : MonoBehaviour,I_EnemyBase
 
     protected void StopMove()
     {
-
+        birdRB.linearVelocity = Vector3.zero;
+        birdRB.angularVelocity = Vector3.zero;
     }
 
     protected void HitReact()
     {
-
+        birdRB.AddForce(-transform.forward * 5f + Vector3.up * 2f, ForceMode.Impulse);
+        currentState = EnemyState.Retreat;
     }
 
     protected void Retreat()
     {
-
+        KeepAltitude();
+        birdRB.AddForce(-transform.forward*flySpeed*0.5f,ForceMode.Acceleration);
+        if (Vector3.Distance(transform.position, player.transform.position) > detectionRange * 2f)
+        {
+            currentState = EnemyState.Patrolling;
+        }
     }
 
     public void OnDeath(bool isDead)

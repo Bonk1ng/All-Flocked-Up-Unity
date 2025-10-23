@@ -75,6 +75,9 @@ public class UI_CanvasController : MonoBehaviour
     [Header("DebugMenu")]
     [SerializeField] private UI_DebugMenu debugMenuCanvas;
     public UI_DebugMenu activeDebugMenu;
+    [Header("MainMap")]
+    [SerializeField] private UI_MainMap mainMapCanvas;
+    public UI_MainMap activeMapCanvas;
 
     private void Start()
     {
@@ -464,6 +467,27 @@ public class UI_CanvasController : MonoBehaviour
             Destroy(activeDebugMenu);
             activeDebugMenu = null;
             HidePlayerCursor();
+        }
+    }
+
+    public void OpenMainMap()
+    {
+        if(activeMapCanvas == null)
+        {
+            activeMapCanvas = Instantiate(mainMapCanvas);
+            ShowPlayerCursor();
+            Time.timeScale = 0;
+        }
+    }
+
+    public void CloseMainMap()
+    {
+        if(activeMapCanvas != null)
+        {
+            Destroy(activeMapCanvas.gameObject);
+            activeMapCanvas = null;
+            HidePlayerCursor();
+            Time.timeScale = 1;
         }
     }
 
