@@ -16,6 +16,7 @@ public class CinematicController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         if( splineDollyRef.CameraPosition>=1) 
         {
             DestroyPrefab();
@@ -25,6 +26,7 @@ public class CinematicController : MonoBehaviour
     private void DestroyPrefab()
     {
         Destroy(gameObject);
+        Destroy(FindFirstObjectByType<CreditRoll>().gameObject);
     }
 
     private void OnDestroy()
