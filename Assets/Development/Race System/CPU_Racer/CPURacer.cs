@@ -1,10 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections.Generic;
-using System.Linq;
-using UnityEditor.Experimental.GraphView;
-using Unity.VisualScripting;
-using System.Net;
+
 
 public class CPURacer : MonoBehaviour 
 {

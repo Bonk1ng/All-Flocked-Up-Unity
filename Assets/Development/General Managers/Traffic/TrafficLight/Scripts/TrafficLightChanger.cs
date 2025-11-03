@@ -12,7 +12,7 @@ public class TrafficLightChanger : MonoBehaviour
     [Header("SystemRefs")]
     [SerializeField] private ETrafficLightState currentLightState;
     [SerializeField] private ITrafficInterface currentState;
-    [SerializeField] private TrafficManager trafficManager;
+    public TrafficManager trafficManager;
 
     public ETrafficLightState state = new();
     [SerializeField]private float detectionRange = 2f;
@@ -21,9 +21,9 @@ public class TrafficLightChanger : MonoBehaviour
     [SerializeField]private bool redLightStop;
 
     private TrafficLightTrigger trigger;
+    public float lightTimer;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
         trafficManager = FindFirstObjectByType<TrafficManager>();
         greenLight.SetActive(false);
@@ -35,24 +35,21 @@ public class TrafficLightChanger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        GetCurrentLightTimer();
+        state = currentLightState;     
 
-        state = currentLightState;
-        
-        currentState?.UpdateTrafficState();
-        if (redLightStop)
-        {
+    }
 
-        }
-
-
-
+    public void GetCurrentLightTimer()
+    {
+        lightTimer = trafficManager.timer;
     }
 
     public void ChangeLightState(ITrafficInterface state, ETrafficLightState lightState)
     {
         currentState?.ExitTrafficState();
-        currentState = state;
         currentLightState = lightState;
+        currentState = state;
         currentState.EnterTrafficState();
         SetState();
     }
@@ -78,7 +75,6 @@ public class TrafficLightChanger : MonoBehaviour
             yellowLight.SetActive(false);
             redLight.SetActive(true);
         }
-        Debug.Log("LightColorChanged");
 
     }
 
@@ -89,20 +85,17 @@ public class TrafficLightChanger : MonoBehaviour
             case ETrafficLightState.Green:
                 currentState = new GreenState(this);
                 ChangeLightColor("Green");
-                Debug.Log("LightColorChangedGreen");
                 redLightStop = false;
                 trigger.redLightBox.enabled = false;
                 break;
             case ETrafficLightState.Yellow:
                 currentState = new YellowState(this);
                 ChangeLightColor("Yellow");
-                Debug.Log("LightColorChangedYellow");
                 trigger.redLightBox.enabled = false;
                 break;
             case ETrafficLightState.Red:
                 currentState = new RedState(this);
                 ChangeLightColor("Red");
-                Debug.Log("LightColorChangedRed");
                 redLightStop = true;
                 trigger.redLightBox.enabled = true;
                 break;

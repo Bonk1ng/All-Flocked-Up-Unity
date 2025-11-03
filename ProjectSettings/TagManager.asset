@@ -13,6 +13,13 @@ TagManager:
   - Race
   - Vehicle
   - Traffic
+  - Human
+  - Cat
+  - Dog
+  - Hawk
+  - Poop
+  - Racoon
+  - BorderHawkZone
   layers:
   - Default
   - TransparentFX
@@ -37,8 +44,8 @@ TagManager:
   - Map
   - Poopable
   - Projectile
-  - 
-  - 
+  - Shop
+  - Climbable
   - 
   - 
   - 

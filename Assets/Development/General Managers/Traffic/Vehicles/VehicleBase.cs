@@ -15,7 +15,7 @@ public class VehicleBase :MonoBehaviour
     [SerializeField] protected LayerMask playerLayer;
     [SerializeField] protected LayerMask enemyLayer;
     [SerializeField] protected LayerMask trafficLayer;
-    [SerializeField] private bool isStopped;
+    public bool isStopped;
     [SerializeField] private bool isMoving;
     [SerializeField] private List<WaypointConnection> connections = new();
     [SerializeField] protected float detectObjectRange=2f;
@@ -29,6 +29,13 @@ public class VehicleBase :MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
+        if (isStopped)
+        {
+            StopVehicle();
+        }else if (!isStopped)
+        {
+            MoveVehicleToLocation();
+        }
         CheckForCollisions();
 
         if (currentNode == null)
@@ -63,7 +70,7 @@ public class VehicleBase :MonoBehaviour
     public virtual void StopVehicle()
     {
         navAgent.isStopped = true;
-        Debug.Log("Stopping");
+        //Debug.Log("Stopping");
     }
 
     protected virtual void CheckForCollisions()
@@ -71,7 +78,7 @@ public class VehicleBase :MonoBehaviour
         RaycastHit hit;
         int combinedMask = trafficLayer | playerLayer | enemyLayer;
 
-        if (Physics.SphereCast(transform.position, detectRadius, transform.forward, out hit, detectObjectRange, combinedMask))
+        if (Physics.Raycast(transform.position, transform.forward, out hit, detectObjectRange, combinedMask))
         {
             StopVehicle();
             HonkHorn();
