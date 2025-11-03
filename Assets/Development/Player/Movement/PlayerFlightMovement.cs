@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,6 +7,7 @@ public class PlayerFlightMovement : MonoBehaviour
     GroundCheck groundCheck;
     Rigidbody playerBody;
     StaminaSystem playerStamina;
+    [SerializeField] Transform meshTransform;
 
     bool isFlying = false;
     bool gliding = true;
@@ -23,6 +25,7 @@ public class PlayerFlightMovement : MonoBehaviour
     [SerializeField] float glideDownSpeed = 1000f;
     [SerializeField] float glideDownDropSpeed = 1f;
     [SerializeField] float stallDownSpeed = .00001f;
+    [SerializeField] float tiltSpeed = 500f;
 
     float flapUpVelocity;
 
@@ -84,6 +87,27 @@ public class PlayerFlightMovement : MonoBehaviour
         if (horizontalMovement < 0 || horizontalMovement > 0)
         {
             transform.Rotate(new Vector3(0, rotateSpeed * horizontalMovement * Time.deltaTime, 0));
+
+            Vector3 currentAngle = meshTransform.eulerAngles + new Vector3(0, 0, -horizontalMovement) * tiltSpeed * Time.deltaTime;
+    
+            // Weird math to get relative angle
+            currentAngle.z = Mathf.Clamp(((currentAngle.z + 540) % 360) - 180, -25f, 25f);
+            meshTransform.rotation = Quaternion.Euler(currentAngle);
+        }
+        else if (meshTransform.localRotation.z != 0)
+        {
+            Vector3 currentAngle = Vector3.zero;
+            Debug.Log("Angle: " + meshTransform.localEulerAngles.z);
+            if (meshTransform.localEulerAngles.z < 30)
+                currentAngle = Vector3.Lerp(meshTransform.localEulerAngles, Vector3.zero, .1f);
+            else
+                currentAngle = Vector3.Lerp(meshTransform.localEulerAngles, new Vector3(0, 0, 360), .1f);
+
+            meshTransform.localRotation = Quaternion.Euler(currentAngle);
+
+            if (meshTransform.localEulerAngles.z < 1)
+                meshTransform.localRotation = Quaternion.Euler(Vector3.zero);
+
         }
 
         if (forwardMovement > 0)
@@ -138,6 +162,7 @@ public class PlayerFlightMovement : MonoBehaviour
     void ReturnToWalkState()
     {
         isFlying = false;
+        meshTransform.localRotation = Quaternion.Euler(Vector3.zero);
         GetComponent<PlayerGroundMovement>().InitiateWalkState();
     }
 }
