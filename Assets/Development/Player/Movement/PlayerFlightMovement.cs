@@ -25,7 +25,7 @@ public class PlayerFlightMovement : MonoBehaviour
     [SerializeField] float glideDownSpeed = 1000f;
     [SerializeField] float glideDownDropSpeed = 1f;
     [SerializeField] float stallDownSpeed = .00001f;
-    [SerializeField] float tiltSpeed = 500f;
+    [SerializeField] float tiltSpeed = 100f;
 
     float flapUpVelocity;
 
@@ -96,17 +96,16 @@ public class PlayerFlightMovement : MonoBehaviour
         }
         else if (meshTransform.localRotation.z != 0)
         {
-            Vector3 currentAngle = Vector3.zero;
-            Debug.Log("Angle: " + meshTransform.localEulerAngles.z);
-            if (meshTransform.localEulerAngles.z < 30)
-                currentAngle = Vector3.Lerp(meshTransform.localEulerAngles, Vector3.zero, .1f);
+            Vector3 currentAngle = meshTransform.localEulerAngles;
+            if (currentAngle.z < 30)
+                currentAngle.z = Mathf.Lerp(meshTransform.localEulerAngles.z, 0, 2f * Time.deltaTime);
             else
-                currentAngle = Vector3.Lerp(meshTransform.localEulerAngles, new Vector3(0, 0, 360), .1f);
+                currentAngle.z = Mathf.Lerp(meshTransform.localEulerAngles.z, 360, 2f * Time.deltaTime);
 
             meshTransform.localRotation = Quaternion.Euler(currentAngle);
 
             if (meshTransform.localEulerAngles.z < 1)
-                meshTransform.localRotation = Quaternion.Euler(Vector3.zero);
+                meshTransform.localRotation = Quaternion.Euler(new Vector3(meshTransform.eulerAngles.x, 0, 0));
 
         }
 
@@ -118,6 +117,12 @@ public class PlayerFlightMovement : MonoBehaviour
             Vector3 glideDownAmount = transform.forward * glideDownSpeed * Time.deltaTime;
             glideDownAmount.y = playerBody.linearVelocity.y - (glideDownDropSpeed * Time.deltaTime);
             playerBody.linearVelocity = glideDownAmount;
+
+            Vector3 currentAngle = meshTransform.eulerAngles + new Vector3(forwardMovement, 0, 0) * tiltSpeed * Time.deltaTime;
+
+            // Weird math to get relative angle
+            currentAngle.x = Mathf.Clamp(((currentAngle.x + 540) % 360) - 180, -25f, 25f);
+            meshTransform.rotation = Quaternion.Euler(currentAngle);
         }
         else if (forwardMovement < 0)
         {
@@ -126,11 +131,31 @@ public class PlayerFlightMovement : MonoBehaviour
             Vector3 tempVel = playerBody.linearVelocity;
             Debug.Log(tempVel);
             playerBody.linearVelocity = new Vector3(Mathf.Clamp(tempVel.x - (stallDownSpeed * Time.deltaTime), 0, 10000), tempVel.y, Mathf.Clamp(tempVel.z - (stallDownSpeed * Time.deltaTime), 0, 10000));
+
+            Vector3 currentAngle = meshTransform.eulerAngles + new Vector3(forwardMovement, 0, 0) * tiltSpeed * Time.deltaTime;
+
+            // Weird math to get relative angle
+            currentAngle.x = Mathf.Clamp(((currentAngle.x + 540) % 360) - 180, -25f, 25f);
+            meshTransform.rotation = Quaternion.Euler(currentAngle);
         }
         else
         {
             if (!gliding)
                 gliding = true;
+
+            if (meshTransform.localRotation.x != 0)
+            {
+                Vector3 currentAngle = meshTransform.localEulerAngles;
+                if (currentAngle.x < 30)
+                    currentAngle.x = Mathf.Lerp(meshTransform.localEulerAngles.x, 0, 2f * Time.deltaTime);
+                else
+                    currentAngle.x = Mathf.Lerp(meshTransform.localEulerAngles.x, 360, 2f * Time.deltaTime);
+
+                meshTransform.localRotation = Quaternion.Euler(currentAngle);
+
+                if (meshTransform.localEulerAngles.x < 1)
+                    meshTransform.localRotation = Quaternion.Euler(new Vector3(0, 0, meshTransform.eulerAngles.z));
+            }
         }
     }
 
