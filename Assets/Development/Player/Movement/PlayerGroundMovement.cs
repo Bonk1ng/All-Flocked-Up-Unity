@@ -127,7 +127,11 @@ public class PlayerGroundMovement : MonoBehaviour
         z = moveAction.ReadValue<Vector2>().y;
 
         if (x == 0 && z == 0)
+        {
+            //playerBody.linearVelocity = new Vector3(0, playerBody.linearVelocity.y, 0);
+            CounterMovement(x, z, FindVelRelativeToLook());
             return;
+        }
 
         if (x != 0 || z != 0)
             StepClimb();
