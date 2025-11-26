@@ -17,6 +17,9 @@ public class AccessoryBase : MonoBehaviour
     [SerializeField] private GameObject currentItem;
 
     [SerializeField] protected List<Mesh> meshList;
+    public int poopStatBonus;
+    public int staminaStatBonus;
+    public int healthStatBonus;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
