@@ -13,6 +13,8 @@ public class PlayerGroundMovement : MonoBehaviour
     static GroundCheck groundCheck;
     Transform cameraRef;
 
+    [Header("Additional Requirements")]
+    [SerializeField] GameObject crouchVinete;
 
     // movement variables
     [Header("Movement Speed: ")]
@@ -193,6 +195,7 @@ public class PlayerGroundMovement : MonoBehaviour
 
         if (!crouching)
         {
+            crouchVinete.SetActive(true);
             crouching = true;
             currentMaxSpeed = crouchSpeed;
         }
@@ -202,6 +205,7 @@ public class PlayerGroundMovement : MonoBehaviour
     {
         if (crouching)
         {
+            crouchVinete.SetActive(false);
             crouching = false;
             currentMaxSpeed = maxSpeed;
         }
