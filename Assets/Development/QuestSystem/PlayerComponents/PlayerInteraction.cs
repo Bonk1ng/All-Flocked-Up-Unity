@@ -11,9 +11,11 @@ public class PlayerInteraction : MonoBehaviour
     public LayerMask raceLayer;
     public LayerMask nestLayer;
     public LayerMask shopLayer;
+    public LayerMask wearableLayer;
     public QuestLog questLog; // assign in Inspector
     public UI_CanvasController canvasController;
     public bool gamePaused;
+    [SerializeField] private GameObject attachPoint;
 
     void Update()
     {
@@ -27,7 +29,6 @@ public class PlayerInteraction : MonoBehaviour
                 if (questNPC != null)
                 {
                     canvasController.ShowQuestGiver(hit.collider.GetComponentInParent<QuestGiver>());
-                    Debug.Log(hit.ToString() + "QuestGiver");
                 }
             }
 
@@ -37,7 +38,6 @@ public class PlayerInteraction : MonoBehaviour
                 if (questInteractable != null)
                 {
                     questInteractable.InteractWithObjective();
-                    Debug.Log(hit.ToString() + "InteractionObject");
                 }
             }
 
@@ -48,7 +48,6 @@ public class PlayerInteraction : MonoBehaviour
                 {
                     canvasController.OpenDialogue();
                     dialogueInteractable.InteractWithNPCDialogue();
-                    Debug.Log(hit.ToString() + "Dialogue");
                 }
             }
 
@@ -58,7 +57,6 @@ public class PlayerInteraction : MonoBehaviour
                 if (trashInteractable != null)
                 {
                     trashInteractable.InteractWithTrashCan();
-                    Debug.Log(hit.ToString() + "TrashCan");
                 }
             }
 
@@ -68,7 +66,6 @@ public class PlayerInteraction : MonoBehaviour
                 if (raceGiver != null)
                 {
                     raceGiver.InteractWithRaceGiver();
-                    Debug.Log(hit.ToString() + "RaceGiver");
                 }
             }
 
@@ -85,13 +82,25 @@ public class PlayerInteraction : MonoBehaviour
                 var box = hit.collider as BoxCollider ?? hit.collider.GetComponentInParent<BoxCollider>();
                 shopObj?.InteractWithShop(box);
             }
+
+            if(Physics.Raycast(transform.position, transform.forward,out hit,interactionRange, wearableLayer))
+            {
+                var wearableObj = hit.collider.gameObject;
+                var comp = wearableObj.GetComponent<Wearable_Base>();
+                if (!comp.isGrabbed)
+                {
+                    comp.LookForObject();
+                    comp.attachPoint = attachPoint;
+                }
+                else if (comp.isGrabbed) { comp.RemoveObject(); }
+                else return;
+            }
         }
         //TAB for quest log...will change this later to new input system
        else if (Input.GetKeyDown(KeyCode.Tab))
         {
             if (canvasController.activeLogInstance == null)
             {
-                Debug.Log("QuestLog Opened?");
                 canvasController.ShowQuestLog();
             }
             else canvasController.DestroyQuestLog();
@@ -109,7 +118,6 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (canvasController.activeWingventory== null)
             {
-                Debug.Log("QuestLog Opened?");
                 canvasController.OpenWingventory();
             }
             else canvasController.CloseWingventory();
@@ -119,7 +127,6 @@ public class PlayerInteraction : MonoBehaviour
         {
             if (!gamePaused && canvasController.activePauseMenu == null)
             {
-                Debug.Log("GamePaused?");
                 canvasController.PauseGame();
             }
             else canvasController.ResumeGame();
@@ -130,12 +137,10 @@ public class PlayerInteraction : MonoBehaviour
             if(canvasController.activeBugReporter == null)
             {
                 canvasController.OpenBugReporter();
-                Debug.Log("BugReporterOpened");
             }
             else
             {
                 canvasController.CloseBugReporter();
-                Debug.Log("BugReporterClosed");
             }
 
         }
@@ -145,12 +150,10 @@ public class PlayerInteraction : MonoBehaviour
             if(canvasController.activeBugReporter == null)
             {
                 canvasController.OpenDebugMenu();
-                Debug.Log("DebugMenuOpened");
             }
             else
             {
                 canvasController.CloseDebugMenu();
-                Debug.Log("DebugMenuClosed");
             }
         }
 
@@ -159,12 +162,10 @@ public class PlayerInteraction : MonoBehaviour
             if(canvasController.activeMapCanvas == null)
             {
                 canvasController.OpenMainMap();
-                Debug.Log("MapOpened");
             }
             else
             {
                 canvasController.CloseMainMap();
-                Debug.Log("MapClosed");
             }
         }
 
