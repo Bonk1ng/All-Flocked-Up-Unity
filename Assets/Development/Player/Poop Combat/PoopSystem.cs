@@ -39,6 +39,11 @@ public class PoopSystem : MonoBehaviour
         else GetCurrentAccessories() ;
     }
 
+    public void GainPoop(int poop)
+    {
+        currentPoop += poop;
+    }
+
     public bool TryPoop()
     {
         if (!CanPoop) return false;

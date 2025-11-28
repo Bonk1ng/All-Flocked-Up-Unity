@@ -57,7 +57,6 @@ public class PlayerInteraction : MonoBehaviour
                 var trashInteractable = hit.collider.GetComponentInParent<TrashCanInteraction>();
                 if (trashInteractable != null)
                 {
-                    canvasController.OpenDialogue();
                     trashInteractable.InteractWithTrashCan();
                     Debug.Log(hit.ToString() + "TrashCan");
                 }
