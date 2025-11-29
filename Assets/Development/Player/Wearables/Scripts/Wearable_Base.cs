@@ -12,6 +12,13 @@ public class Wearable_Base : MonoBehaviour
     public GameObject attachPoint;
     [SerializeField] private float grabDistance;
 
+    [SerializeField] private PlayerStealthSystem playerRef;
+
+    private void Start()
+    {
+        playerRef = FindFirstObjectByType<PlayerStealthSystem>();
+    }
+
     void Update()
     {
         if (wornObject != null)
@@ -54,6 +61,7 @@ public class Wearable_Base : MonoBehaviour
             wornObject.GetComponent<Rigidbody>().useGravity = false;
             wornObject.GetComponent<BoxCollider>().enabled = false;
             Debug.Log("Grabbed");
+            GiveStealth();
         }
     }
 
@@ -76,6 +84,21 @@ public class Wearable_Base : MonoBehaviour
             wornObject.GetComponent<Rigidbody>().useGravity = true;
             wornObject.GetComponent<BoxCollider>().enabled = true;
             wornObject = null;
+            RemoveStealth();
         }
+    }
+
+    protected void GiveStealth()
+    {
+        playerRef.stealthModifier = 2;
+        playerRef.radiusModifier = 2f;
+        playerRef.ToggleStealthOn();
+    }
+
+    protected void RemoveStealth()
+    {
+        playerRef.stealthModifier = 0;
+        playerRef.radiusModifier = 0f;
+        playerRef.ToggleStealthOff();
     }
 }
