@@ -3,11 +3,13 @@ using UnityEngine;
 public class ExitSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject player;
-    [SerializeField] private GameObject promptPrefab;
+    [SerializeField] private UI_InteriorPrompt promptPrefab;
+    [SerializeField] private UI_InteriorPrompt currentPrompt;
     [SerializeField] private BoxCollider boxCollider;
     [SerializeField] private Vector3 startLocation;
     private bool isPromptShown;
     private bool isTeleporting;
+    public string locationName;
 
     private void Start()
     {
@@ -44,12 +46,14 @@ public class ExitSpawner : MonoBehaviour
 
     private void ShowPrompt()
     {
-        //spawn prompt
+        currentPrompt = Instantiate(promptPrefab);
+        currentPrompt.prompt = "Travel to " + locationName;
         isPromptShown = true;
     }
 
     private void HidePrompt()
     {
+        Destroy(currentPrompt);
         isPromptShown = false;
     }
 
@@ -57,5 +61,6 @@ public class ExitSpawner : MonoBehaviour
     {
         isTeleporting = true;
         player.transform.position = startLocation;
+        HidePrompt();
     }
 }
