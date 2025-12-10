@@ -5,24 +5,39 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using System.Linq;
 using UnityEditor.TerrainTools;
+using UnityEditor.UI;
 
 [ExecuteInEditMode]
 public class InteriorStudioManager : EditorWindow
 {
+    [Header("Room Info")]
     public Vector3 roomSize = new Vector3();
     string interiorName = "";
     [SerializeField]ShellSpawner shellSpawnerPrefab;
     [SerializeField] List<ShellSpawner> shells = new();
     ShellSpawner currentShell;
+    [Header("Interior List")]
     [SerializeField] List<string> shellNames = new();
     [SerializeField] private int indexer;
     int currentIndex;
+    [Header("Prefabs")]
     [SerializeField] EntranceSpawner entranceSpawner;
+    [SerializeField] EntranceSpawner currentEntrance;
     [SerializeField] ExitSpawner exitSpawner;
+    [SerializeField] ExitSpawner currentExit;
     Vector3 entranceLocation = new();
     Vector3 exitLocation = new();
+    [Header("Triggers")]
     [SerializeField] bool isPlacingEntrance = false;
     [SerializeField] bool isPlacingExit = false;
+    [Header("WallMaterials")]
+    [SerializeField] private Material frontMaterial;
+    [SerializeField] private Material backMaterial;
+    [SerializeField] private Material leftMaterial;
+    [SerializeField] private Material rightMaterial;
+    [SerializeField] private Material floorMaterial;
+    [SerializeField] private Material ceilMaterial;
+
 
     private void OnSceneGUI(SceneView sceneView)
     {
@@ -41,18 +56,20 @@ public class InteriorStudioManager : EditorWindow
                 if (isPlacingEntrance)
                 {
                     entranceLocation = hit.point;
-                    var entrance = Instantiate(entranceSpawner, entranceLocation, Quaternion.identity);
-                    entrance.name = "Entrance";
-                    entrance.transform.SetParent(currentShell.transform, true);
+                    currentEntrance = Instantiate(entranceSpawner, entranceLocation, Quaternion.identity);
+                    currentEntrance.name = "Entrance";
+                    currentEntrance.locationName = interiorName;
+                    currentEntrance.transform.SetParent(currentShell.transform, true);
                     isPlacingEntrance = false;
                     click.Use();
                 }
                 else if (isPlacingExit)
                 {
                     exitLocation = hit.point;
-                    var exit = Instantiate(exitSpawner, exitLocation, Quaternion.identity);
-                    exit.name = "Exit";
-                    exit.transform.SetParent(currentShell.transform, true);
+                    currentExit = Instantiate(exitSpawner, exitLocation, Quaternion.identity);
+                    currentExit.name = "Exit";
+                    currentExit.locationName = interiorName;
+                    currentExit.transform.SetParent(currentShell.transform, true);
                     isPlacingExit = false;
                     click.Use();
                 }
@@ -126,6 +143,18 @@ public class InteriorStudioManager : EditorWindow
         roomSize = EditorGUILayout.Vector3Field("Room Size: ", roomSize);
         interiorName = EditorGUILayout.TextField("Name of Interior: ", interiorName);
         indexer = EditorGUILayout.Popup(indexer, shellNames.ToArray());
+        SerializedProperty frontMat = obj.FindProperty("frontMaterial");
+        frontMaterial = frontMat.objectReferenceValue as Material;
+        SerializedProperty backMat = obj.FindProperty("backMaterial");
+        backMaterial = backMat.objectReferenceValue as Material;
+        SerializedProperty leftMat = obj.FindProperty("leftMaterial");
+        leftMaterial = leftMat.objectReferenceValue as Material;
+        SerializedProperty rightMat = obj.FindProperty("rightMaterial");
+        rightMaterial = rightMat.objectReferenceValue as Material;
+        SerializedProperty floorMat = obj.FindProperty("floorMaterial");
+        floorMaterial = floorMat.objectReferenceValue as Material;
+        SerializedProperty ceilMat = obj.FindProperty("ceilMaterial");
+        ceilMaterial = ceilMat.objectReferenceValue as Material;
         DrawButtons();
         EditorGUILayout.EndVertical();
         EditorGUILayout.PropertyField(shellPrefab);
@@ -133,6 +162,12 @@ public class InteriorStudioManager : EditorWindow
         EditorGUILayout.PropertyField(exitPrefab);
         EditorGUILayout.PropertyField(placingEntrance);
         EditorGUILayout.PropertyField(placingExit);
+        EditorGUILayout.PropertyField(frontMat);
+        EditorGUILayout.PropertyField(backMat);
+        EditorGUILayout.PropertyField(leftMat);
+        EditorGUILayout.PropertyField(rightMat);
+        EditorGUILayout.PropertyField(floorMat);
+        EditorGUILayout.PropertyField(ceilMat);
         obj.ApplyModifiedProperties();
 
     }
@@ -162,6 +197,15 @@ public class InteriorStudioManager : EditorWindow
         if (GUILayout.Button("Destroy Interior"))
         {
             DestroyAndRemoveInterior(interiorName);
+        }
+        if (GUILayout.Button("Update Locations"))
+        {
+            UpdateLocations();
+        }
+        if(GUILayout.Button("Update Shell Materials"))
+        {
+            SendMaterialsToShell();
+            currentShell.UpdateMaterials();
         }
     }
 
@@ -213,8 +257,9 @@ public class InteriorStudioManager : EditorWindow
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
             entranceLocation = hit.point;
-            var entrance = Instantiate(entranceSpawner, entranceLocation, Quaternion.identity);
-            entrance.locationName = interiorName;
+            currentEntrance = Instantiate(entranceSpawner, entranceLocation, Quaternion.identity);
+            currentEntrance.locationName = interiorName;
+            currentEntrance.endLocation = exitLocation;
             isPlacingEntrance = false;
         }
     }
@@ -226,11 +271,30 @@ public class InteriorStudioManager : EditorWindow
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
             exitLocation = hit.point;
-            var exit = Instantiate(exitSpawner, exitLocation, Quaternion.identity);
-            exit.locationName = interiorName;
+            currentExit = Instantiate(exitSpawner, exitLocation, Quaternion.identity);
+            currentExit.locationName = interiorName;
+            currentExit.startLocation = entranceLocation;
             isPlacingExit = false;
         }
     }
+
+    void UpdateLocations()
+    {
+        currentEntrance.endLocation = exitLocation;
+        currentExit.startLocation = entranceLocation;
+    }
+
+    void SendMaterialsToShell()
+    {
+        currentShell.frontMaterial = frontMaterial;
+        currentShell.backMaterial = backMaterial;
+        currentShell.leftMaterial = leftMaterial;
+        currentShell.rightMaterial = rightMaterial;
+        currentShell.floorMaterial = floorMaterial;
+        currentShell.ceilMaterial=ceilMaterial;
+    }
+
+
 
     }
 #endif
