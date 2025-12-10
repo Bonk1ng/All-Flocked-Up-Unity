@@ -6,10 +6,11 @@ public class EntranceSpawner : MonoBehaviour
     [SerializeField] private UI_InteriorPrompt promptPrefab;
     [SerializeField] private UI_InteriorPrompt currentPrompt;
     [SerializeField] private BoxCollider boxCollider;
-    [SerializeField] private Vector3 endLocation;
+    public Vector3 endLocation;
     public string locationName;
-    private bool isPromptShown;
-    private bool isTeleporting;
+    [SerializeField] private bool isPromptShown;
+    [SerializeField] private bool isTeleporting;
+    [SerializeField] private bool isReady;
 
     private void Start()
     {
@@ -18,9 +19,9 @@ public class EntranceSpawner : MonoBehaviour
 
     private void Update()
     {
-       if(isPromptShown)
+       if(isPromptShown&& isReady)
         {
-            if (Input.GetKeyDown(KeyCode.KeypadEnter))
+            if (Input.GetKeyDown(KeyCode.E))
             {
                 if (!isTeleporting)
                 {
@@ -39,21 +40,40 @@ public class EntranceSpawner : MonoBehaviour
             if(player != null)
             {
                 ShowPrompt();
+                isReady = true;
             }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            player = null;
+            isReady = false;
+            HidePrompt();
         }
     }
 
     private void ShowPrompt()
     {
-        currentPrompt = Instantiate(promptPrefab);
-        currentPrompt.prompt = "Travel to " + locationName;
-        isPromptShown = true;
+        if(currentPrompt == null)
+        {
+            currentPrompt = Instantiate(promptPrefab);
+            currentPrompt.prompt = "Travel to " + locationName;
+            isPromptShown = true;
+        }
+
     }
 
     private void HidePrompt()
     {
-        Destroy(currentPrompt);
-        isPromptShown = false;
+        if(currentPrompt != null)
+        {
+            Destroy(currentPrompt);
+            isPromptShown = false;
+        }
+
     }
 
     private void GoToEndLocation()
@@ -61,5 +81,7 @@ public class EntranceSpawner : MonoBehaviour
         isTeleporting = true;
         player.transform.position = endLocation;
         HidePrompt();
+        isReady = false;
+        isTeleporting = false;
     }
 }
